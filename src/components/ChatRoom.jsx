@@ -23,13 +23,12 @@ export default function ChatRoom() {
     return () => unsub();
   }, []);
 
-  // Ambil pesan real-time
+  // Ambil pesan real-time (tidak perlu login untuk melihat)
   useEffect(() => {
     console.log("Setting up Firestore listener...");
     console.log("Database instance:", db);
-    console.log("User:", user);
 
-    // Try simple query first without orderBy to test if it's an index issue
+    // Query messages - bisa diakses tanpa login
     const q = query(collection(db, "messages"));
 
     const unsub = onSnapshot(
@@ -65,7 +64,7 @@ export default function ChatRoom() {
       console.log("Cleaning up Firestore listener");
       unsub();
     };
-  }, []);
+  }, []); // Tidak bergantung pada user, jadi pesan bisa dimuat tanpa login
 
   // Handle login with popup
   const handleLogin = async () => {
