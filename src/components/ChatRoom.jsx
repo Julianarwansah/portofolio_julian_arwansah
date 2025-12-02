@@ -25,11 +25,46 @@ export default function ChatRoom() {
 
   // Ambil pesan real-time
   useEffect(() => {
-    const q = query(collection(db, "messages"), orderBy("createdAt"));
-    const unsub = onSnapshot(q, (snapshot) => {
-      setMessages(snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() })));
-    });
-    return () => unsub();
+    console.log("Setting up Firestore listener...");
+    console.log("Database instance:", db);
+    console.log("User:", user);
+
+    // Try simple query first without orderBy to test if it's an index issue
+    const q = query(collection(db, "messages"));
+
+    const unsub = onSnapshot(
+      q,
+      (snapshot) => {
+        console.log("✅ Firestore snapshot received:", snapshot.docs.length, "messages");
+        const msgs = snapshot.docs.map((doc) => {
+          const data = doc.data();
+          console.log("Message data:", data);
+          return { id: doc.id, ...data };
+        });
+        // Sort manually by createdAt
+        msgs.sort((a, b) => {
+          if (!a.createdAt || !b.createdAt) return 0;
+          return a.createdAt.seconds - b.createdAt.seconds;
+        });
+        setMessages(msgs);
+        console.log("Messages state updated with", msgs.length, "messages");
+      },
+      (error) => {
+        console.error("❌ Firestore error:", error);
+        console.error("Error code:", error.code);
+        console.error("Error message:", error.message);
+
+        // If it's a permission error, show it clearly
+        if (error.code === 'permission-denied') {
+          console.error("🔒 PERMISSION DENIED - Check Firestore Security Rules!");
+          console.error("You need to allow read access to 'messages' collection");
+        }
+      }
+    );
+    return () => {
+      console.log("Cleaning up Firestore listener");
+      unsub();
+    };
   }, []);
 
   // Handle login with popup
