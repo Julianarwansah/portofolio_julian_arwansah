@@ -19,7 +19,60 @@ const app = initializeApp(firebaseConfig);
 // Auth
 export const auth = getAuth(app);
 const provider = new GoogleAuthProvider();
-export const loginWithGoogle = () => signInWithPopup(auth, provider);
+
+// Login with popup (default method)
+export const loginWithGoogle = async () => {
+  try {
+    const result = await signInWithPopup(auth, provider);
+    return { success: true, user: result.user };
+  } catch (error) {
+    console.error("Login error:", error);
+
+    // Handle specific error cases
+    if (error.code === 'auth/popup-blocked') {
+      return {
+        success: false,
+        error: 'Popup diblokir oleh browser. Silakan coba metode redirect atau izinkan popup.',
+        code: error.code
+      };
+    } else if (error.code === 'auth/popup-closed-by-user') {
+      return {
+        success: false,
+        error: 'Login dibatalkan. Silakan coba lagi.',
+        code: error.code
+      };
+    } else if (error.code === 'auth/unauthorized-domain') {
+      return {
+        success: false,
+        error: 'Domain tidak diauthorize. Hubungi administrator.',
+        code: error.code
+      };
+    } else {
+      return {
+        success: false,
+        error: `Login gagal: ${error.message}`,
+        code: error.code
+      };
+    }
+  }
+};
+
+// Login with redirect (fallback method if popup is blocked)
+export const loginWithGoogleRedirect = async () => {
+  try {
+    const { signInWithRedirect } = await import('firebase/auth');
+    await signInWithRedirect(auth, provider);
+    return { success: true };
+  } catch (error) {
+    console.error("Redirect login error:", error);
+    return {
+      success: false,
+      error: `Login gagal: ${error.message}`,
+      code: error.code
+    };
+  }
+};
+
 export const logout = () => signOut(auth);
 
 // Firestore

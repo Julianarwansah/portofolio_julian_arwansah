@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { auth, loginWithGoogle, logout, db } from "../firebase";
+import { auth, loginWithGoogle, loginWithGoogleRedirect, logout, db } from "../firebase";
 import { onAuthStateChanged } from "firebase/auth";
 import {
   collection,
@@ -14,6 +14,8 @@ export default function ChatRoom() {
   const [user, setUser] = useState(null);
   const [message, setMessage] = useState("");
   const [messages, setMessages] = useState([]);
+  const [loginError, setLoginError] = useState(null);
+  const [isLoggingIn, setIsLoggingIn] = useState(false);
 
   // Cek login
   useEffect(() => {
@@ -29,6 +31,29 @@ export default function ChatRoom() {
     });
     return () => unsub();
   }, []);
+
+  // Handle login with popup
+  const handleLogin = async () => {
+    setIsLoggingIn(true);
+    setLoginError(null);
+
+    const result = await loginWithGoogle();
+
+    if (!result.success) {
+      setLoginError(result.error);
+      setIsLoggingIn(false);
+    } else {
+      setIsLoggingIn(false);
+    }
+  };
+
+  // Handle login with redirect (fallback)
+  const handleRedirectLogin = async () => {
+    setIsLoggingIn(true);
+    setLoginError(null);
+    await loginWithGoogleRedirect();
+    // Note: Page will redirect, so no need to set loading to false
+  };
 
   // Kirim pesan
   const sendMessage = async (e) => {
@@ -80,11 +105,10 @@ export default function ChatRoom() {
               />
             )}
             <div
-              className={`p-3 rounded-lg max-w-[75%] ${
-                msg.uid === user?.uid
-                  ? "bg-blue-500 text-white"
-                  : "bg-gray-700 text-white"
-              }`}
+              className={`p-3 rounded-lg max-w-[75%] ${msg.uid === user?.uid
+                ? "bg-blue-500 text-white"
+                : "bg-gray-700 text-white"
+                }`}
             >
               <div className="text-xs opacity-70 mb-1">{msg.displayName}</div>
               <div>{msg.text}</div>
@@ -119,17 +143,48 @@ export default function ChatRoom() {
         </form>
       ) : (
         <div className="flex flex-col items-center justify-center gap-4">
+          {/* Error message */}
+          {loginError && (
+            <div className="w-full bg-red-500/20 border border-red-500 text-red-200 px-4 py-3 rounded-lg text-sm">
+              <p className="font-semibold">❌ Login Gagal</p>
+              <p>{loginError}</p>
+            </div>
+          )}
+
+          {/* Primary login button (popup) */}
           <button
-            onClick={loginWithGoogle}
-            className="flex items-center gap-3 bg-white text-gray-800 px-5 py-2 rounded-full shadow hover:bg-gray-200 transition"
+            onClick={handleLogin}
+            disabled={isLoggingIn}
+            className="flex items-center gap-3 bg-white text-gray-800 px-5 py-2 rounded-full shadow hover:bg-gray-200 transition disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            <img
-              src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg"
-              alt="Google logo"
-              className="w-5 h-5"
-            />
-            Login with Google
+            {isLoggingIn ? (
+              <>
+                <div className="w-5 h-5 border-2 border-gray-800 border-t-transparent rounded-full animate-spin"></div>
+                <span>Loading...</span>
+              </>
+            ) : (
+              <>
+                <img
+                  src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg"
+                  alt="Google logo"
+                  className="w-5 h-5"
+                />
+                Login with Google
+              </>
+            )}
           </button>
+
+          {/* Fallback redirect button */}
+          {loginError && loginError.includes('Popup') && (
+            <button
+              onClick={handleRedirectLogin}
+              disabled={isLoggingIn}
+              className="text-sm text-blue-400 hover:text-blue-300 underline disabled:opacity-50"
+            >
+              Coba dengan metode redirect
+            </button>
+          )}
+
           <p className="text-sm text-gray-400">Login untuk mengirim pesan</p>
         </div>
       )}
