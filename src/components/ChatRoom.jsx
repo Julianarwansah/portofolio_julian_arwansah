@@ -105,7 +105,7 @@ export default function ChatRoom() {
   };
 
   return (
-    <div className="bg-zinc-900 border border-gray-700 p-6 rounded-xl shadow-lg max-w-xl mx-auto mt-5">
+    <div className="bg-zinc-900 border border-gray-700 p-6 rounded-xl shadow-lg max-w-xl mx-auto">
       <h2 className="text-2xl font-bold text-center mb-4 text-white">💬 Chat Room</h2>
 
       {/* Header user */}
@@ -126,36 +126,43 @@ export default function ChatRoom() {
 
       {/* Area pesan */}
       <div className="h-72 overflow-y-auto border border-gray-700 p-3 rounded-lg bg-zinc-800 mb-4 space-y-3">
-        {messages.map((msg) => (
-          <div
-            key={msg.id}
-            className={`flex gap-2 ${msg.uid === user?.uid ? "justify-end" : "justify-start"}`}
-          >
-            {msg.uid !== user?.uid && (
-              <img
-                src={msg.photoURL || "https://via.placeholder.com/40"}
-                alt="avatar"
-                className="w-8 h-8 rounded-full"
-              />
-            )}
-            <div
-              className={`p-3 rounded-lg max-w-[75%] ${msg.uid === user?.uid
-                ? "bg-blue-500 text-white"
-                : "bg-gray-700 text-white"
-                }`}
-            >
-              <div className="text-xs opacity-70 mb-1">{msg.displayName}</div>
-              <div>{msg.text}</div>
-            </div>
-            {msg.uid === user?.uid && (
-              <img
-                src={msg.photoURL || "https://via.placeholder.com/40"}
-                alt="avatar"
-                className="w-8 h-8 rounded-full"
-              />
-            )}
+        {messages.length === 0 ? (
+          <div className="h-full flex flex-col items-center justify-center text-gray-400 opacity-70">
+            <p>Belum ada pesan.</p>
+            <p className="text-sm">Jadilah yang pertama mengirim pesan!</p>
           </div>
-        ))}
+        ) : (
+          messages.map((msg) => (
+            <div
+              key={msg.id}
+              className={`flex gap-2 ${msg.uid === user?.uid ? "justify-end" : "justify-start"}`}
+            >
+              {msg.uid !== user?.uid && (
+                <img
+                  src={msg.photoURL || "https://via.placeholder.com/40"}
+                  alt="avatar"
+                  className="w-8 h-8 rounded-full"
+                />
+              )}
+              <div
+                className={`p-3 rounded-lg max-w-[75%] ${msg.uid === user?.uid
+                  ? "bg-blue-500 text-white"
+                  : "bg-gray-700 text-white"
+                  }`}
+              >
+                <div className="text-xs opacity-70 mb-1">{msg.displayName}</div>
+                <div>{msg.text}</div>
+              </div>
+              {msg.uid === user?.uid && (
+                <img
+                  src={msg.photoURL || "https://via.placeholder.com/40"}
+                  alt="avatar"
+                  className="w-8 h-8 rounded-full"
+                />
+              )}
+            </div>
+          ))
+        )}
       </div>
 
       {/* Form login / kirim pesan */}
@@ -219,7 +226,7 @@ export default function ChatRoom() {
             </button>
           )}
 
-          <p className="text-sm text-gray-400">Login untuk mengirim pesan</p>
+          <p className="text-sm text-gray-400">Login untuk bergabung dalam percakapan</p>
         </div>
       )}
     </div>
