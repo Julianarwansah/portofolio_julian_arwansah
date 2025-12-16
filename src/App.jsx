@@ -71,7 +71,7 @@ function App() {
               <ShinyText text="Hi I'm Julian Arwansah" disabled={false} speed={3} className='custom-class' />
             </h1>
             <BlurText
-              text="I’m a 4th-semester Informatics Engineering student specializing in Software Engineering, passionate about back-end development with PHP and Laravel, and aspiring to become a skilled Full-Stack Developer."
+              text="I’m a 5th-semester Informatics Engineering student specializing in Software Engineering, passionate about back-end development with PHP and Laravel, and aspiring to become a skilled Full-Stack Developer."
               delay={150}
               animateBy="words"
               direction="top"
@@ -118,7 +118,7 @@ function App() {
                 </h2>
 
                 <BlurText
-                  text="I’m a 4th-semester undergraduate student majoring in Informatics Engineering, specializing in Software Engineering. I am passionate about back-end development and currently focusing on building efficient, scalable, and secure server-side applications. With a strong foundation in PHP and Laravel, I’m on a journey to become a proficient Full-Stack Developer by continuously learning and exploring front-end technologies as well."
+                  text="I’m a 5th-semester undergraduate student majoring in Informatics Engineering, specializing in Software Engineering. I am passionate about back-end development and currently focusing on building efficient, scalable, and secure server-side applications. With a strong foundation in PHP and Laravel, I’m on a journey to become a proficient Full-Stack Developer by continuously learning and exploring front-end technologies as well."
                   delay={150}
                   animateBy="words"
                   direction="top"
