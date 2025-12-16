@@ -168,6 +168,9 @@ import Proyek2 from "/assets/proyek/proyek2.png";
 import Proyek3 from "/assets/proyek/proyek3.png";
 import Proyek4 from "/assets/proyek/proyek4.png";
 import Proyek5 from "/assets/proyek/proyek5.png";
+import Proyek6 from "/assets/proyek/proyek6.png";
+import Proyek7 from "/assets/proyek/proyek7.png";
+import Proyek8 from "/assets/proyek/proyek8.png";
 
 export const listProyek = [
   {
@@ -223,6 +226,39 @@ export const listProyek = [
     borderColor: "#F59E0B",
     gradient: "linear-gradient(145deg, #F59E0B, #D97706)",
     url: "https://github.com/Julianarwansah/konveksi-app.git",
+    dad: "100",
+  },
+  {
+    id: 6,
+    image: Proyek6,
+    title: "Company Profile Joulwinn",
+    subtitle: "Company Profile Joulwinn",
+    fullDescription: "Sebuah sistem yang dirancang untuk mempermudah proses bisnis, menghadirkan pengalaman pengguna yang lebih efisien dengan tampilan modern dan alur kerja terstruktur. Berfokus pada otomasi, pengelolaan data, dan workflow yang lebih ringkas.",
+    borderColor: "#06B6D4",
+    gradient: "linear-gradient(145deg, #06B6D4, #0891B2)",
+    url: "https://www.joulwinn.com/",
+    dad: "100",
+  },
+  {
+    id: 7,
+    image: Proyek7,
+    title: "Company Profile Jarwinn",
+    subtitle: "Company Profile Jarwinn",
+    fullDescription: "Sebuah sistem yang dirancang untuk mempermudah proses bisnis, menghadirkan pengalaman pengguna yang lebih efisien dengan tampilan modern dan alur kerja terstruktur. Berfokus pada otomasi, pengelolaan data, dan workflow yang lebih ringkas.",
+    borderColor: "#EC4899",
+    gradient: "linear-gradient(145deg, #EC4899, #DB2777)",
+    url: "https://www.jarwinn.com/",
+    dad: "100",
+  },
+  {
+    id: 8,
+    image: Proyek8,
+    title: "SE FASHION",
+    subtitle: "Ecommerce SE FASHION",
+    fullDescription: "Sebuah sistem yang dirancang untuk mempermudah proses bisnis, menghadirkan pengalaman pengguna yang lebih efisien dengan tampilan modern dan alur kerja terstruktur. Berfokus pada otomasi, pengelolaan data, dan workflow yang lebih ringkas.",
+    borderColor: "#6366F1",
+    gradient: "linear-gradient(145deg, #6366F1, #4F46E5)",
+    url: "https://sefashion.my.id/",
     dad: "100",
   },
 ];
