@@ -172,6 +172,7 @@ import Proyek6 from "/assets/proyek/proyek6.png";
 import Proyek7 from "/assets/proyek/proyek7.png";
 import Proyek8 from "/assets/proyek/proyek8.png";
 import Proyek9 from "/assets/proyek/proyek9.png";
+import Proyek10 from "/assets/proyek/proyek10.png";
 
 export const listProyek = [
   {
@@ -271,6 +272,17 @@ export const listProyek = [
     borderColor: "#10B981",
     gradient: "linear-gradient(145deg, #10B981, #059669)",
     url: "https://julianarwansah-sistemcharging-admin.hf.space/login",
+    dad: "100",
+  },
+  {
+    id: 10,
+    image: Proyek10,
+    title: "Electric Charging - Mobile App",
+    subtitle: "EV User Application (Mobile)",
+    fullDescription: "Aplikasi mobile untuk pengguna kendaraan listrik yang memudahkan proses pengisian daya, scan QR code, top-up saldo, dan mencari lokasi stasiun pengisian terdekat. Memberikan pengalaman pengguna yang seamless dan efisien.",
+    borderColor: "#10B981",
+    gradient: "linear-gradient(145deg, #10B981, #34D399)",
+    url: "https://drive.google.com/file/d/1PJt0caqdfowMnB4BZuMovtkPMgRP4Wbt/view?usp=sharing",
     dad: "100",
   },
 ];
