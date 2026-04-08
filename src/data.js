@@ -173,6 +173,7 @@ import Proyek7 from "/assets/proyek/proyek7.png";
 import Proyek8 from "/assets/proyek/proyek8.png";
 import Proyek9 from "/assets/proyek/proyek9.png";
 import Proyek10 from "/assets/proyek/proyek10.png";
+import Proyek11 from "/assets/proyek/proyek11.png";
 
 export const listProyek = [
   {
@@ -283,6 +284,17 @@ export const listProyek = [
     borderColor: "#10B981",
     gradient: "linear-gradient(145deg, #10B981, #34D399)",
     url: "https://drive.google.com/file/d/1PJt0caqdfowMnB4BZuMovtkPMgRP4Wbt/view?usp=sharing",
+    dad: "100",
+  },
+  {
+    id: 11,
+    image: Proyek11,
+    title: "Flutter Cashflow App",
+    subtitle: "Personal Finance Tracker",
+    fullDescription: "Sebuah aplikasi manajemen keuangan pribadi yang dibangun menggunakan Flutter. Dilengkapi dengan fitur pelacakan pemasukan dan pengeluaran, saldo otomatis, serta riwayat transaksi yang informatif.",
+    borderColor: "#3B82F6",
+    gradient: "linear-gradient(145deg, #3B82F6, #2563EB)",
+    url: "https://github.com/Julianarwansah/uas_cashflow_app.git",
     dad: "100",
   },
 ];
