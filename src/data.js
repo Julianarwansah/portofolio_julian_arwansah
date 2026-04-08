@@ -171,6 +171,7 @@ import Proyek5 from "/assets/proyek/proyek5.png";
 import Proyek6 from "/assets/proyek/proyek6.png";
 import Proyek7 from "/assets/proyek/proyek7.png";
 import Proyek8 from "/assets/proyek/proyek8.png";
+import Proyek9 from "/assets/proyek/proyek9.png";
 
 export const listProyek = [
   {
@@ -259,6 +260,17 @@ export const listProyek = [
     borderColor: "#6366F1",
     gradient: "linear-gradient(145deg, #6366F1, #4F46E5)",
     url: "https://sefashion.my.id/",
+    dad: "100",
+  },
+  {
+    id: 9,
+    image: Proyek9,
+    title: "Electric Charging System",
+    subtitle: "Charging Management Dashboard",
+    fullDescription: "Sebuah sistem manajemen stasiun pengisian kendaraan listrik (EV) yang dilengkapi dengan monitoring real-time, manajemen pengguna, dan pelacakan transaksi. Dirancang untuk efisiensi operasional dengan tampilan yang modern dan informatif.",
+    borderColor: "#10B981",
+    gradient: "linear-gradient(145deg, #10B981, #059669)",
+    url: "https://julianarwansah-sistemcharging-admin.hf.space/login",
     dad: "100",
   },
 ];
