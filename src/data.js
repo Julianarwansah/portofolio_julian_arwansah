@@ -174,8 +174,20 @@ import Proyek8 from "/assets/proyek/proyek8.png";
 import Proyek9 from "/assets/proyek/proyek9.png";
 import Proyek10 from "/assets/proyek/proyek10.png";
 import Proyek11 from "/assets/proyek/proyek11.png";
+import Proyek12 from "/assets/proyek/proyek12.png";
 
 export const listProyek = [
+  {
+    id: 12,
+    image: Proyek12,
+    title: "Topnesia",
+    subtitle: "Freelance IT & Design Marketplace",
+    fullDescription: "Topnesia adalah platform marketplace freelance untuk para profesional IT dan desainer. Memungkinkan para freelancer memposting layanan atau jasa mereka, dan klien dapat menemukan serta memesan layanan yang mereka butuhkan dengan mudah.",
+    borderColor: "#06B6D4",
+    gradient: "linear-gradient(145deg, #06B6D4, #3B82F6)",
+    url: "https://topnesia.com",
+    dad: "100",
+  },
   {
     id: 1,
     image: Proyek1,
