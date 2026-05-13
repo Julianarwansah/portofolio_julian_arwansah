@@ -176,8 +176,20 @@ import Proyek10 from "/assets/proyek/proyek10.png";
 import Proyek11 from "/assets/proyek/proyek11.png";
 import Proyek12 from "/assets/proyek/proyek12.png";
 import Proyek13 from "/assets/proyek/proyek13.png";
+import Proyek14 from "/assets/proyek/proyek14.jpeg";
 
 export const listProyek = [
+  {
+    id: 14,
+    image: Proyek14,
+    title: "Admin HR Absensi - Web",
+    subtitle: "HR Management Dashboard",
+    fullDescription: "Sistem manajemen kehadiran karyawan berbasis web yang komprehensif. Fitur meliputi monitoring absensi real-time, manajemen data karyawan, pengajuan cuti, dan otomatisasi laporan bulanan untuk efisiensi departemen HR.",
+    borderColor: "#3B82F6",
+    gradient: "linear-gradient(145deg, #3B82F6, #1D4ED8)",
+    url: "#",
+    dad: "100",
+  },
   {
     id: 13,
     image: Proyek13,
