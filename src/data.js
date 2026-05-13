@@ -175,8 +175,20 @@ import Proyek9 from "/assets/proyek/proyek9.png";
 import Proyek10 from "/assets/proyek/proyek10.png";
 import Proyek11 from "/assets/proyek/proyek11.png";
 import Proyek12 from "/assets/proyek/proyek12.png";
+import Proyek13 from "/assets/proyek/proyek13.png";
 
 export const listProyek = [
+  {
+    id: 13,
+    image: Proyek13,
+    title: "SRNE Solar Indonesia",
+    subtitle: "Website with WordPress",
+    fullDescription: "Website profil perusahaan SRNE Solar Indonesia yang dibangun menggunakan platform WordPress. Menampilkan berbagai produk solusi energi surya dan informasi teknis untuk pasar Indonesia.",
+    borderColor: "#EAB308",
+    gradient: "linear-gradient(145deg, #EAB308, #F97316)",
+    url: "https://srnesolar.co.id",
+    dad: "100",
+  },
   {
     id: 12,
     image: Proyek12,
