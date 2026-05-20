@@ -1,7 +1,151 @@
 @import "tailwindcss";
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Syne:wght@700;800&display=swap');
+
+@theme {
+  --font-display: "Syne", "Poppins", sans-serif;
+  --font-sans: "Space Grotesk", "Poppins", sans-serif;
+}
 
 @layer base {
   body {
-    font-family: "Poppins", sans-serif;
+    font-family: var(--font-sans);
+    background-color: #0d0d11;
+    background-image: radial-gradient(rgba(255, 255, 255, 0.08) 1.5px, transparent 1.5px);
+    background-size: 24px 24px;
+    color: #ffffff;
+    overflow-x: hidden;
   }
+  
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-display);
+  }
+}
+
+/* Neo-Brutalist Utilities */
+.neo-border {
+  border: 3px solid #000000;
+}
+
+.neo-shadow-cyan {
+  box-shadow: 5px 5px 0px #00e5ff;
+}
+
+.neo-shadow-pink {
+  box-shadow: 5px 5px 0px #ff007f;
+}
+
+.neo-shadow-yellow {
+  box-shadow: 5px 5px 0px #ffe600;
+}
+
+.neo-shadow-green {
+  box-shadow: 5px 5px 0px #00ff66;
+}
+
+.neo-shadow-black {
+  box-shadow: 5px 5px 0px #000000;
+}
+
+/* Neo Brutalist Buttons */
+.neo-btn-cyan {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #00e5ff;
+  color: #000000;
+  font-weight: 700;
+  border: 3px solid #000000;
+  box-shadow: 4px 4px 0px #000000;
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+
+.neo-btn-cyan:hover {
+  transform: translate(-2px, -2px);
+  box-shadow: 6px 6px 0px #000000;
+}
+
+.neo-btn-cyan:active {
+  transform: translate(2px, 2px);
+  box-shadow: 2px 2px 0px #000000;
+}
+
+.neo-btn-yellow {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #ffe600;
+  color: #000000;
+  font-weight: 700;
+  border: 3px solid #000000;
+  box-shadow: 4px 4px 0px #000000;
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+
+.neo-btn-yellow:hover {
+  transform: translate(-2px, -2px);
+  box-shadow: 6px 6px 0px #000000;
+}
+
+.neo-btn-yellow:active {
+  transform: translate(2px, 2px);
+  box-shadow: 2px 2px 0px #000000;
+}
+
+.neo-btn-magenta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #ff007f;
+  color: #ffffff;
+  font-weight: 700;
+  border: 3px solid #000000;
+  box-shadow: 4px 4px 0px #000000;
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+
+.neo-btn-magenta:hover {
+  transform: translate(-2px, -2px);
+  box-shadow: 6px 6px 0px #000000;
+}
+
+.neo-btn-magenta:active {
+  transform: translate(2px, 2px);
+  box-shadow: 2px 2px 0px #000000;
+}
+
+/* Badge tags */
+.neo-badge {
+  display: inline-block;
+  padding: 4px 12px;
+  font-weight: 700;
+  border: 2px solid #000000;
+  background-color: #ffe600;
+  color: #000000;
+  text-transform: uppercase;
+  font-size: 0.8rem;
+  letter-spacing: 0.05em;
+}
+
+/* Custom Scrollbar for Neo-brutalism */
+::-webkit-scrollbar {
+  width: 12px;
+}
+
+::-webkit-scrollbar-track {
+  background: #0d0d11;
+  border-left: 3px solid #000000;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #ffe600;
+  border: 3px solid #000000;
+}
+
+/* Text selections */
+::selection {
+  background: #ff007f;
+  color: #ffffff;
 }

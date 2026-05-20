@@ -105,19 +105,21 @@ export default function ChatRoom() {
   };
 
   return (
-    <div className="bg-zinc-900 border border-gray-700 p-6 rounded-xl shadow-lg w-full">
-      <h2 className="text-2xl font-bold text-center mb-4 text-white">💬 Chat Room</h2>
+    <div className="bg-zinc-950 p-6 rounded-lg w-full">
+      <h2 className="text-2xl font-black text-center mb-6 text-white tracking-tight uppercase flex items-center justify-center gap-2">
+        💬 Live Chat Room
+      </h2>
 
       {/* Header user */}
       {user && (
-        <div className="flex justify-between items-center mb-4 border-b border-gray-700 pb-3">
+        <div className="flex justify-between items-center mb-6 border-b-3 border-black pb-4">
           <div className="flex items-center gap-3">
-            <img src={user.photoURL} alt="avatar" className="w-10 h-10 rounded-full" />
-            <span className="text-white font-semibold">{user.displayName}</span>
+            <img src={user.photoURL} alt="avatar" className="w-10 h-10 rounded-md border-2 border-black shadow-[2px_2px_0px_rgba(0,0,0,1)]" />
+            <span className="text-white font-bold">{user.displayName}</span>
           </div>
           <button
             onClick={logout}
-            className="bg-red-600 px-4 py-1 rounded-full text-white hover:bg-red-700"
+            className="bg-[#ff007f] hover:bg-[#ff2299] text-white border-2 border-black font-black p-1.5 px-4 rounded-md shadow-[2px_2px_0px_#000] active:translate-x-0.5 active:translate-y-0.5 active:shadow-[0px_0px_0px_#000] transition-all cursor-pointer text-xs uppercase"
           >
             Logout
           </button>
@@ -125,11 +127,11 @@ export default function ChatRoom() {
       )}
 
       {/* Area pesan */}
-      <div className="h-72 overflow-y-auto border border-gray-700 p-3 rounded-lg bg-zinc-800 mb-4 space-y-3">
+      <div className="h-80 overflow-y-auto border-3 border-black p-4 rounded-md bg-[#0c0c0e] mb-6 space-y-4 shadow-[inset_4px_4px_0px_rgba(0,0,0,0.5)]">
         {messages.length === 0 ? (
-          <div className="h-full flex flex-col items-center justify-center text-gray-400 opacity-70">
-            <p>Belum ada pesan.</p>
-            <p className="text-sm">Jadilah yang pertama mengirim pesan!</p>
+          <div className="h-full flex flex-col items-center justify-center text-zinc-500 font-bold">
+            <p className="text-lg">Belum ada pesan.</p>
+            <p className="text-sm font-mono uppercase tracking-wider text-[#ffe600] mt-1">Jadilah yang pertama mengirim pesan!</p>
           </div>
         ) : (
           messages.map((msg) => (
@@ -141,23 +143,23 @@ export default function ChatRoom() {
                 <img
                   src={msg.photoURL || "https://via.placeholder.com/40"}
                   alt="avatar"
-                  className="w-8 h-8 rounded-full"
+                  className="w-8 h-8 rounded-md border-2 border-black flex-shrink-0"
                 />
               )}
               <div
-                className={`p-3 rounded-lg max-w-[75%] ${msg.uid === user?.uid
-                  ? "bg-blue-500 text-white"
-                  : "bg-gray-700 text-white"
+                className={`p-3 rounded-md border-2 border-black shadow-[3px_3px_0px_#000000] max-w-[75%] ${msg.uid === user?.uid
+                  ? "bg-[#00e5ff] text-black"
+                  : "bg-zinc-900 text-white"
                   }`}
               >
-                <div className="text-xs opacity-70 mb-1">{msg.displayName}</div>
-                <div>{msg.text}</div>
+                <div className="text-[10px] font-mono font-bold uppercase tracking-wider opacity-70 mb-1">{msg.displayName}</div>
+                <div className="font-semibold text-sm sm:text-base">{msg.text}</div>
               </div>
               {msg.uid === user?.uid && (
                 <img
                   src={msg.photoURL || "https://via.placeholder.com/40"}
                   alt="avatar"
-                  className="w-8 h-8 rounded-full"
+                  className="w-8 h-8 rounded-md border-2 border-black flex-shrink-0"
                 />
               )}
             </div>
@@ -167,28 +169,28 @@ export default function ChatRoom() {
 
       {/* Form login / kirim pesan */}
       {user ? (
-        <form onSubmit={sendMessage} className="flex gap-2 flex-wrap sm:flex-nowrap w-full">
+        <form onSubmit={sendMessage} className="flex gap-3 flex-wrap sm:flex-nowrap w-full">
           <input
             type="text"
             value={message}
             onChange={(e) => setMessage(e.target.value)}
             placeholder="Ketik pesan..."
-            className="flex-1 min-w-0 p-2 rounded-lg bg-zinc-700 text-white border border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="flex-1 min-w-0 p-3 rounded-md bg-zinc-900 text-white border-3 border-black focus:outline-none focus:border-[#ffe600] font-semibold shadow-[2px_2px_0px_#000]"
           />
           <button
             type="submit"
-            className="bg-green-600 px-4 py-2 rounded-lg text-white hover:bg-green-700 w-full sm:w-auto"
+            className="neo-btn-yellow p-3 px-6 rounded-md w-full sm:w-auto font-bold uppercase"
           >
             Send
           </button>
         </form>
       ) : (
-        <div className="flex flex-col items-center justify-center gap-4">
+        <div className="flex flex-col items-center justify-center gap-4 py-4">
           {/* Error message */}
           {loginError && (
-            <div className="w-full bg-red-500/20 border border-red-500 text-red-200 px-4 py-3 rounded-lg text-sm">
-              <p className="font-semibold">❌ Login Gagal</p>
-              <p>{loginError}</p>
+            <div className="w-full max-w-md bg-red-950/40 border-3 border-red-600 text-red-200 px-4 py-3 rounded-md text-sm font-bold shadow-[4px_4px_0px_#000]">
+              <p className="font-extrabold text-red-400">❌ Login Gagal</p>
+              <p className="font-mono text-xs mt-1">{loginError}</p>
             </div>
           )}
 
@@ -196,11 +198,11 @@ export default function ChatRoom() {
           <button
             onClick={handleLogin}
             disabled={isLoggingIn}
-            className="flex items-center gap-3 bg-white text-gray-800 px-5 py-2 rounded-full shadow hover:bg-gray-200 transition disabled:opacity-50 disabled:cursor-not-allowed"
+            className="flex items-center gap-3 bg-white text-gray-800 px-6 py-2.5 rounded-md border-3 border-black font-extrabold shadow-[4px_4px_0px_#000] hover:-translate-x-0.5 hover:-translate-y-0.5 hover:shadow-[5px_5px_0px_#000] active:translate-x-0.5 active:translate-y-0.5 active:shadow-[2px_2px_0px_#000] transition-all disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer uppercase text-sm"
           >
             {isLoggingIn ? (
               <>
-                <div className="w-5 h-5 border-2 border-gray-800 border-t-transparent rounded-full animate-spin"></div>
+                <div className="w-5 h-5 border-3 border-gray-800 border-t-transparent rounded-full animate-spin"></div>
                 <span>Loading...</span>
               </>
             ) : (
@@ -220,13 +222,13 @@ export default function ChatRoom() {
             <button
               onClick={handleRedirectLogin}
               disabled={isLoggingIn}
-              className="text-sm text-blue-400 hover:text-blue-300 underline disabled:opacity-50"
+              className="text-sm font-bold text-[#00e5ff] hover:text-[#5ce1e6] underline cursor-pointer disabled:opacity-50"
             >
               Coba dengan metode redirect
             </button>
           )}
 
-          <p className="text-sm text-gray-400">Login untuk bergabung dalam percakapan</p>
+          <p className="text-xs font-mono uppercase tracking-wider text-zinc-500">Login untuk bergabung dalam percakapan</p>
         </div>
       )}
     </div>

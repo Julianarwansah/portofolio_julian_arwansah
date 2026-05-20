@@ -35,33 +35,33 @@ const ProjectModal = ({ isOpen, onClose, project }) => {
     // Overlay
     <div
       onClick={handleClose}
-      className="fixed inset-0 bg-black bg-opacity-70 flex justify-center items-center z-50 p-4 transition-opacity duration-300"
+      className="fixed inset-0 bg-black bg-opacity-80 flex justify-center items-center z-50 p-4 transition-opacity duration-300"
     >
       {/* Modal Content */}
       <div
         onClick={(e) => e.stopPropagation()} // Mencegah modal tertutup saat diklik di dalam
-        className={`bg-zinc-900 border border-violet-500/50 rounded-2xl shadow-2xl shadow-violet-500/20 w-full max-w-lg transform transition-transform duration-300 ${isClosing ? 'animate-out' : 'animate-in'}`}
+        className={`bg-zinc-950 border-4 border-black rounded-lg shadow-[8px_8px_0px_#ff007f] w-full max-w-lg transform transition-transform duration-300 ${isClosing ? 'animate-out' : 'animate-in'}`}
       >
         {/* --- GAMBAR PROYEK --- */}
         <img 
           src={project.image} 
           alt={project.title} 
-          className="w-full h-56 object-cover rounded-t-2xl"
+          className="w-full h-56 object-cover border-b-3 border-black"
         />
 
         <div className="p-6 flex flex-col gap-4">
-            <div className="flex justify-between items-start">
-                <h2 className="text-2xl font-bold text-white">{project.title}</h2>
+            <div className="flex justify-between items-center">
+                <h2 className="text-2xl font-black text-white tracking-tight">{project.title}</h2>
                 <button
                     onClick={handleClose}
-                    className="text-zinc-400 hover:text-white transition-colors p-2 rounded-full hover:bg-zinc-700 -mt-2 -mr-2"
+                    className="text-black bg-[#ffe600] border-2 border-black p-1.5 hover:bg-[#ff007f] hover:text-white transition-colors cursor-pointer shadow-[2px_2px_0px_#000] active:translate-x-0.5 active:translate-y-0.5 active:shadow-[0px_0px_0px_#000] -mt-2 -mr-2"
                 >
-                    <FiX size={24} />
+                    <FiX size={20} />
                 </button>
             </div>
 
             {/* --- DESKRIPSI LENGKAP --- */}
-            <p className="text-zinc-300 text-base leading-relaxed">
+            <p className="text-zinc-300 text-base leading-relaxed font-medium">
                 {project.fullDescription}
             </p>
 
@@ -69,7 +69,7 @@ const ProjectModal = ({ isOpen, onClose, project }) => {
                 href={project.url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="mt-4 inline-flex items-center justify-center gap-2 font-semibold bg-violet-600 p-3 px-5 rounded-full w-full cursor-pointer border border-transparent hover:bg-violet-700 transition-colors"
+                className="mt-4 inline-flex items-center justify-center gap-2 neo-btn-cyan py-3 px-5 rounded-md w-full"
             >
                 {project.url?.includes('github.com') ? <FiGithub /> : <FiExternalLink />}
                 <span>{project.url?.includes('github.com') ? 'Source Code' : 'Visit Website'}</span>
