@@ -8,15 +8,35 @@ import Lanyard from "./components/Lanyard/Lanyard";
 import GlassIcons from "./components/GlassIcons/GlassIcons";
 import { listTools, listProyek } from "./data";
 import ChromaGrid from "./components/ChromaGrid/ChromaGrid";
-import ProjectModal from "./components/ProjectModal/ProjectModal"; // <-- IMPORT MODAL
+import ProjectModal from "./components/ProjectModal/ProjectModal";
 import Aurora from "./components/Aurora/Aurora";
 import AOS from 'aos';
 import ChatRoom from "./components/ChatRoom";
-import 'aos/dist/aos.css'; // You can also use <link> for styles
-// ..
+import Navbar from "./components/Navbar";
+import Footer from "./components/Footer";
+import PreLoader from "./components/PreLoader";
+import 'aos/dist/aos.css'; 
+
 AOS.init();
 
 function App() {
+  const [theme, setTheme] = useState(() => {
+    return localStorage.getItem("theme") || "dark";
+  });
+
+  const toggleTheme = () => {
+    setTheme((prev) => (prev === "light" ? "dark" : "light"));
+  };
+
+  useEffect(() => {
+    if (theme === "light") {
+      document.body.classList.add("light-mode");
+    } else {
+      document.body.classList.remove("light-mode");
+    }
+    localStorage.setItem("theme", theme);
+  }, [theme]);
+
   const aboutRef = useRef(null);
   const [isVisible, setIsVisible] = useState(false);
 
@@ -51,7 +71,10 @@ function App() {
 
   return (
     <>
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <PreLoader />
+      <div className="container mx-auto px-6">
+        <Navbar theme={theme} onToggleTheme={toggleTheme} />
+        <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
         <div className="hero grid md:grid-cols-2 items-center pt-16 xl:gap-0 gap-8 grid-cols-1">
           <div className="animate__animated animate__fadeInUp animate__delay-1s">
@@ -219,8 +242,9 @@ function App() {
             <ChatRoom />
           </div>
         </div>
-        {/* Kontak */}
       </main >
+      <Footer />
+      </div>
 
       <ProjectModal
         isOpen={!!selectedProject}

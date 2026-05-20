@@ -149,3 +149,140 @@
   background: #ff007f;
   color: #ffffff;
 }
+
+/* Theme Transitions */
+body {
+  transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+}
+
+/* Light Mode Styles */
+body.light-mode {
+  background-color: #faf9f5;
+  background-image: radial-gradient(rgba(0, 0, 0, 0.09) 1.5px, transparent 1.5px);
+  color: #000000;
+}
+
+/* Scrollbar override */
+body.light-mode ::-webkit-scrollbar-track {
+  background: #faf9f5;
+}
+
+/* Target elements specifically outside the dark sections */
+body.light-mode .navbar {
+  background-color: rgba(250, 249, 245, 0.85) !important;
+}
+
+body.light-mode .navbar h1 {
+  color: #000000 !important;
+}
+
+body.light-mode .navbar a {
+  color: #374151 !important;
+}
+
+body.light-mode .navbar a:hover {
+  color: #000000 !important;
+}
+
+body.light-mode .navbar ul {
+  background-color: #ffffff !important;
+}
+
+body.light-mode .hero h1 {
+  color: #000000 !important;
+}
+
+body.light-mode .tools h1,
+body.light-mode .proyek-box + h1,
+body.light-mode .kontak h1,
+body.light-mode .proyek h1,
+body.light-mode h1.text-white,
+body.light-mode h1.text-center {
+  color: #000000 !important;
+}
+
+body.light-mode .proyek h1, 
+body.light-mode .flex.flex-col.items-center.text-center.mt-10 h1 {
+  color: #000000 !important;
+}
+
+body.light-mode p.text-zinc-400,
+body.light-mode span.text-zinc-500 {
+  color: #4b5563 !important;
+}
+
+/* Skill Grid Items in Light Mode */
+body.light-mode .tools-box > div {
+  background-color: #ffffff !important;
+  color: #000000 !important;
+  box-shadow: 4px 4px 0px #000000 !important;
+}
+
+body.light-mode .tools-box h3 {
+  color: #000000 !important;
+}
+
+body.light-mode .tools-box img {
+  background-color: #f3f4f6 !important;
+}
+
+/* Project Cards in Light Mode */
+body.light-mode .proyek-box .chroma-card {
+  background-color: #ffffff !important;
+  color: #000000 !important;
+}
+
+body.light-mode .proyek-box .chroma-info {
+  background-color: #ffffff !important;
+  color: #000000 !important;
+}
+
+body.light-mode .proyek-box .chroma-info .name {
+  color: #000000 !important;
+}
+
+body.light-mode .proyek-box .chroma-img-wrapper {
+  background-color: #f3f4f6 !important;
+}
+
+/* Chat Room in Light Mode */
+body.light-mode .chat-container-brutalist {
+  background-color: #ffffff !important;
+}
+
+body.light-mode .chat-room-inner {
+  background-color: #ffffff !important;
+  color: #000000 !important;
+}
+
+body.light-mode .chat-room-inner h2 {
+  color: #000000 !important;
+}
+
+body.light-mode .chat-messages-container {
+  background-color: #faf9f6 !important;
+}
+
+body.light-mode .chat-bubble-incoming {
+  background-color: #f3f4f6 !important;
+  color: #000000 !important;
+}
+
+body.light-mode .chat-input-text {
+  background-color: #ffffff !important;
+  color: #000000 !important;
+}
+
+/* Project Details Modal in Light Mode */
+body.light-mode .project-modal-card {
+  background-color: #ffffff !important;
+  color: #000000 !important;
+}
+
+body.light-mode .project-modal-card h2 {
+  color: #000000 !important;
+}
+
+body.light-mode .project-modal-card p {
+  color: #374151 !important;
+}

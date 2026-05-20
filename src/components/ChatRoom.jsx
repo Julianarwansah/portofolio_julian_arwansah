@@ -105,7 +105,7 @@ export default function ChatRoom() {
   };
 
   return (
-    <div className="bg-zinc-950 p-6 rounded-lg w-full">
+    <div className="chat-room-inner bg-zinc-950 p-6 rounded-lg w-full">
       <h2 className="text-2xl font-black text-center mb-6 text-white tracking-tight uppercase flex items-center justify-center gap-2">
         💬 Live Chat Room
       </h2>
@@ -127,7 +127,7 @@ export default function ChatRoom() {
       )}
 
       {/* Area pesan */}
-      <div className="h-80 overflow-y-auto border-3 border-black p-4 rounded-md bg-[#0c0c0e] mb-6 space-y-4 shadow-[inset_4px_4px_0px_rgba(0,0,0,0.5)]">
+      <div className="chat-messages-container h-80 overflow-y-auto border-3 border-black p-4 rounded-md bg-[#0c0c0e] mb-6 space-y-4 shadow-[inset_4px_4px_0px_rgba(0,0,0,0.5)]">
         {messages.length === 0 ? (
           <div className="h-full flex flex-col items-center justify-center text-zinc-500 font-bold">
             <p className="text-lg">Belum ada pesan.</p>
@@ -149,7 +149,7 @@ export default function ChatRoom() {
               <div
                 className={`p-3 rounded-md border-2 border-black shadow-[3px_3px_0px_#000000] max-w-[75%] ${msg.uid === user?.uid
                   ? "bg-[#00e5ff] text-black"
-                  : "bg-zinc-900 text-white"
+                  : "chat-bubble-incoming bg-zinc-900 text-white"
                   }`}
               >
                 <div className="text-[10px] font-mono font-bold uppercase tracking-wider opacity-70 mb-1">{msg.displayName}</div>
@@ -175,7 +175,7 @@ export default function ChatRoom() {
             value={message}
             onChange={(e) => setMessage(e.target.value)}
             placeholder="Ketik pesan..."
-            className="flex-1 min-w-0 p-3 rounded-md bg-zinc-900 text-white border-3 border-black focus:outline-none focus:border-[#ffe600] font-semibold shadow-[2px_2px_0px_#000]"
+            className="chat-input-text flex-1 min-w-0 p-3 rounded-md bg-zinc-900 text-white border-3 border-black focus:outline-none focus:border-[#ffe600] font-semibold shadow-[2px_2px_0px_#000]"
           />
           <button
             type="submit"

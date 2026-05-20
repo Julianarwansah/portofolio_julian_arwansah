@@ -40,7 +40,7 @@ const ProjectModal = ({ isOpen, onClose, project }) => {
       {/* Modal Content */}
       <div
         onClick={(e) => e.stopPropagation()} // Mencegah modal tertutup saat diklik di dalam
-        className={`bg-zinc-950 border-4 border-black rounded-lg shadow-[8px_8px_0px_#ff007f] w-full max-w-lg transform transition-transform duration-300 ${isClosing ? 'animate-out' : 'animate-in'}`}
+        className={`project-modal-card bg-zinc-950 border-4 border-black rounded-lg shadow-[8px_8px_0px_#ff007f] w-full max-w-lg transform transition-transform duration-300 ${isClosing ? 'animate-out' : 'animate-in'}`}
       >
         {/* --- GAMBAR PROYEK --- */}
         <img 
