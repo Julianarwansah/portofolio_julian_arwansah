@@ -286,3 +286,17 @@ body.light-mode .project-modal-card h2 {
 body.light-mode .project-modal-card p {
   color: #374151 !important;
 }
+
+/* Profile Card adjustments in Light Mode */
+body.light-mode .pc-details {
+  background-color: #00e5ff !important; /* Keep cyan or allow shifts */
+}
+
+body.light-mode .pc-avatar-content .avatar {
+  filter: grayscale(100%) contrast(1.1) brightness(1.05);
+  transition: filter 0.3s ease, opacity 0.3s ease;
+}
+
+body.light-mode .pc-card:hover .avatar {
+  filter: grayscale(0%) contrast(1) brightness(1);
+}
