@@ -1,5 +1,6 @@
 import { lazy, Suspense, useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { FiMail, FiPhone, FiMapPin } from "react-icons/fi";
 import ProfileCard from "./components/ProfileCard/ProfileCard";
 import BlurText from "./components/BlurText/BlurText";
 import Lanyard from "./components/Lanyard/Lanyard";
@@ -43,8 +44,8 @@ function App() {
   const handleProjectClick = (project) => navigate(`/projects/${project.slug}`);
 
   usePageMeta(
-    "Julian Arwansah — Software Developer",
-    "Portfolio of Julian Arwansah, a software developer specializing in back-end development with PHP and Laravel. Projects, skills and experience."
+    "Julian Arwansah — Fullstack Developer",
+    "Portfolio of Julian Arwansah, a fullstack developer proficient in PHP, JavaScript, Python and Laravel. Projects, experience and skills."
   );
 
   return (
@@ -73,7 +74,7 @@ function App() {
               </span>
             </h1>
             <BlurText
-              text="I’m a 5th-semester Informatics Engineering student specializing in Software Engineering, passionate about back-end development with PHP and Laravel, and aspiring to become a skilled Full-Stack Developer."
+              text="I am a seventh-semester Software Engineering student with a strong interest in web development, proficient in PHP, JavaScript, Python, and frameworks such as Laravel. I enjoy solving technical problems and continuously honing my skills through personal projects and collaboration."
               delay={100}
               animateBy="words"
               direction="top"
@@ -100,7 +101,7 @@ function App() {
           <div className="md:ml-auto animate-fade-in-up animate-delay-2s">
             <ProfileCard
               name="Julian"
-              title="Software Developer"
+              title="Fullstack Developer"
               handle="iyan_julian"
               status="Online"
               contactText="Contact Me"
@@ -108,7 +109,9 @@ function App() {
               showUserInfo={true}
               enableTilt={true}
               enableMobileTilt={false}
-              onContactClick={() => console.log('Contact clicked')}
+              onContactClick={() => {
+                window.location.href = "mailto:julianarwansahh@gmail.com";
+              }}
             />
           </div>
         </div>
@@ -130,7 +133,7 @@ function App() {
                 </h2>
 
                 <BlurText
-                  text="I’m a 5th-semester undergraduate student majoring in Informatics Engineering, specializing in Software Engineering. I am passionate about back-end development and currently focusing on building efficient, scalable, and secure server-side applications. With a strong foundation in PHP and Laravel, I’m on a journey to become a proficient Full-Stack Developer by continuously learning and exploring front-end technologies as well."
+                  text="I am a seventh-semester undergraduate student majoring in Informatics Engineering, specializing in Software Engineering. I am proficient in PHP, JavaScript, Python, and frameworks such as Laravel, with hands-on experience from backend internships to production full-stack work. I believe in continuous learning and adapting to technological advancements — outside of coding, I enjoy activities that challenge creativity and logic, such as strategy games."
                   delay={100}
                   animateBy="words"
                   direction="top"
@@ -245,6 +248,27 @@ function App() {
           <p className="text-zinc-400 font-bold text-center max-w-lg leading-relaxed mb-10">
             Get in touch with me or chat in real-time with other visitors!
           </p>
+
+          <div className="w-full max-w-4xl grid sm:grid-cols-3 gap-4 mb-10">
+            <a
+              href="mailto:julianarwansahh@gmail.com"
+              className="contact-card flex flex-col gap-2 items-center text-center bg-zinc-950 border-3 border-black rounded-lg p-4 shadow-[4px_4px_0px_#000] hover:shadow-[6px_6px_0px_#ffe600] hover:-translate-y-1 transition-all"
+            >
+              <FiMail size={20} className="text-[#00e5ff]" aria-hidden="true" />
+              <span className="font-bold text-white text-sm break-all">julianarwansahh@gmail.com</span>
+            </a>
+            <a
+              href="tel:+6289661770123"
+              className="contact-card flex flex-col gap-2 items-center text-center bg-zinc-950 border-3 border-black rounded-lg p-4 shadow-[4px_4px_0px_#000] hover:shadow-[6px_6px_0px_#ffe600] hover:-translate-y-1 transition-all"
+            >
+              <FiPhone size={20} className="text-[#00ff66]" aria-hidden="true" />
+              <span className="font-bold text-white text-sm">+62 896-6177-0123</span>
+            </a>
+            <div className="contact-card flex flex-col gap-2 items-center text-center bg-zinc-950 border-3 border-black rounded-lg p-4 shadow-[4px_4px_0px_#000]">
+              <FiMapPin size={20} className="text-[#ff007f]" aria-hidden="true" />
+              <span className="font-bold text-white text-sm">Cikupa, Kabupaten Tangerang, Indonesia</span>
+            </div>
+          </div>
 
           {/* Chat Room */}
           <div className="w-full max-w-4xl border-4 border-black shadow-[8px_8px_0px_rgba(0,0,0,1)] rounded-xl overflow-hidden bg-zinc-950 p-2" data-aos="fade-up" data-aos-duration="1000" data-aos-delay="400" data-aos-once="true">

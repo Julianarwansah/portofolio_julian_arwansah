@@ -270,6 +270,15 @@ body.light-mode .timeline-period {
   color: #a16207 !important;
 }
 
+body.light-mode .contact-card {
+  background: #ffffff !important;
+  box-shadow: 4px 4px 0px #000000 !important;
+}
+
+body.light-mode .contact-card span {
+  color: #000000 !important;
+}
+
 body.light-mode p.text-zinc-400,
 body.light-mode span.text-zinc-500 {
   color: #4b5563 !important;

@@ -1,6 +1,7 @@
 import Dock from "./Dock/Dock";
 import { VscHome, VscArchive, VscAccount } from "react-icons/vsc";
 import { RiGithubFill, RiInstagramFill } from "react-icons/ri";
+import { FiMail, FiPhone } from "react-icons/fi";
 import { scrollToId } from "../lib/scroll";
 
 const Footer = () => {
@@ -39,6 +40,20 @@ const Footer = () => {
             className="text-black bg-[#ffe600] border-2 border-black p-2 hover:bg-[#ff007f] hover:text-white transition-all rounded-md shadow-[2px_2px_0px_#000] active:translate-x-0.5 active:translate-y-0.5 active:shadow-[0px_0px_0px_#000] cursor-pointer flex items-center justify-center w-10 h-10"
           >
             <RiInstagramFill size={20} aria-hidden="true" />
+          </a>
+          <a
+            href="mailto:julianarwansahh@gmail.com"
+            aria-label="Email Julian Arwansah"
+            className="text-black bg-[#ffe600] border-2 border-black p-2 hover:bg-[#00e5ff] transition-all rounded-md shadow-[2px_2px_0px_#000] active:translate-x-0.5 active:translate-y-0.5 active:shadow-[0px_0px_0px_#000] cursor-pointer flex items-center justify-center w-10 h-10"
+          >
+            <FiMail size={20} aria-hidden="true" />
+          </a>
+          <a
+            href="tel:+6289661770123"
+            aria-label="Call Julian Arwansah"
+            className="text-black bg-[#ffe600] border-2 border-black p-2 hover:bg-[#00ff66] transition-all rounded-md shadow-[2px_2px_0px_#000] active:translate-x-0.5 active:translate-y-0.5 active:shadow-[0px_0px_0px_#000] cursor-pointer flex items-center justify-center w-10 h-10"
+          >
+            <FiPhone size={20} aria-hidden="true" />
           </a>
         </div>
 
