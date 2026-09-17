@@ -1,9 +1,8 @@
 @import "tailwindcss";
-@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Syne:wght@700;800&display=swap');
 
 @theme {
-  --font-display: "Syne", "Poppins", sans-serif;
-  --font-sans: "Space Grotesk", "Poppins", sans-serif;
+  --font-display: "Syne", sans-serif;
+  --font-sans: "Space Grotesk", sans-serif;
 }
 
 @layer base {
@@ -19,6 +18,54 @@
   h1, h2, h3, h4, h5, h6 {
     font-family: var(--font-display);
   }
+}
+
+/* Replaces the two animate.css classes the hero used, so the whole
+   animate.css stylesheet no longer ships for 2 keyframes. */
+@keyframes fade-in-up {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 100%, 0);
+  }
+
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+.animate-fade-in-up {
+  animation: fade-in-up 1s both;
+}
+
+.animate-delay-1s {
+  animation-delay: 1s;
+}
+
+.animate-delay-2s {
+  animation-delay: 2s;
+}
+
+@media (prefers-reduced-motion: reduce) {
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    animation-delay: 0s !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+:focus-visible {
+  outline: 3px solid #00e5ff;
+  outline-offset: 2px;
+}
+
+body.light-mode :focus-visible {
+  outline-color: #000000;
 }
 
 /* Neo-Brutalist Utilities */
@@ -172,7 +219,7 @@ body.light-mode .navbar {
   background-color: rgba(250, 249, 245, 0.85) !important;
 }
 
-body.light-mode .navbar h1 {
+body.light-mode .navbar .logo p {
   color: #000000 !important;
 }
 
@@ -192,23 +239,44 @@ body.light-mode .hero h1 {
   color: #000000 !important;
 }
 
-body.light-mode .tools h1,
-body.light-mode .proyek-box + h1,
-body.light-mode .kontak h1,
-body.light-mode .proyek h1,
-body.light-mode h1.text-white,
-body.light-mode h1.text-center {
+body.light-mode .tools h2,
+body.light-mode .kontak h2,
+body.light-mode .proyek h2,
+body.light-mode .pengalaman h2,
+body.light-mode h2.text-white,
+body.light-mode h2.text-center {
   color: #000000 !important;
 }
 
-body.light-mode .proyek h1, 
-body.light-mode .flex.flex-col.items-center.text-center.mt-10 h1 {
+/* Timeline in Light Mode */
+body.light-mode .timeline-card {
+  background: #ffffff !important;
+  box-shadow: 5px 5px 0px #000000 !important;
+}
+
+body.light-mode .timeline-title {
   color: #000000 !important;
+}
+
+body.light-mode .timeline-org {
+  color: #0369a1 !important;
+}
+
+body.light-mode .timeline-desc {
+  color: #374151 !important;
+}
+
+body.light-mode .timeline-period {
+  color: #a16207 !important;
 }
 
 body.light-mode p.text-zinc-400,
 body.light-mode span.text-zinc-500 {
   color: #4b5563 !important;
+}
+
+body.light-mode .site-footer p {
+  color: #000000 !important;
 }
 
 /* Skill Grid Items in Light Mode */
@@ -273,18 +341,14 @@ body.light-mode .chat-input-text {
   color: #000000 !important;
 }
 
-/* Project Details Modal in Light Mode */
-body.light-mode .project-modal-card {
-  background-color: #ffffff !important;
-  color: #000000 !important;
-}
-
-body.light-mode .project-modal-card h2 {
-  color: #000000 !important;
-}
-
-body.light-mode .project-modal-card p {
-  color: #374151 !important;
+/* Project detail page */
+.detail-hero img {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-height: 420px;
+  object-fit: cover;
+  object-position: top;
 }
 
 /* Profile Card adjustments in Light Mode */

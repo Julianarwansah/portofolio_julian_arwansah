@@ -1,11 +1,28 @@
 .lanyard-wrapper {
   position: relative;
   z-index: 0;
+  /* The camera projection is authored for this wide aspect; the parent
+     column crops it. Narrowing the canvas changes the framing, so the
+     size stays as designed and cost is controlled via dpr + frameloop. */
   width: 200vh;
   height: 70vh;
   display: flex;
   justify-content: center;
   align-items: center;
-  transform: scale(1);
-  transform-origin: center;
+}
+
+.lanyard-fallback {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+}
+
+.lanyard-fallback img {
+  width: min(60%, 260px);
+  height: auto;
+  border: 3px solid #000000;
+  border-radius: 8px;
+  box-shadow: 6px 6px 0px #000000;
 }

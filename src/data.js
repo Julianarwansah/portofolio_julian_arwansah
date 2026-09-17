@@ -1,30 +1,22 @@
-import HeroImage from "/assets/hero-img.webp";
-
-const Image = {
-  HeroImage,
-};
-
-export default Image;
-
-import Tools1 from "/assets/tools/vscode.png";
-import Tools2 from "/assets/tools/reactjs.png";
-import Tools3 from "/assets/tools/nextjs.png";
-import Tools4 from "/assets/tools/tailwind.png";
-import Tools5 from "/assets/tools/bootstrap.png";
-import Tools6 from "/assets/tools/js.png";
-import Tools7 from "/assets/tools/nodejs.png";
-import Tools8 from "/assets/tools/github.png";
-import Tools9 from "/assets/tools/ai.png";
-import Tools10 from "/assets/tools/canva.png";
-import Tools11 from "/assets/tools/figma.png";
-import Tools12 from "/assets/tools/kotlin.png";
-import Tools13 from "/assets/tools/firebase.png";
-import Tools14 from "/assets/tools/html.png";
-import Tools15 from "/assets/tools/css.png";
-import Tools16 from "/assets/tools/ts.png";
-import Tools17 from "/assets/tools/php.png";
-import Tools18 from "/assets/tools/vite.png";
-import Tools19 from "/assets/tools/mysql.png";
+import Tools1 from "/assets/tools/vscode.webp";
+import Tools2 from "/assets/tools/reactjs.webp";
+import Tools3 from "/assets/tools/nextjs.webp";
+import Tools4 from "/assets/tools/tailwind.webp";
+import Tools5 from "/assets/tools/bootstrap.webp";
+import Tools6 from "/assets/tools/js.webp";
+import Tools7 from "/assets/tools/nodejs.webp";
+import Tools8 from "/assets/tools/github.webp";
+import Tools9 from "/assets/tools/ai.webp";
+import Tools10 from "/assets/tools/canva.webp";
+import Tools11 from "/assets/tools/figma.webp";
+import Tools12 from "/assets/tools/kotlin.webp";
+import Tools13 from "/assets/tools/firebase.webp";
+import Tools14 from "/assets/tools/html.webp";
+import Tools15 from "/assets/tools/css.webp";
+import Tools16 from "/assets/tools/ts.webp";
+import Tools17 from "/assets/tools/php.webp";
+import Tools18 from "/assets/tools/vite.webp";
+import Tools19 from "/assets/tools/mysql.webp";
 
 
 export const listTools = [
@@ -163,57 +155,59 @@ export const listTools = [
   },
 ];
 
-import Proyek1 from "/assets/proyek/proyek1.png";
-import Proyek2 from "/assets/proyek/proyek2.png";
-import Proyek3 from "/assets/proyek/proyek3.png";
-import Proyek4 from "/assets/proyek/proyek4.png";
-import Proyek5 from "/assets/proyek/proyek5.png";
-import Proyek6 from "/assets/proyek/proyek6.png";
-import Proyek7 from "/assets/proyek/proyek7.png";
-import Proyek8 from "/assets/proyek/proyek8.png";
-import Proyek9 from "/assets/proyek/proyek9.png";
-import Proyek10 from "/assets/proyek/proyek10.png";
-import Proyek11 from "/assets/proyek/proyek11.png";
-import Proyek12 from "/assets/proyek/proyek12.png";
-import Proyek13 from "/assets/proyek/proyek13.png";
-import Proyek14 from "/assets/proyek/proyek14.jpeg";
+import Proyek1 from "/assets/proyek/proyek1.webp";
+import Proyek2 from "/assets/proyek/proyek2.webp";
+import Proyek3 from "/assets/proyek/proyek3.webp";
+import Proyek4 from "/assets/proyek/proyek4.webp";
+import Proyek5 from "/assets/proyek/proyek5.webp";
+import Proyek6 from "/assets/proyek/proyek6.webp";
+import Proyek7 from "/assets/proyek/proyek7.webp";
+import Proyek8 from "/assets/proyek/proyek8.webp";
+import Proyek9 from "/assets/proyek/proyek9.webp";
+import Proyek10 from "/assets/proyek/proyek10.webp";
+import Proyek11 from "/assets/proyek/proyek11.webp";
+import Proyek12 from "/assets/proyek/proyek12.webp";
+import Proyek13 from "/assets/proyek/proyek13.webp";
+import Proyek14 from "/assets/proyek/proyek14.webp";
 
 export const listProyek = [
   {
     id: 14,
+    slug: "admin-hr-absensi",
     image: Proyek14,
     title: "Admin HR Absensi - Web",
     subtitle: "HR Management Dashboard",
-    fullDescription: "Sistem manajemen kehadiran karyawan berbasis web yang komprehensif. Fitur meliputi monitoring absensi real-time, manajemen data karyawan, pengajuan cuti, dan otomatisasi laporan bulanan untuk efisiensi departemen HR.",
+    fullDescription: "A comprehensive web-based employee attendance management system. Features include real-time attendance monitoring, employee data management, leave requests, and automated monthly reporting to keep the HR department efficient.",
     borderColor: "#3B82F6",
     gradient: "linear-gradient(145deg, #3B82F6, #1D4ED8)",
-    url: "#",
-    dad: "100",
+    url: null,
   },
   {
     id: 13,
+    slug: "srne-solar-indonesia",
     image: Proyek13,
     title: "SRNE Solar Indonesia",
     subtitle: "Website with WordPress",
-    fullDescription: "Website profil perusahaan SRNE Solar Indonesia yang dibangun menggunakan platform WordPress. Menampilkan berbagai produk solusi energi surya dan informasi teknis untuk pasar Indonesia.",
+    fullDescription: "A company profile website for SRNE Solar Indonesia, built on WordPress. It showcases the company's solar energy products and technical information for the Indonesian market.",
     borderColor: "#EAB308",
     gradient: "linear-gradient(145deg, #EAB308, #F97316)",
     url: "https://srnesolar.co.id",
-    dad: "100",
+    stack: ["WordPress", "PHP"],
   },
   {
     id: 12,
+    slug: "topnesia",
     image: Proyek12,
     title: "Topnesia",
     subtitle: "Freelance IT & Design Marketplace",
-    fullDescription: "Topnesia adalah platform marketplace freelance untuk para profesional IT dan desainer. Memungkinkan para freelancer memposting layanan atau jasa mereka, dan klien dapat menemukan serta memesan layanan yang mereka butuhkan dengan mudah.",
+    fullDescription: "Topnesia is a freelance marketplace for IT professionals and designers. Freelancers publish their services, and clients can discover and order the services they need with ease.",
     borderColor: "#06B6D4",
     gradient: "linear-gradient(145deg, #06B6D4, #3B82F6)",
     url: "https://topnesia.com",
-    dad: "100",
   },
   {
     id: 1,
+    slug: "car-rental",
     image: Proyek1,
     title: "Car Rental",
     subtitle: "Web with PHP Native",
@@ -221,10 +215,11 @@ export const listProyek = [
     borderColor: "#3B82F6",
     gradient: "linear-gradient(145deg, #3B82F6, #1E40AF)",
     url: "https://github.com/Julianarwansah/Rental-Mobil.git",
-    dad: "100",
+    stack: ["PHP", "MySQL"],
   },
   {
     id: 2,
+    slug: "laravel-portfolio",
     image: Proyek2,
     title: "Portfolio",
     subtitle: "Website with Laravel",
@@ -232,10 +227,11 @@ export const listProyek = [
     borderColor: "#10B981",
     gradient: "linear-gradient(145deg, #10B981, #047857)",
     url: "https://github.com/Julianarwansah/Portofolio.git",
-    dad: "100",
+    stack: ["PHP", "Laravel", "MySQL"],
   },
   {
     id: 3,
+    slug: "hotel-reservation",
     image: Proyek3,
     title: "Hotel Reservation",
     subtitle: "PHP Hotel Reservation System",
@@ -243,10 +239,11 @@ export const listProyek = [
     borderColor: "#8B5CF6",
     gradient: "linear-gradient(145deg, #8B5CF6, #7C3AED)",
     url: "https://github.com/Julianarwansah/PHP-Hotel-Reservation-System.git",
-    dad: "100",
+    stack: ["PHP", "MySQL"],
   },
   {
     id: 4,
+    slug: "campus-profile",
     image: Proyek4,
     title: "Campus Profile",
     subtitle: "Campus Profile PHP Native",
@@ -254,83 +251,134 @@ export const listProyek = [
     borderColor: "#EF4444",
     gradient: "linear-gradient(145deg, #EF4444, #DC2626)",
     url: "https://github.com/Julianarwansah/campus-profile-php-native.git",
-    dad: "100",
+    stack: ["PHP", "MySQL"],
   },
   {
     id: 5,
+    slug: "konveksi-app",
     image: Proyek5,
     title: "Konveksi",
     subtitle: "Konveksi-App Laravel",
-    fullDescription: "Sebuah aplikasi Laravel fullstack untuk manajemen konveksi produk jadi dan custom. Mendukung fitur e-commerce, pemesanan custom, manajemen produksi, inventori, dan laporan keuangan dengan sistem multi-aktor.",
+    fullDescription: "A full-stack Laravel application for managing made-to-order and custom garment production. Supports e-commerce, custom ordering, production management, inventory, and financial reporting across multiple user roles.",
     borderColor: "#F59E0B",
     gradient: "linear-gradient(145deg, #F59E0B, #D97706)",
     url: "https://github.com/Julianarwansah/konveksi-app.git",
-    dad: "100",
+    stack: ["PHP", "Laravel", "MySQL"],
   },
   {
     id: 6,
+    slug: "company-profile-joulwinn",
     image: Proyek6,
     title: "Company Profile Joulwinn",
     subtitle: "Company Profile Joulwinn",
-    fullDescription: "Sebuah sistem yang dirancang untuk mempermudah proses bisnis, menghadirkan pengalaman pengguna yang lebih efisien dengan tampilan modern dan alur kerja terstruktur. Berfokus pada otomasi, pengelolaan data, dan workflow yang lebih ringkas.",
+    fullDescription: "A company profile website for Joulwinn, built to streamline business processes with a modern look and a structured content flow. Focuses on a clear presentation of the company's services, portfolio, and contact information.",
     borderColor: "#06B6D4",
     gradient: "linear-gradient(145deg, #06B6D4, #0891B2)",
     url: "https://www.joulwinn.com/",
-    dad: "100",
   },
   {
     id: 7,
+    slug: "company-profile-jarwinn",
     image: Proyek7,
     title: "Company Profile Jarwinn",
     subtitle: "Company Profile Jarwinn",
-    fullDescription: "Sebuah sistem yang dirancang untuk mempermudah proses bisnis, menghadirkan pengalaman pengguna yang lebih efisien dengan tampilan modern dan alur kerja terstruktur. Berfokus pada otomasi, pengelolaan data, dan workflow yang lebih ringkas.",
+    fullDescription: "A company profile website for Jarwinn with an emphasis on fast, content-driven pages. Presents the company's services and track record in a clean, structured layout that is easy for visitors to scan.",
     borderColor: "#EC4899",
     gradient: "linear-gradient(145deg, #EC4899, #DB2777)",
     url: "https://www.jarwinn.com/",
-    dad: "100",
   },
   {
     id: 8,
+    slug: "se-fashion",
     image: Proyek8,
     title: "SE FASHION",
     subtitle: "Ecommerce SE FASHION",
-    fullDescription: "Sebuah sistem yang dirancang untuk mempermudah proses bisnis, menghadirkan pengalaman pengguna yang lebih efisien dengan tampilan modern dan alur kerja terstruktur. Berfokus pada otomasi, pengelolaan data, dan workflow yang lebih ringkas.",
+    fullDescription: "An e-commerce website for SE FASHION covering the product catalog, ordering, and checkout flow, designed around a modern storefront experience and a simple back-office workflow.",
     borderColor: "#6366F1",
     gradient: "linear-gradient(145deg, #6366F1, #4F46E5)",
     url: "https://sefashion.my.id/",
-    dad: "100",
   },
   {
     id: 9,
+    slug: "ev-charging-system",
     image: Proyek9,
     title: "Electric Charging System",
     subtitle: "Charging Management Dashboard",
-    fullDescription: "Sebuah sistem manajemen stasiun pengisian kendaraan listrik (EV) yang dilengkapi dengan monitoring real-time, manajemen pengguna, dan pelacakan transaksi. Dirancang untuk efisiensi operasional dengan tampilan yang modern dan informatif.",
+    fullDescription: "An electric vehicle (EV) charging station management system with real-time monitoring, user management, and transaction tracking, designed for operational efficiency with a modern, informative interface.",
     borderColor: "#10B981",
     gradient: "linear-gradient(145deg, #10B981, #059669)",
     url: "https://julianarwansah-sistemcharging-admin.hf.space/login",
-    dad: "100",
   },
   {
     id: 10,
+    slug: "ev-charging-mobile",
     image: Proyek10,
     title: "Electric Charging - Mobile App",
     subtitle: "EV User Application (Mobile)",
-    fullDescription: "Aplikasi mobile untuk pengguna kendaraan listrik yang memudahkan proses pengisian daya, scan QR code, top-up saldo, dan mencari lokasi stasiun pengisian terdekat. Memberikan pengalaman pengguna yang seamless dan efisien.",
+    fullDescription: "A mobile application for EV owners that simplifies charging sessions, QR code scanning, balance top-ups, and finding the nearest charging stations, for a seamless and efficient user experience.",
     borderColor: "#10B981",
     gradient: "linear-gradient(145deg, #10B981, #34D399)",
     url: "https://drive.google.com/file/d/1PJt0caqdfowMnB4BZuMovtkPMgRP4Wbt/view?usp=sharing",
-    dad: "100",
   },
   {
     id: 11,
+    slug: "flutter-cashflow",
     image: Proyek11,
     title: "Flutter Cashflow App",
     subtitle: "Personal Finance Tracker",
-    fullDescription: "Sebuah aplikasi manajemen keuangan pribadi yang dibangun menggunakan Flutter. Dilengkapi dengan fitur pelacakan pemasukan dan pengeluaran, saldo otomatis, serta riwayat transaksi yang informatif.",
+    fullDescription: "A personal finance management app built with Flutter. Tracks income and expenses, maintains an automatic balance, and presents an informative transaction history.",
     borderColor: "#3B82F6",
     gradient: "linear-gradient(145deg, #3B82F6, #2563EB)",
     url: "https://github.com/Julianarwansah/uas_cashflow_app.git",
-    dad: "100",
+    stack: ["Flutter", "Dart"],
+  },
+];
+
+// Placeholder entries: replace judul/instansi/periode/deskripsi with real
+// content. `tipe` must stay one of the four values used by Timeline.jsx.
+export const listTimeline = [
+  {
+    id: 1,
+    tipe: "pendidikan",
+    judul: "[JURUSAN / PROGRAM STUDI]",
+    instansi: "[NAMA KAMPUS]",
+    periode: "[2023 - sekarang]",
+    tempat: "[Kota]",
+    deskripsi: "[Replace with 1-2 sentences about your studies: focus area, GPA, or relevant coursework.]",
+    tautan: null,
+    nomorSertifikat: null,
+  },
+  {
+    id: 2,
+    tipe: "pengalaman",
+    judul: "[POSISI / PERAN]",
+    instansi: "[NAMA PERUSAHAAN]",
+    periode: "[Bulan Tahun - Bulan Tahun]",
+    tempat: "[Kota]",
+    deskripsi: "[Replace with 1-2 sentences about your responsibilities and the impact of your work.]",
+    tautan: null,
+    nomorSertifikat: null,
+  },
+  {
+    id: 3,
+    tipe: "organisasi",
+    judul: "[PERAN DI ORGANISASI]",
+    instansi: "[NAMA ORGANISASI]",
+    periode: "[Bulan Tahun - Bulan Tahun]",
+    tempat: "[Kota]",
+    deskripsi: "[Replace with 1-2 sentences about your contribution to this organization.]",
+    tautan: null,
+    nomorSertifikat: null,
+  },
+  {
+    id: 4,
+    tipe: "sertifikat",
+    judul: "[NAMA SERTIFIKAT]",
+    instansi: "[LEMBAGA PENERBIT]",
+    periode: "[Bulan Tahun]",
+    tempat: null,
+    deskripsi: "[Replace with a short note about this certification, or delete this entry.]",
+    tautan: null,
+    nomorSertifikat: "[NOMOR SERTIFIKAT]",
   },
 ];

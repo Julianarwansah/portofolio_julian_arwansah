@@ -2,10 +2,9 @@ import { useRef, useEffect } from "react";
 import { gsap } from "gsap";
 import "./ChromaGrid.css";
 
-// Terima `onItemClick` di props
 export const ChromaGrid = ({
   items,
-  onItemClick, // Fungsi handler dari App.jsx
+  onItemClick,
   className = "",
   radius = 300,
   columns = 3,
@@ -19,8 +18,10 @@ export const ChromaGrid = ({
   const setX = useRef(null);
   const setY = useRef(null);
   const pos = useRef({ x: 0, y: 0 });
+  const frame = useRef(0);
+  const spotlightTween = useRef(null);
+  const fadeTween = useRef(null);
 
-  // Gunakan `items` yang di-pass dari App.jsx, bukan data demo
   const data = items?.length ? items : [];
 
   useEffect(() => {
@@ -32,10 +33,16 @@ export const ChromaGrid = ({
     pos.current = { x: width / 2, y: height / 2 };
     setX.current(pos.current.x);
     setY.current(pos.current.y);
+
+    return () => {
+      cancelAnimationFrame(frame.current);
+      spotlightTween.current?.kill();
+      fadeTween.current?.kill();
+    };
   }, []);
 
   const moveTo = (x, y) => {
-    gsap.to(pos.current, {
+    spotlightTween.current = gsap.to(pos.current, {
       x,
       y,
       duration: damping,
@@ -48,14 +55,24 @@ export const ChromaGrid = ({
     });
   };
 
+  const revealSpotlight = () => {
+    fadeTween.current = gsap.to(fadeRef.current, { opacity: 0, duration: 0.25, overwrite: true });
+  };
+
   const handleMove = (e) => {
-    const r = rootRef.current.getBoundingClientRect();
-    moveTo(e.clientX - r.left, e.clientY - r.top);
-    gsap.to(fadeRef.current, { opacity: 0, duration: 0.25, overwrite: true });
+    const x = e.clientX;
+    const y = e.clientY;
+    cancelAnimationFrame(frame.current);
+    frame.current = requestAnimationFrame(() => {
+      const r = rootRef.current.getBoundingClientRect();
+      moveTo(x - r.left, y - r.top);
+      revealSpotlight();
+    });
   };
 
   const handleLeave = () => {
-    gsap.to(fadeRef.current, {
+    cancelAnimationFrame(frame.current);
+    fadeTween.current = gsap.to(fadeRef.current, {
       opacity: 1,
       duration: fadeOut,
       overwrite: true,
@@ -65,10 +82,25 @@ export const ChromaGrid = ({
   const handleCardMove = (e) => {
     const card = e.currentTarget;
     const rect = card.getBoundingClientRect();
-    const x = e.clientX - rect.left;
-    const y = e.clientY - rect.top;
-    card.style.setProperty("--mouse-x", `${x}px`);
-    card.style.setProperty("--mouse-y", `${y}px`);
+    card.style.setProperty("--mouse-x", `${e.clientX - rect.left}px`);
+    card.style.setProperty("--mouse-y", `${e.clientY - rect.top}px`);
+  };
+
+  // Keyboard focus must lift the grayscale overlay off the focused card,
+  // otherwise the focus ring and content sit behind the desaturating mask.
+  const handleCardFocus = (e) => {
+    const card = e.currentTarget;
+    const root = rootRef.current.getBoundingClientRect();
+    const rect = card.getBoundingClientRect();
+    moveTo(rect.left - root.left + rect.width / 2, rect.top - root.top + rect.height / 2);
+    revealSpotlight();
+  };
+
+  const handleCardKeyDown = (e, card) => {
+    if (e.key === "Enter" || e.key === " ") {
+      e.preventDefault();
+      onItemClick(card);
+    }
   };
 
   return (
@@ -85,30 +117,34 @@ export const ChromaGrid = ({
       onPointerMove={handleMove}
       onPointerLeave={handleLeave}
     >
-      {data.map((c, i) => (
+      {data.map((c) => (
         <article
-          key={i}
+          key={c.slug ?? c.id}
           className="chroma-card"
+          role="button"
+          tabIndex={0}
+          aria-label={`Open details for ${c.title}`}
           onMouseMove={handleCardMove}
-          // Panggil `onItemClick` saat kartu diklik dan kirim datanya
+          onFocus={handleCardFocus}
           onClick={() => onItemClick(c)}
+          onKeyDown={(e) => handleCardKeyDown(e, c)}
           style={
             {
               "--card-border": c.borderColor || "transparent",
               "--card-gradient": c.gradient,
-              cursor: "pointer", // Selalu pointer karena akan membuka modal
+              cursor: "pointer",
             }
           }
         >
           <div className="chroma-img-wrapper">
-            <img src={c.image} alt={c.title} loading="lazy" />
+            <img src={c.image} alt={`Screenshot of ${c.title}`} width={320} height={180} loading="lazy" decoding="async" />
           </div>
-          <footer className="chroma-info">
+          <div className="chroma-info">
             <h3 className="name">{c.title}</h3>
             {c.handle && <span className="handle">{c.handle}</span>}
             <p className="role">{c.subtitle}</p>
             {c.location && <span className="location">{c.location}</span>}
-          </footer>
+          </div>
         </article>
       ))}
       <div className="chroma-overlay" />

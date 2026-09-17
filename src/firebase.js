@@ -32,25 +32,25 @@ export const loginWithGoogle = async () => {
     if (error.code === 'auth/popup-blocked') {
       return {
         success: false,
-        error: 'Popup diblokir oleh browser. Silakan coba metode redirect atau izinkan popup.',
+        error: 'Popup blocked by your browser. Allow popups for this site, or use the redirect method.',
         code: error.code
       };
     } else if (error.code === 'auth/popup-closed-by-user') {
       return {
         success: false,
-        error: 'Login dibatalkan. Silakan coba lagi.',
+        error: 'Login cancelled. Please try again.',
         code: error.code
       };
     } else if (error.code === 'auth/unauthorized-domain') {
       return {
         success: false,
-        error: 'Domain tidak diauthorize. Hubungi administrator.',
+        error: 'This domain is not authorized. Add it under Authentication > Settings in the Firebase console.',
         code: error.code
       };
     } else {
       return {
         success: false,
-        error: `Login gagal: ${error.message}`,
+        error: `Login failed: ${error.message}`,
         code: error.code
       };
     }
@@ -67,7 +67,7 @@ export const loginWithGoogleRedirect = async () => {
     console.error("Redirect login error:", error);
     return {
       success: false,
-      error: `Login gagal: ${error.message}`,
+      error: `Login failed: ${error.message}`,
       code: error.code
     };
   }

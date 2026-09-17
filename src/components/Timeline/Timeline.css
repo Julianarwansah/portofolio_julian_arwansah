@@ -1,0 +1,102 @@
+.timeline-list {
+  position: relative;
+  list-style: none;
+  margin: 0;
+  padding: 0 0 0 2rem;
+}
+
+.timeline-list::before {
+  content: "";
+  position: absolute;
+  left: 0.5rem;
+  top: 0.5rem;
+  bottom: 0.5rem;
+  width: 4px;
+  background: #000000;
+}
+
+.timeline-item {
+  position: relative;
+  padding-bottom: 2.5rem;
+}
+
+.timeline-item:last-child {
+  padding-bottom: 0;
+}
+
+.timeline-dot {
+  position: absolute;
+  left: -1.85rem;
+  top: 0.4rem;
+  width: 1.1rem;
+  height: 1.1rem;
+  border: 3px solid #000000;
+  border-radius: 50%;
+  box-shadow: 2px 2px 0px #000000;
+}
+
+.timeline-card {
+  background: #121216;
+  border: 3px solid #000000;
+  border-radius: 8px;
+  box-shadow: 5px 5px 0px #000000;
+  padding: 1.25rem 1.5rem;
+}
+
+.timeline-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 0.75rem;
+}
+
+.timeline-type {
+  border: 2px solid #000000;
+  box-shadow: 2px 2px 0px #000000;
+}
+
+.timeline-period {
+  font-family: monospace;
+  font-size: 0.8rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #ffe600;
+}
+
+.timeline-title {
+  font-size: 1.35rem;
+  font-weight: 800;
+  color: #ffffff;
+  margin: 0 0 0.25rem;
+}
+
+.timeline-org {
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: #00e5ff;
+  margin: 0 0 0.5rem;
+}
+
+.timeline-desc {
+  font-size: 0.95rem;
+  line-height: 1.6;
+  color: #d4d4d8;
+  margin: 0;
+}
+
+.timeline-cert {
+  font-family: monospace;
+  font-size: 0.75rem;
+  color: #888899;
+  margin: 0.5rem 0 0;
+}
+
+.timeline-link {
+  display: inline-block;
+  margin-top: 0.75rem;
+  font-weight: 700;
+  color: #00e5ff;
+  text-decoration: underline;
+}

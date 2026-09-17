@@ -290,7 +290,7 @@ const ProfileCardComponent = ({
       className={`pc-card-wrapper ${className}`.trim()}
       style={cardStyle}
     >
-      <section ref={cardRef} className="pc-card">
+      <section ref={cardRef} className="pc-card" aria-label="Profile summary">
         <div className="pc-inside">
           <div className="pc-shine" />
           <div className="pc-glare" />
@@ -299,7 +299,9 @@ const ProfileCardComponent = ({
               className="avatar"
               src={avatarUrl}
               alt={`${name || "User"} avatar`}
-              loading="lazy"
+              loading="eager"
+              fetchPriority="high"
+              decoding="async"
               onError={(e) => {
                 const target = e.target;
                 target.style.display = "none";

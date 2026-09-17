@@ -55,6 +55,17 @@
   border-color: var(--card-border);
 }
 
+/* The overlay/fade layers sit above the cards and desaturate them, so the
+   focus ring needs to escape that stack to stay visible. */
+.chroma-card:focus-visible {
+  outline: 3px solid #00e5ff;
+  outline-offset: 4px;
+  z-index: 6;
+  transform: translate(-4px, -4px);
+  box-shadow: 10px 10px 0px #000000;
+  border-color: var(--card-border);
+}
+
 /* Spotlight glow over card */
 .chroma-card::before {
   content: "";
