@@ -1,0 +1,101 @@
+.cert-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.75rem;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+/* Ticket-style card: dashed border with punched notches on both sides. */
+.cert-card {
+  position: relative;
+  background: #121216;
+  border: 3px dashed #ff007f;
+  border-radius: 12px;
+  padding: 1.5rem;
+}
+
+.cert-card::before,
+.cert-card::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  width: 1.4rem;
+  height: 1.4rem;
+  background: #0d0d11;
+  border: 3px dashed #ff007f;
+  border-radius: 50%;
+  transform: translateY(-50%);
+}
+
+.cert-card::before {
+  left: -0.95rem;
+  clip-path: inset(0 0 0 50%);
+}
+
+.cert-card::after {
+  right: -0.95rem;
+  clip-path: inset(0 50% 0 0);
+}
+
+.cert-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.cert-seal {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 3rem;
+  height: 3rem;
+  background: #ff007f;
+  color: #ffffff;
+  border: 3px solid #000000;
+  border-radius: 50%;
+  box-shadow: 3px 3px 0px #000000;
+}
+
+.cert-period {
+  font-family: monospace;
+  font-size: 0.78rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #ff007f;
+}
+
+.cert-name {
+  font-size: 1.2rem;
+  font-weight: 800;
+  color: #ffffff;
+  margin: 0 0 0.25rem;
+}
+
+.cert-issuer {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #00e5ff;
+  margin: 0;
+}
+
+.cert-id {
+  font-family: monospace;
+  font-size: 0.75rem;
+  color: #888899;
+  margin: 0.6rem 0 0;
+}
+
+.cert-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin-top: 0.75rem;
+  font-weight: 700;
+  color: #ff007f;
+  text-decoration: underline;
+}

@@ -243,31 +243,44 @@ body.light-mode .tools h2,
 body.light-mode .kontak h2,
 body.light-mode .proyek h2,
 body.light-mode .pengalaman h2,
+body.light-mode .edukasi h2,
+body.light-mode .sertifikat h2,
 body.light-mode h2.text-white,
 body.light-mode h2.text-center {
   color: #000000 !important;
 }
 
-/* Timeline in Light Mode */
-body.light-mode .timeline-card {
+/* Work experience, education and certificates in Light Mode */
+body.light-mode .xp-card,
+body.light-mode .edu-card,
+body.light-mode .cert-card {
   background: #ffffff !important;
-  box-shadow: 5px 5px 0px #000000 !important;
 }
 
-body.light-mode .timeline-title {
+body.light-mode .xp-role,
+body.light-mode .edu-degree,
+body.light-mode .cert-name {
   color: #000000 !important;
 }
 
-body.light-mode .timeline-org {
-  color: #0369a1 !important;
-}
-
-body.light-mode .timeline-desc {
+body.light-mode .xp-desc,
+body.light-mode .edu-desc {
   color: #374151 !important;
 }
 
-body.light-mode .timeline-period {
+body.light-mode .xp-company,
+body.light-mode .cert-issuer {
+  color: #0369a1 !important;
+}
+
+body.light-mode .edu-school {
   color: #a16207 !important;
+}
+
+body.light-mode .xp-dot,
+body.light-mode .cert-card::before,
+body.light-mode .cert-card::after {
+  background: #faf9f5 !important;
 }
 
 body.light-mode .contact-card {

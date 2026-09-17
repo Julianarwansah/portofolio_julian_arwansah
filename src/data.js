@@ -334,72 +334,55 @@ export const listProyek = [
   },
 ];
 
-// `tipe` must stay one of the four values used by Timeline.jsx.
-export const listTimeline = [
+// Three separate lists: work history, formal education and credentials each
+// get their own section and visual treatment on the home page.
+export const listPengalaman = [
   {
     id: 1,
-    tipe: "pengalaman",
     judul: "Full Stack Developer & IT Support",
     instansi: "PT Jarwinn Felicity Hotapea",
     periode: "Oct 2025 - Present",
-    tempat: null,
     deskripsi: "Develop and maintain web applications and internal IT systems, build and integrate frontend and backend features from business requirements, and provide IT support, troubleshooting, maintenance, and system optimization.",
-    tautan: null,
-    nomorSertifikat: null,
   },
   {
     id: 2,
-    tipe: "pengalaman",
     judul: "Backend Intern",
     instansi: "PT Moemtaz Grub",
     periode: "Mar 2025 - Jun 2025",
-    tempat: null,
     deskripsi: "Full-cycle backend development including RESTful API development, with a focus on security and best practices.",
-    tautan: null,
-    nomorSertifikat: null,
   },
   {
     id: 3,
-    tipe: "pendidikan",
-    judul: "Bachelor of Engineering - Informatics Engineering",
-    instansi: "Global Institute",
-    periode: "Aug 2023 - Present",
-    tempat: null,
-    deskripsi: "Seventh-semester student specializing in Software Engineering with a focus on web development.",
-    tautan: null,
-    nomorSertifikat: null,
-  },
-  {
-    id: 4,
-    tipe: "pengalaman",
     judul: "Admin Checker",
     instansi: "PT Moiz Indonesia",
     periode: "Jul 2023 - Sep 2023",
-    tempat: null,
     deskripsi: "Checked and counted items scheduled for shipment, and verified goods during loading and unloading.",
-    tautan: null,
-    nomorSertifikat: null,
   },
   {
-    id: 5,
-    tipe: "pengalaman",
+    id: 4,
     judul: "Store Crew (Full-Time)",
     instansi: "PT NICESO SUKSES INDONESIA",
     periode: "Jul 2022 - May 2023",
-    tempat: null,
     deskripsi: "Organized and displayed merchandise by category, maintained stockroom order, and prepared financial reports.",
-    tautan: null,
-    nomorSertifikat: null,
+  },
+];
+
+export const listPendidikan = [
+  {
+    id: 1,
+    judul: "Bachelor of Engineering - Informatics Engineering",
+    instansi: "Global Institute",
+    periode: "Aug 2023 - Present",
+    deskripsi: "Seventh-semester student specializing in Software Engineering with a focus on web development.",
   },
   {
-    id: 6,
-    tipe: "pendidikan",
+    id: 2,
     judul: "Multimedia",
     instansi: "SMK BINA AM MAMUR",
     periode: "2019 - 2022",
-    tempat: null,
     deskripsi: "Vocational school majoring in Multimedia.",
-    tautan: null,
-    nomorSertifikat: null,
   },
 ];
+
+// Add entries here and the Certificates section appears automatically.
+export const listSertifikat = [];

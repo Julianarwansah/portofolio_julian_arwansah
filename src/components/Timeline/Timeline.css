@@ -1,102 +1,91 @@
-.timeline-list {
+.xp-list {
   position: relative;
   list-style: none;
   margin: 0;
-  padding: 0 0 0 2rem;
+  padding: 0 0 0 2.25rem;
 }
 
-.timeline-list::before {
+.xp-list::before {
   content: "";
   position: absolute;
-  left: 0.5rem;
-  top: 0.5rem;
-  bottom: 0.5rem;
+  left: 0.55rem;
+  top: 0.6rem;
+  bottom: 0.6rem;
   width: 4px;
-  background: #000000;
+  background: #ffe600;
+  box-shadow: 2px 2px 0px #000000;
 }
 
-.timeline-item {
+.xp-item {
   position: relative;
-  padding-bottom: 2.5rem;
+  padding-bottom: 2.25rem;
 }
 
-.timeline-item:last-child {
+.xp-item:last-child {
   padding-bottom: 0;
 }
 
-.timeline-dot {
+.xp-dot {
   position: absolute;
-  left: -1.85rem;
-  top: 0.4rem;
-  width: 1.1rem;
-  height: 1.1rem;
-  border: 3px solid #000000;
+  left: -2.05rem;
+  top: 0.55rem;
+  width: 1rem;
+  height: 1rem;
+  background: #0d0d11;
+  border: 4px solid #ffe600;
   border-radius: 50%;
   box-shadow: 2px 2px 0px #000000;
 }
 
-.timeline-card {
+.xp-card {
   background: #121216;
   border: 3px solid #000000;
+  border-left: 8px solid #ffe600;
   border-radius: 8px;
   box-shadow: 5px 5px 0px #000000;
   padding: 1.25rem 1.5rem;
 }
 
-.timeline-meta {
+.xp-head {
   display: flex;
   flex-wrap: wrap;
-  align-items: center;
-  gap: 0.75rem;
-  margin-bottom: 0.75rem;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.5rem 1rem;
+  margin-bottom: 0.25rem;
 }
 
-.timeline-type {
-  border: 2px solid #000000;
-  box-shadow: 2px 2px 0px #000000;
-}
-
-.timeline-period {
-  font-family: monospace;
-  font-size: 0.8rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  color: #ffe600;
-}
-
-.timeline-title {
+.xp-role {
   font-size: 1.35rem;
   font-weight: 800;
   color: #ffffff;
-  margin: 0 0 0.25rem;
+  margin: 0;
 }
 
-.timeline-org {
-  font-size: 0.9rem;
+.xp-period {
+  font-family: monospace;
+  font-size: 0.78rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #0d0d11;
+  background: #ffe600;
+  border: 2px solid #000000;
+  box-shadow: 2px 2px 0px #000000;
+  padding: 0.15rem 0.5rem;
+  white-space: nowrap;
+}
+
+.xp-company {
+  font-size: 0.95rem;
   font-weight: 700;
   color: #00e5ff;
-  margin: 0 0 0.5rem;
+  margin: 0 0 0.6rem;
 }
 
-.timeline-desc {
+.xp-desc {
   font-size: 0.95rem;
   line-height: 1.6;
   color: #d4d4d8;
   margin: 0;
-}
-
-.timeline-cert {
-  font-family: monospace;
-  font-size: 0.75rem;
-  color: #888899;
-  margin: 0.5rem 0 0;
-}
-
-.timeline-link {
-  display: inline-block;
-  margin-top: 0.75rem;
-  font-weight: 700;
-  color: #00e5ff;
-  text-decoration: underline;
 }

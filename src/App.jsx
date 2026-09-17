@@ -4,9 +4,11 @@ import { FiMail, FiPhone, FiMapPin } from "react-icons/fi";
 import ProfileCard from "./components/ProfileCard/ProfileCard";
 import BlurText from "./components/BlurText/BlurText";
 import Lanyard from "./components/Lanyard/Lanyard";
-import { listTools, listProyek, listTimeline } from "./data";
+import { listTools, listProyek, listPengalaman, listPendidikan, listSertifikat } from "./data";
 import ChromaGrid from "./components/ChromaGrid/ChromaGrid";
 import Timeline from "./components/Timeline/Timeline";
+import Education from "./components/Education/Education";
+import Certificates from "./components/Certificates/Certificates";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 import { usePageMeta } from "./lib/meta";
@@ -195,21 +197,55 @@ function App() {
         </section>
         {/* tentang */}
 
-        {/* Pengalaman */}
+        {/* Pengalaman kerja */}
         <section className="pengalaman mt-32" id="experience" aria-labelledby="experience-title">
           <div className="flex flex-col items-center text-center mb-14" data-aos="fade-up" data-aos-duration="1000" data-aos-once="true">
-            <span className="neo-badge bg-[#00e5ff] text-black border-2 border-black shadow-[2px_2px_0px_#000] mb-4 text-sm">
-              MY JOURNEY
+            <span className="neo-badge bg-[#ffe600] text-black border-2 border-black shadow-[2px_2px_0px_#000] mb-4 text-sm">
+              CAREER
             </span>
-            <h2 id="experience-title" className="text-4xl sm:text-5xl font-black mb-4 text-white">Experience & Certificates</h2>
+            <h2 id="experience-title" className="text-4xl sm:text-5xl font-black mb-4 text-white">Work Experience</h2>
             <p className="text-zinc-400 font-bold max-w-2xl leading-relaxed">
-              Education, organizations, work experience and certifications along the way.
+              Roles and responsibilities across companies, internships and full-time positions.
             </p>
           </div>
           <div className="max-w-3xl mx-auto w-full px-4">
-            <Timeline items={listTimeline} />
+            <Timeline items={listPengalaman} />
           </div>
         </section>
+
+        {/* Pendidikan */}
+        <section className="edukasi mt-32" id="education" aria-labelledby="education-title">
+          <div className="flex flex-col items-center text-center mb-14" data-aos="fade-up" data-aos-duration="1000" data-aos-once="true">
+            <span className="neo-badge bg-[#00e5ff] text-black border-2 border-black shadow-[2px_2px_0px_#000] mb-4 text-sm">
+              CAMPUS
+            </span>
+            <h2 id="education-title" className="text-4xl sm:text-5xl font-black mb-4 text-white">Education</h2>
+            <p className="text-zinc-400 font-bold max-w-2xl leading-relaxed">
+              Formal education from vocational school to university.
+            </p>
+          </div>
+          <div className="max-w-4xl mx-auto w-full px-4">
+            <Education items={listPendidikan} />
+          </div>
+        </section>
+
+        {/* Sertifikat */}
+        {listSertifikat.length > 0 && (
+          <section className="sertifikat mt-32" id="certificates" aria-labelledby="certificates-title">
+            <div className="flex flex-col items-center text-center mb-14" data-aos="fade-up" data-aos-duration="1000" data-aos-once="true">
+              <span className="neo-badge bg-[#ff007f] text-white border-2 border-black shadow-[2px_2px_0px_#000] mb-4 text-sm">
+                CREDENTIALS
+              </span>
+              <h2 id="certificates-title" className="text-4xl sm:text-5xl font-black mb-4 text-white">Certificates</h2>
+              <p className="text-zinc-400 font-bold max-w-2xl leading-relaxed">
+                Certifications and credentials earned along the way.
+              </p>
+            </div>
+            <div className="max-w-5xl mx-auto w-full px-4">
+              <Certificates items={listSertifikat} />
+            </div>
+          </section>
+        )}
 
         {/* Proyek */}
         <section className="proyek mt-32" id="project" aria-labelledby="projects-title">

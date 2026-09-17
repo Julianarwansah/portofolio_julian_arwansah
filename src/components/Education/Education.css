@@ -1,0 +1,69 @@
+.edu-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1.75rem;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.edu-card {
+  position: relative;
+  background: #121216;
+  border: 3px solid #000000;
+  border-top: 10px solid #00e5ff;
+  border-radius: 8px;
+  box-shadow: 6px 6px 0px #000000;
+  padding: 1.5rem;
+}
+
+.edu-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.edu-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 3rem;
+  height: 3rem;
+  background: #00e5ff;
+  color: #000000;
+  border: 3px solid #000000;
+  border-radius: 8px;
+  box-shadow: 3px 3px 0px #000000;
+}
+
+.edu-period {
+  font-family: monospace;
+  font-size: 0.78rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #00e5ff;
+}
+
+.edu-degree {
+  font-size: 1.3rem;
+  font-weight: 800;
+  color: #ffffff;
+  margin: 0 0 0.25rem;
+}
+
+.edu-school {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #ffe600;
+  margin: 0 0 0.6rem;
+}
+
+.edu-desc {
+  font-size: 0.95rem;
+  line-height: 1.6;
+  color: #d4d4d8;
+  margin: 0;
+}
