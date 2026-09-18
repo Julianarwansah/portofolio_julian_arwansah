@@ -5,7 +5,6 @@ import ProfileCard from "./components/ProfileCard/ProfileCard";
 import BlurText from "./components/BlurText/BlurText";
 import Lanyard from "./components/Lanyard/Lanyard";
 import { listTools, listProyek, listPengalaman, listPendidikan, listSertifikat } from "./data";
-import ChromaGrid from "./components/ChromaGrid/ChromaGrid";
 import Timeline from "./components/Timeline/Timeline";
 import Education from "./components/Education/Education";
 import Certificates from "./components/Certificates/Certificates";
@@ -272,18 +271,65 @@ function App() {
             Showcasing a selection of projects that reflect my skills, creativity, and passion for building meaningful digital experiences.
           </p>
         </div>
-        <div className="proyek-box mt-14" >
-
-          <div style={{ height: 'auto', position: 'relative' }} data-aos="fade-up" data-aos-duration="1000" data-aos-delay="400" data-aos-once="true" >
-            <ChromaGrid
-              items={listProyek}
-              onItemClick={handleProjectClick} // Kirim fungsi untuk handle klik
-              radius={500}
-              damping={0.45}
-              fadeOut={0.6}
-              ease="power3.out"
-            />
-          </div>
+        <div className="proyek-box mt-14 flex flex-col gap-10 max-w-5xl mx-auto w-full">
+          {listProyek.map((project, i) => {
+            const flipped = i % 2 === 1;
+            return (
+              <article
+                key={project.slug}
+                className="case-row grid md:grid-cols-2 items-stretch border-4 border-black rounded-xl overflow-hidden bg-zinc-950 shadow-[8px_8px_0px_#000000]"
+                data-aos="fade-up"
+                data-aos-duration="1000"
+                data-aos-once="true"
+              >
+                <div className={`relative border-b-4 md:border-b-0 border-black ${flipped ? "md:order-2 md:border-l-4" : "md:border-r-4"}`}>
+                  <img
+                    src={project.image}
+                    alt={`Screenshot of ${project.title}`}
+                    loading="lazy"
+                    decoding="async"
+                    className="w-full h-64 md:h-full object-cover"
+                  />
+                  <span className="absolute top-4 left-4 neo-badge bg-[#ffe600] text-black border-2 border-black shadow-[2px_2px_0px_#000] px-2 py-0.5 text-xs font-bold">
+                    {String(i + 1).padStart(2, "0")}
+                  </span>
+                </div>
+                <div className={`p-8 md:p-10 flex flex-col gap-4 ${flipped ? "md:order-1" : ""}`}>
+                  <p className="case-sub text-xs font-mono uppercase tracking-wider text-[#ffe600]">{project.subtitle}</p>
+                  <h3 className="text-2xl md:text-3xl font-black text-white leading-tight">{project.title}</h3>
+                  <p className="case-desc text-zinc-400 leading-relaxed">{project.fullDescription}</p>
+                  {project.stack && (
+                    <ul className="flex flex-wrap gap-2 list-none m-0 p-0">
+                      {project.stack.map((tech) => (
+                        <li key={tech} className="case-chip text-[11px] font-mono uppercase border-2 border-black px-2 py-0.5 rounded-sm bg-zinc-900 text-[#00e5ff]">
+                          {tech}
+                        </li>
+                      ))}
+                    </ul>
+                  )}
+                  <div className="mt-auto flex flex-wrap gap-3 pt-2">
+                    <button
+                      type="button"
+                      onClick={() => handleProjectClick(project)}
+                      className="neo-btn-yellow p-3 px-5 rounded-md text-sm"
+                    >
+                      View Case Study
+                    </button>
+                    {project.url && (
+                      <a
+                        href={project.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="neo-btn-cyan p-3 px-5 rounded-md text-sm"
+                      >
+                        Live / Repo
+                      </a>
+                    )}
+                  </div>
+                </div>
+              </article>
+            );
+          })}
         </div>
         </section>
         {/* Proyek */}

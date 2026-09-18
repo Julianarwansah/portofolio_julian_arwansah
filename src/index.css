@@ -365,23 +365,26 @@ body.light-mode .tool-chip img {
   background-color: #f3f4f6 !important;
 }
 
-/* Project Cards in Light Mode */
-body.light-mode .proyek-box .chroma-card {
+/* Project case rows in Light Mode */
+body.light-mode .case-row {
   background-color: #ffffff !important;
+}
+
+body.light-mode .case-row h3 {
   color: #000000 !important;
 }
 
-body.light-mode .proyek-box .chroma-info {
-  background-color: #ffffff !important;
-  color: #000000 !important;
+body.light-mode .case-desc {
+  color: #374151 !important;
 }
 
-body.light-mode .proyek-box .chroma-info .name {
-  color: #000000 !important;
+body.light-mode .case-sub {
+  color: #a16207 !important;
 }
 
-body.light-mode .proyek-box .chroma-img-wrapper {
+body.light-mode .case-chip {
   background-color: #f3f4f6 !important;
+  color: #0369a1 !important;
 }
 
 /* Chat Room in Light Mode */
