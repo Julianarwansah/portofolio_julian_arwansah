@@ -103,7 +103,6 @@ function App() {
           <div className="md:ml-auto animate-fade-in-up animate-delay-2s">
             <ProfileCard
               name="Julian"
-              title="Fullstack Developer"
               handle="iyan_julian"
               status="Online"
               contactText="Contact Me"
