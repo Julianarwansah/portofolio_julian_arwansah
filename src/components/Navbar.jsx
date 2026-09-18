@@ -43,6 +43,7 @@ const Navbar = ({ theme = "dark", onToggleTheme }) => {
       <div className="flex items-center gap-4">
         <button
           onClick={onToggleTheme}
+          data-magnetic
           className="text-black bg-[#ffe600] border-2 border-black p-2 hover:bg-[#ff007f] hover:text-white transition-all rounded-md shadow-[2px_2px_0px_#000] active:translate-x-0.5 active:translate-y-0.5 active:shadow-[0px_0px_0px_#000] cursor-pointer flex items-center justify-center z-50"
           aria-label={theme === "light" ? "Switch to dark mode" : "Switch to light mode"}
           aria-pressed={theme === "light"}
@@ -53,6 +54,7 @@ const Navbar = ({ theme = "dark", onToggleTheme }) => {
 
         <button
           type="button"
+          data-magnetic
           onClick={() => setMenuOpen((open) => !open)}
           className="md:hidden text-black bg-[#00e5ff] border-2 border-black p-2 rounded-md shadow-[2px_2px_0px_#000] active:translate-x-0.5 active:translate-y-0.5 active:shadow-[0px_0px_0px_#000] cursor-pointer flex items-center justify-center z-50"
           aria-expanded={menuOpen}

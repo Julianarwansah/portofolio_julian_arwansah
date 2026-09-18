@@ -74,6 +74,97 @@ body {
   overflow-x: clip;
 }
 
+/* Custom neo-brutalist cursor */
+.neo-cursor {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 14px;
+  height: 14px;
+  background: #ffe600;
+  border: 2px solid #000000;
+  box-shadow: 2px 2px 0px #000000;
+  pointer-events: none;
+  z-index: 9999;
+  display: none;
+  transition: width 0.18s ease, height 0.18s ease, background-color 0.18s ease, border-radius 0.18s ease;
+}
+
+body.has-custom-cursor .neo-cursor {
+  display: block;
+}
+
+body.has-custom-cursor,
+body.has-custom-cursor a,
+body.has-custom-cursor button,
+body.has-custom-cursor [role="button"],
+body.has-custom-cursor input {
+  cursor: none;
+}
+
+.neo-cursor.cursor-hot {
+  width: 40px;
+  height: 40px;
+  background: transparent;
+  border-radius: 8px;
+}
+
+.neo-cursor.cursor-down {
+  width: 10px;
+  height: 10px;
+}
+
+/* Scroll progress bar */
+.scroll-progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 4px;
+  background: #ffe600;
+  border-bottom: 2px solid #000000;
+  transform: scaleX(0);
+  transform-origin: 0 50%;
+  z-index: 100;
+  pointer-events: none;
+}
+
+/* Typewriter caret */
+.tw-caret {
+  color: #ffe600;
+  animation: tw-blink 1s steps(1) infinite;
+}
+
+@keyframes tw-blink {
+  50% {
+    opacity: 0;
+  }
+}
+
+/* Konami confetti */
+.confetti-host {
+  position: fixed;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 9998;
+}
+
+.confetti-host i {
+  position: absolute;
+  top: -24px;
+  width: 10px;
+  height: 14px;
+  border: 2px solid #000000;
+  animation: confetti-fall linear forwards;
+}
+
+@keyframes confetti-fall {
+  to {
+    transform: translateY(110vh) rotate(720deg);
+  }
+}
+
 /* Neo-Brutalist Utilities */
 .neo-border {
   border: 3px solid #000000;
@@ -295,6 +386,10 @@ body.light-mode .contact-card {
 }
 
 body.light-mode .contact-card span {
+  color: #000000 !important;
+}
+
+body.light-mode .contact-card a {
   color: #000000 !important;
 }
 

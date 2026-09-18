@@ -1,4 +1,4 @@
-import { lazy, Suspense, useState, useEffect } from "react";
+import { lazy, Suspense, useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { FiMail, FiPhone, FiMapPin } from "react-icons/fi";
 import ProfileCard from "./components/ProfileCard/ProfileCard";
@@ -10,6 +10,7 @@ import Education from "./components/Education/Education";
 import Certificates from "./components/Certificates/Certificates";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
+import CreativeCursor from "./components/CreativeCursor";
 import { usePageMeta } from "./lib/meta";
 
 const ChatRoom = lazy(() => import("./components/ChatRoom"));
@@ -52,6 +53,93 @@ function ToolMarquee({ items, duration, reverse = false }) {
   );
 }
 
+function ScrollProgress() {
+  const barRef = useRef(null);
+
+  useEffect(() => {
+    const update = () => {
+      const el = document.documentElement;
+      const max = el.scrollHeight - el.clientHeight;
+      barRef.current.style.transform = `scaleX(${max > 0 ? el.scrollTop / max : 0})`;
+    };
+    update();
+    window.addEventListener("scroll", update, { passive: true });
+    window.addEventListener("resize", update);
+    return () => {
+      window.removeEventListener("scroll", update);
+      window.removeEventListener("resize", update);
+    };
+  }, []);
+
+  return <div ref={barRef} className="scroll-progress" aria-hidden="true" />;
+}
+
+function Typewriter({ text, speed = 45 }) {
+  const [length, setLength] = useState(() =>
+    window.matchMedia("(prefers-reduced-motion: reduce)").matches ? text.length : 0
+  );
+
+  useEffect(() => {
+    if (length >= text.length) return;
+    const t = setTimeout(() => setLength((n) => n + 1), speed);
+    return () => clearTimeout(t);
+  }, [length, text, speed]);
+
+  return (
+    <>
+      {text.slice(0, length)}
+      {length < text.length && (
+        <span className="tw-caret" aria-hidden="true">
+          ▌
+        </span>
+      )}
+    </>
+  );
+}
+
+const KONAMI = ["ArrowUp", "ArrowUp", "ArrowDown", "ArrowDown", "ArrowLeft", "ArrowRight", "ArrowLeft", "ArrowRight", "b", "a"];
+
+function KonamiConfetti() {
+  const [burst, setBurst] = useState(0);
+
+  useEffect(() => {
+    let idx = 0;
+    const onKey = (e) => {
+      const key = e.key.length === 1 ? e.key.toLowerCase() : e.key;
+      idx = key === KONAMI[idx] ? idx + 1 : 0;
+      if (idx === KONAMI.length) {
+        idx = 0;
+        setBurst((n) => n + 1);
+      }
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, []);
+
+  useEffect(() => {
+    if (!burst || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    const colors = ["#ffe600", "#00e5ff", "#ff007f", "#00ff66"];
+    const host = document.createElement("div");
+    host.className = "confetti-host";
+    for (let i = 0; i < 80; i++) {
+      const piece = document.createElement("i");
+      piece.style.left = `${Math.random() * 100}vw`;
+      piece.style.background = colors[i % colors.length];
+      piece.style.animationDelay = `${Math.random() * 0.4}s`;
+      piece.style.animationDuration = `${1.6 + Math.random() * 1.2}s`;
+      host.appendChild(piece);
+    }
+    document.body.appendChild(host);
+    const t = setTimeout(() => host.remove(), 3400);
+    return () => {
+      clearTimeout(t);
+      host.remove();
+    };
+  }, [burst]);
+
+  return null;
+}
+
 // Stable references so toggling the theme does not rebuild the physics scene.
 const LANYARD_POSITION = [0, 0, 15];
 const LANYARD_GRAVITY = [0, -40, 0];
@@ -59,9 +147,9 @@ const LANYARD_GRAVITY = [0, -40, 0];
 function App() {
   const [theme, setTheme] = useState(() => {
     try {
-      return localStorage.getItem("theme") || "dark";
+      return localStorage.getItem("theme") || "light";
     } catch {
-      return "dark";
+      return "light";
     }
   });
 
@@ -80,6 +168,39 @@ function App() {
 
   const navigate = useNavigate();
 
+  const heroTextRef = useRef(null);
+  const heroCardRef = useRef(null);
+  const [copied, setCopied] = useState(false);
+
+  useEffect(() => {
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    let raf = 0;
+    const update = () => {
+      const y = window.scrollY;
+      if (heroTextRef.current) heroTextRef.current.style.transform = `translateY(${y * -0.05}px)`;
+      if (heroCardRef.current) heroCardRef.current.style.transform = `translateY(${y * -0.1}px)`;
+    };
+    const onScroll = () => {
+      cancelAnimationFrame(raf);
+      raf = requestAnimationFrame(update);
+    };
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => {
+      cancelAnimationFrame(raf);
+      window.removeEventListener("scroll", onScroll);
+    };
+  }, []);
+
+  const copyEmail = async () => {
+    try {
+      await navigator.clipboard.writeText("julianarwansahh@gmail.com");
+      setCopied(true);
+      setTimeout(() => setCopied(false), 1600);
+    } catch {
+      // Clipboard is blocked (permissions/private mode); the mailto link still works.
+    }
+  };
+
   const handleProjectClick = (project) => navigate(`/projects/${project.slug}`);
 
   usePageMeta(
@@ -89,12 +210,16 @@ function App() {
 
   return (
     <>
+      <ScrollProgress />
+      <CreativeCursor />
+      <KonamiConfetti />
       <div className="container mx-auto px-4 sm:px-6">
         <Navbar theme={theme} onToggleTheme={toggleTheme} />
         <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
         <div className="hero grid md:grid-cols-2 items-center pt-16 xl:gap-0 gap-8 grid-cols-1">
           <div className="animate-fade-in-up animate-delay-1s">
+            <div ref={heroTextRef}>
             <div className="flex flex-wrap items-center gap-3 mb-6 bg-zinc-950 w-fit max-w-full p-4 border-3 border-black neo-shadow-yellow rounded-md">
               <img
                 src={`${import.meta.env.BASE_URL}assets/cardjul.webp`}
@@ -104,7 +229,11 @@ function App() {
                 decoding="async"
                 className="w-10 h-10 border-2 border-black rounded-sm"
               />
-              <q className="font-bold text-zinc-100 text-sm sm:text-base">Building smarter solutions with IT and AI</q>
+              <q className="font-bold text-zinc-100 text-sm sm:text-base" aria-label="Building smarter solutions with IT and AI">
+                <span aria-hidden="true">
+                  <Typewriter text="Building smarter solutions with IT and AI" />
+                </span>
+              </q>
             </div>
             <h1 className="text-4xl sm:text-6xl font-black mb-6 text-white leading-none tracking-tight">
               Hi I'm <br className="sm:hidden" />
@@ -123,6 +252,7 @@ function App() {
               <a
                 href={`${import.meta.env.BASE_URL}assets/CV.pdf`}
                 download="Julian_Arwansah_CV.pdf"
+                data-magnetic
                 className="neo-btn-cyan p-4 px-6 rounded-md text-base"
               >
                 Download CV
@@ -130,14 +260,16 @@ function App() {
 
               <a 
                 href="#project" 
+                data-magnetic
                 className="neo-btn-yellow p-4 px-6 rounded-md text-base"
               >
                 Explore My Projects
               </a>
             </div>
-
+            </div>
           </div>
           <div className="md:ml-auto animate-fade-in-up animate-delay-2s">
+            <div ref={heroCardRef}>
             <ProfileCard
               name="Julian"
               handle="iyan_julian"
@@ -151,6 +283,7 @@ function App() {
                 window.location.href = "mailto:julianarwansahh@gmail.com";
               }}
             />
+            </div>
           </div>
         </div>
         {/* tentang */}
@@ -328,13 +461,22 @@ function App() {
           </p>
 
           <div className="w-full max-w-4xl grid sm:grid-cols-3 gap-4 mb-10">
-            <a
-              href="mailto:julianarwansahh@gmail.com"
-              className="contact-card flex flex-col gap-2 items-center text-center bg-zinc-950 border-3 border-black rounded-lg p-4 shadow-[4px_4px_0px_#000] hover:shadow-[6px_6px_0px_#ffe600] hover:-translate-y-1 transition-all"
-            >
+            <div className="contact-card flex flex-col gap-2 items-center text-center bg-zinc-950 border-3 border-black rounded-lg p-4 shadow-[4px_4px_0px_#000] hover:shadow-[6px_6px_0px_#ffe600] hover:-translate-y-1 transition-all">
               <FiMail size={20} className="text-[#00e5ff]" aria-hidden="true" />
-              <span className="font-bold text-white text-sm break-all">julianarwansahh@gmail.com</span>
-            </a>
+              <a
+                href="mailto:julianarwansahh@gmail.com"
+                className="font-bold text-white text-sm break-all hover:text-[#ffe600] transition-colors"
+              >
+                julianarwansahh@gmail.com
+              </a>
+              <button
+                type="button"
+                onClick={copyEmail}
+                className="text-[11px] font-mono uppercase border-2 border-black px-2 py-0.5 rounded-sm bg-[#ffe600] text-black shadow-[2px_2px_0px_#000] active:translate-y-0.5 active:shadow-none cursor-pointer"
+              >
+                {copied ? "Copied!" : "Copy"}
+              </button>
+            </div>
             <a
               href="tel:+6289661770123"
               className="contact-card flex flex-col gap-2 items-center text-center bg-zinc-950 border-3 border-black rounded-lg p-4 shadow-[4px_4px_0px_#000] hover:shadow-[6px_6px_0px_#ffe600] hover:-translate-y-1 transition-all"
