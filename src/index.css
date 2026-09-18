@@ -307,18 +307,61 @@ body.light-mode .site-footer p {
   color: #000000 !important;
 }
 
-/* Skill Grid Items in Light Mode */
-body.light-mode .tools-box > div {
+/* Tools marquee */
+.marquee {
+  overflow: hidden;
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+  mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+}
+
+.marquee-track {
+  display: flex;
+  width: max-content;
+  animation: marquee-scroll 45s linear infinite;
+}
+
+.marquee-reverse .marquee-track {
+  animation-direction: reverse;
+}
+
+.marquee:hover .marquee-track,
+.marquee:focus-within .marquee-track {
+  animation-play-state: paused;
+}
+
+@keyframes marquee-scroll {
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .marquee {
+    overflow-x: auto;
+    -webkit-mask-image: none;
+    mask-image: none;
+  }
+
+  .marquee-track {
+    animation: none;
+  }
+}
+
+/* Skill chips in Light Mode */
+body.light-mode .tool-chip {
   background-color: #ffffff !important;
-  color: #000000 !important;
   box-shadow: 4px 4px 0px #000000 !important;
 }
 
-body.light-mode .tools-box h3 {
+body.light-mode .tool-chip .tool-name {
   color: #000000 !important;
 }
 
-body.light-mode .tools-box img {
+body.light-mode .tool-chip .tool-ket {
+  color: #4b5563 !important;
+}
+
+body.light-mode .tool-chip img {
   background-color: #f3f4f6 !important;
 }
 

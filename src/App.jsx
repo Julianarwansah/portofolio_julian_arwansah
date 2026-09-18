@@ -15,6 +15,44 @@ import { usePageMeta } from "./lib/meta";
 
 const ChatRoom = lazy(() => import("./components/ChatRoom"));
 
+function ToolMarquee({ items, duration, reverse = false }) {
+  return (
+    <div
+      className={`marquee ${reverse ? "marquee-reverse" : ""}`}
+      data-aos="fade-up"
+      data-aos-duration="1000"
+      data-aos-once="true"
+    >
+      <div className="marquee-track" style={{ animationDuration: duration }}>
+        {[...items, ...items].map((tool, i) => {
+          const clone = i >= items.length;
+          return (
+            <div
+              key={`${tool.id}-${i}`}
+              aria-hidden={clone || undefined}
+              className="tool-chip flex items-center gap-3 mr-6 p-3 border-3 border-black rounded-lg bg-zinc-950 shadow-[4px_4px_0px_#000000] hover:shadow-[6px_6px_0px_#ffe600] transition-shadow duration-200 shrink-0"
+            >
+              <img
+                src={tool.gambar}
+                alt={clone ? "" : tool.nama}
+                width={48}
+                height={48}
+                loading="lazy"
+                decoding="async"
+                className="w-12 h-12 object-contain bg-zinc-900 border-2 border-black p-2 rounded-md"
+              />
+              <div className="flex flex-col">
+                <span className="tool-name font-bold text-white text-sm whitespace-nowrap">{tool.nama}</span>
+                <span className="tool-ket text-[10px] text-zinc-500 font-mono tracking-tight uppercase whitespace-nowrap mt-0.5">{tool.ket}</span>
+              </div>
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
+
 // Stable references so toggling the theme does not rebuild the physics scene.
 const LANYARD_POSITION = [0, 0, 15];
 const LANYARD_GRAVITY = [0, -40, 0];
@@ -166,32 +204,9 @@ function App() {
           <p className="text-zinc-400 font-bold max-w-lg leading-relaxed" data-aos="fade-up" data-aos-duration="1000" data-aos-delay="300" data-aos-once="true">
             My Professional Stack & Skills
           </p>
-          <div className="tools-box mt-14 grid lg:grid-cols-4 md:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-6">
-
-            {listTools.map((tool) => (
-              <div
-                key={tool.id} data-aos="fade-up" data-aos-duration="1000" data-aos-delay={tool.dad} data-aos-once="true"
-                className="flex items-center gap-4 p-4 border-3 border-black rounded-lg bg-zinc-950 shadow-[4px_4px_0px_#000000] hover:shadow-[6px_6px_0px_#ffe600] hover:-translate-x-1 hover:-translate-y-1 transition-all duration-200 group"
-              >
-                <img
-                  src={tool.gambar}
-                  alt={tool.nama}
-                  width={56}
-                  height={56}
-                  loading="lazy"
-                  decoding="async"
-                  className="w-14 h-14 object-contain bg-zinc-900 border-2 border-black p-2 rounded-md group-hover:bg-zinc-800 transition-all duration-200"
-                />
-                <div className="flex flex-col overflow-hidden min-w-0">
-                  <div className="truncate">
-                    <h3 className="text-lg font-bold text-white group-hover:text-[#ffe600] transition-colors truncate">
-                      {tool.nama}
-                    </h3>
-                  </div>
-                  <p className="text-xs text-zinc-500 font-mono tracking-tight uppercase mt-0.5 truncate">{tool.ket}</p>
-                </div>
-              </div>
-            ))}
+          <div className="tools-box mt-14 flex flex-col gap-6">
+            <ToolMarquee items={listTools.slice(0, 10)} duration="45s" />
+            <ToolMarquee items={listTools.slice(10)} duration="55s" reverse />
           </div>
         </section>
         {/* tentang */}
