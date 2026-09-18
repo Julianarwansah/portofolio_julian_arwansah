@@ -52,13 +52,13 @@ function App() {
 
   return (
     <>
-      <div className="container mx-auto px-6">
+      <div className="container mx-auto px-4 sm:px-6">
         <Navbar theme={theme} onToggleTheme={toggleTheme} />
         <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
         <div className="hero grid md:grid-cols-2 items-center pt-16 xl:gap-0 gap-8 grid-cols-1">
           <div className="animate-fade-in-up animate-delay-1s">
-            <div className="flex items-center gap-3 mb-6 bg-zinc-950 w-fit p-4 border-3 border-black neo-shadow-yellow rounded-md">
+            <div className="flex flex-wrap items-center gap-3 mb-6 bg-zinc-950 w-fit max-w-full p-4 border-3 border-black neo-shadow-yellow rounded-md">
               <img
                 src={`${import.meta.env.BASE_URL}assets/cardjul.webp`}
                 alt=""
@@ -69,7 +69,7 @@ function App() {
               />
               <q className="font-bold text-zinc-100 text-sm sm:text-base">Building smarter solutions with IT and AI</q>
             </div>
-            <h1 className="text-5xl sm:text-6xl font-black mb-6 text-white leading-none tracking-tight">
+            <h1 className="text-4xl sm:text-6xl font-black mb-6 text-white leading-none tracking-tight">
               Hi I'm <br className="sm:hidden" />
               <span className="bg-[#ffe600] text-black px-4 py-1 border-3 border-black inline-block transform -rotate-1 select-none my-2 neo-shadow-black">
                 Julian Arwansah
@@ -161,7 +161,7 @@ function App() {
             <span className="neo-badge bg-[#00ff66] text-black border-2 border-black shadow-[2px_2px_0px_#000] py-1 px-3 text-sm">
               SKILLS
             </span>
-            Tools & Technologies
+            <span>Tools & Technologies</span>
           </h2>
           <p className="text-zinc-400 font-bold max-w-lg leading-relaxed" data-aos="fade-up" data-aos-duration="1000" data-aos-delay="300" data-aos-once="true">
             My Professional Stack & Skills
@@ -182,7 +182,7 @@ function App() {
                   decoding="async"
                   className="w-14 h-14 object-contain bg-zinc-900 border-2 border-black p-2 rounded-md group-hover:bg-zinc-800 transition-all duration-200"
                 />
-                <div className="flex flex-col overflow-hidden">
+                <div className="flex flex-col overflow-hidden min-w-0">
                   <div className="truncate">
                     <h3 className="text-lg font-bold text-white group-hover:text-[#ffe600] transition-colors truncate">
                       {tool.nama}

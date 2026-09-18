@@ -68,6 +68,12 @@ body.light-mode :focus-visible {
   outline-color: #000000;
 }
 
+/* Decorative shadows/rotations must never create horizontal panning */
+html,
+body {
+  overflow-x: clip;
+}
+
 /* Neo-Brutalist Utilities */
 .neo-border {
   border: 3px solid #000000;
@@ -374,15 +380,14 @@ body.light-mode .chat-input-text {
 }
 
 /* Profile Card adjustments in Light Mode */
-body.light-mode .pc-details {
-  background-color: #00e5ff !important; /* Keep cyan or allow shifts */
+body.light-mode .pc-inside {
+  background-color: #ffffff;
+}
+
+body.light-mode .pc-avatar-content::before {
+  background: linear-gradient(to top, rgba(255, 255, 255, 0.9) 0%, rgba(255, 255, 255, 0.35) 30%, transparent 100%);
 }
 
 body.light-mode .pc-avatar-content .avatar {
-  filter: grayscale(100%) contrast(1.1) brightness(1.05);
-  transition: filter 0.3s ease, opacity 0.3s ease;
-}
-
-body.light-mode .pc-card:hover .avatar {
-  filter: grayscale(0%) contrast(1) brightness(1);
+  opacity: 1;
 }

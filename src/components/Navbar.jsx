@@ -64,7 +64,8 @@ const Navbar = ({ theme = "dark", onToggleTheme }) => {
 
         <ul
           id="primary-nav"
-          className={`flex items-center sm:gap-6 gap-2
+          className={`flex flex-wrap justify-center items-center sm:gap-6 gap-2
+            max-w-[calc(100vw-2rem)]
             md:static md:visible md:opacity-100 md:pointer-events-auto md:translate-x-0 md:top-auto
             fixed left-1/2 -translate-x-1/2
             bg-zinc-950 border-3 border-black shadow-[4px_4px_0px_#00e5ff]
