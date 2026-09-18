@@ -3,11 +3,10 @@ import "./Timeline.css";
 export default function Timeline({ items }) {
   return (
     <ol className="xp-list">
-      {items.map((item, i) => (
+      {items.map((item) => (
         <li
           key={item.id}
-          className="xp-item xp-sticky"
-          style={{ top: `calc(88px + ${i * 14}px)` }}
+          className="xp-item"
           data-aos="fade-up"
           data-aos-duration="1000"
           data-aos-once="true"

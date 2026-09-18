@@ -46,11 +46,6 @@
   padding: 1.25rem 1.5rem;
 }
 
-/* Cards pin with a growing offset so the next one stacks over the previous */
-.xp-sticky {
-  position: sticky;
-}
-
 .xp-head {
   display: flex;
   flex-wrap: wrap;
