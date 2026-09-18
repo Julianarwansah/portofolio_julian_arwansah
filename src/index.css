@@ -365,26 +365,40 @@ body.light-mode .tool-chip img {
   background-color: #f3f4f6 !important;
 }
 
-/* Project case rows in Light Mode */
-body.light-mode .case-row {
+/* Project cards: per-card spotlight glow and accent border */
+.proj-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(255, 255, 255, 0.1), transparent 70%);
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  pointer-events: none;
+  z-index: 2;
+}
+
+@media (hover: hover) {
+  .proj-card:hover::before {
+    opacity: 1;
+  }
+}
+
+.proj-card:hover,
+.proj-card:focus-visible {
+  border-color: var(--card-border);
+}
+
+/* Project cards in Light Mode */
+body.light-mode .proj-card {
   background-color: #ffffff !important;
 }
 
-body.light-mode .case-row h3 {
+body.light-mode .proj-card .proj-name {
   color: #000000 !important;
 }
 
-body.light-mode .case-desc {
-  color: #374151 !important;
-}
-
-body.light-mode .case-sub {
+body.light-mode .proj-card .proj-sub {
   color: #a16207 !important;
-}
-
-body.light-mode .case-chip {
-  background-color: #f3f4f6 !important;
-  color: #0369a1 !important;
 }
 
 /* Chat Room in Light Mode */
