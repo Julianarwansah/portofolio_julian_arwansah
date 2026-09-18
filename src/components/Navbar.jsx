@@ -36,7 +36,7 @@ const Navbar = ({ theme = "dark", onToggleTheme }) => {
           JULIAN<span className="text-[#ffe600]">.</span>
         </p>
         <span className="neo-badge text-xs px-2 py-0.5 rounded-none font-bold bg-[#00e5ff] text-black border border-black shadow-[2px_2px_0px_#000]">
-          DEV
+          AR
         </span>
       </div>
 
