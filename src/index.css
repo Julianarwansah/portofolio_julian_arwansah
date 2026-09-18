@@ -379,6 +379,23 @@ body.light-mode .chat-input-text {
   object-position: top;
 }
 
+/* About section in Light Mode */
+body.light-mode #about {
+  background-color: #ffffff !important;
+}
+
+body.light-mode #about p.text-zinc-300 {
+  color: #374151 !important;
+}
+
+body.light-mode #about .bg-zinc-900 {
+  background-color: #f3f4f6 !important;
+}
+
+body.light-mode #about .bg-zinc-900 p {
+  color: #0369a1 !important;
+}
+
 /* Profile Card adjustments in Light Mode */
 body.light-mode .pc-inside {
   background-color: #ffffff;
