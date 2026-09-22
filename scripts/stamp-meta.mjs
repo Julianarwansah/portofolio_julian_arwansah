@@ -7,7 +7,7 @@ import path from 'node:path';
 // asset imports that Node cannot resolve.
 
 const ROOT = process.cwd();
-const SITE = 'https://julianarwansah.github.io/portofolio_julian_arwansah';
+const SITE = 'https://julianarwansah.web.id';
 
 const dataSource = readFileSync(path.join(ROOT, 'src/data.js'), 'utf8')
   .replace(/^import .*$/gm, '')
