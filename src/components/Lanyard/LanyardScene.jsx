@@ -1,18 +1,28 @@
 'use client';
-import { Suspense, useEffect, useRef, useState } from 'react';
+import { Suspense, useEffect, useMemo, useRef, useState } from 'react';
 import { Canvas, extend, useFrame } from '@react-three/fiber';
 import { useGLTF } from '@react-three/drei/core/Gltf.js';
 import { useTexture } from '@react-three/drei/core/Texture.js';
 import { Environment } from '@react-three/drei/core/Environment.js';
 import { Lightformer } from '@react-three/drei/core/Lightformer.js';
-import { BallCollider, CuboidCollider, Physics, RigidBody, useRopeJoint, useSphericalJoint } from '@react-three/rapier';
 import { MeshLineGeometry, MeshLineMaterial } from 'meshline';
 import * as THREE from 'three';
 
 const cardGLB = `${import.meta.env.BASE_URL}assets/card.glb`;
 const lanyard = `${import.meta.env.BASE_URL}assets/lanyard.png`;
 
-const SEGMENT_PROPS = { type: 'dynamic', canSleep: true, colliders: false, angularDamping: 4, linearDamping: 4 };
+const ANCHOR = new THREE.Vector3(0, 4, 0);
+const SEGMENTS = 3;
+const REST_LENGTH = 1;
+const CARD_DROP = 1.5;
+// Velocity retained per second, raised to dt each frame so the sway decays at
+// the same rate on a 60 Hz and a 144 Hz display.
+const DAMPING_PER_SECOND = 0.25;
+const ITERATIONS = 12;
+const UP = new THREE.Vector3(0, 1, 0);
+const SPIN_STIFFNESS = 8;
+const SPIN_DAMPING = 3;
+const SPIN_FROM_DRAG = 4;
 
 extend({ MeshLineGeometry, MeshLineMaterial });
 
@@ -27,11 +37,9 @@ export default function LanyardScene({ active = true, position = [0, 0, 30], gra
       onCreated={({ gl }) => gl.setClearColor(new THREE.Color(0x000000), transparent ? 0 : 1)}
     >
       <ambientLight intensity={Math.PI} />
-      <Physics gravity={gravity} timeStep={1 / 60}>
-        <Suspense fallback={null}>
-          <Band />
-        </Suspense>
-      </Physics>
+      <Suspense fallback={null}>
+        <Band gravity={gravity[1]} />
+      </Suspense>
       <Environment blur={0.75}>
         <Lightformer intensity={2} color="white" position={[0, -1, 5]} rotation={[0, 0, Math.PI / 3]} scale={[100, 0.1, 1]} />
         <Lightformer intensity={3} color="white" position={[-1, -1, 1]} rotation={[0, 0, Math.PI / 3]} scale={[100, 0.1, 1]} />
@@ -42,26 +50,47 @@ export default function LanyardScene({ active = true, position = [0, 0, 30], gra
   );
 }
 
-function Band({ maxSpeed = 50, minSpeed = 0 }) {
-  const band = useRef(), fixed = useRef(), j1 = useRef(), j2 = useRef(), j3 = useRef(), card = useRef();
-  const vec = new THREE.Vector3(), ang = new THREE.Vector3(), rot = new THREE.Vector3(), dir = new THREE.Vector3();
+function Band({ gravity = -40 }) {
+  const band = useRef(), body = useRef();
+  const dragOffset = useRef(new THREE.Vector3());
+  const lastPointerX = useRef(null);
+  const spin = useRef({ yaw: 0, velocity: 0 });
+
   const { nodes, materials } = useGLTF(cardGLB);
   const texture = useTexture(lanyard);
+
+  const rope = useMemo(
+    () =>
+      Array.from({ length: SEGMENTS + 1 }, (_, i) => {
+        const pos = new THREE.Vector3(ANCHOR.x + i * 0.2, ANCHOR.y - i * REST_LENGTH, ANCHOR.z);
+        return { pos, prev: pos.clone() };
+      }),
+    []
+  );
+
+  const scratch = useMemo(
+    () => ({
+      vec: new THREE.Vector3(),
+      dir: new THREE.Vector3(),
+      target: new THREE.Vector3(),
+      up: new THREE.Vector3(),
+      align: new THREE.Quaternion(),
+      yaw: new THREE.Quaternion(),
+    }),
+    []
+  );
+
   const [curve] = useState(() => {
     const c = new THREE.CatmullRomCurve3([new THREE.Vector3(), new THREE.Vector3(), new THREE.Vector3(), new THREE.Vector3()]);
     c.curveType = 'chordal';
     return c;
   });
+
   const [dragged, drag] = useState(false);
   const [hovered, hover] = useState(false);
   const [isSmall, setIsSmall] = useState(() =>
     typeof window !== 'undefined' && window.innerWidth < 1024
   );
-
-  useRopeJoint(fixed, j1, [[0, 0, 0], [0, 0, 0], 1]);
-  useRopeJoint(j1, j2, [[0, 0, 0], [0, 0, 0], 1]);
-  useRopeJoint(j2, j3, [[0, 0, 0], [0, 0, 0], 1]);
-  useSphericalJoint(j3, card, [[0, 0, 0], [0, 1.50, 0]]);
 
   useEffect(() => {
     texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
@@ -85,59 +114,112 @@ function Band({ maxSpeed = 50, minSpeed = 0 }) {
   }, []);
 
   useFrame((state, delta) => {
+    const dt = Math.min(delta, 1 / 30);
+    const dt2 = dt * dt;
+    const damp = Math.pow(DAMPING_PER_SECOND, dt);
+    const { vec, dir, target, up, align, yaw } = scratch;
+    const tip = rope[SEGMENTS];
+
     if (dragged) {
       vec.set(state.pointer.x, state.pointer.y, 0.5).unproject(state.camera);
       dir.copy(vec).sub(state.camera.position).normalize();
-      vec.add(dir.multiplyScalar(state.camera.position.length()));
-      [card, j1, j2, j3, fixed].forEach((ref) => ref.current?.wakeUp());
-      card.current?.setNextKinematicTranslation({ x: vec.x - dragged.x, y: vec.y - dragged.y, z: vec.z - dragged.z });
+      vec.copy(state.camera.position).addScaledVector(dir, state.camera.position.length());
+      target.copy(vec).sub(dragOffset.current).addScaledVector(UP, CARD_DROP);
+
+      if (lastPointerX.current === null) {
+        lastPointerX.current = state.pointer.x;
+      } else {
+        spin.current.velocity += (state.pointer.x - lastPointerX.current) * SPIN_FROM_DRAG;
+        lastPointerX.current = state.pointer.x;
+      }
+
+      // Keep a fraction of the drag as momentum so letting go flings the strap.
+      tip.prev.lerp(target, 0.5);
+      tip.pos.copy(target);
     }
-    if (fixed.current) {
-      [j1, j2].forEach((ref) => {
-        if (!ref.current.lerped) ref.current.lerped = new THREE.Vector3().copy(ref.current.translation());
-        const clampedDistance = Math.max(0.1, Math.min(1, ref.current.lerped.distanceTo(ref.current.translation())));
-        ref.current.lerped.lerp(ref.current.translation(), delta * (minSpeed + clampedDistance * (maxSpeed - minSpeed)));
-      });
-      curve.points[0].copy(j3.current.translation());
-      curve.points[1].copy(j2.current.lerped);
-      curve.points[2].copy(j1.current.lerped);
-      curve.points[3].copy(fixed.current.translation());
-      band.current.geometry.setPoints(curve.getPoints(32));
-      ang.copy(card.current.angvel());
-      rot.copy(card.current.rotation());
-      card.current.setAngvel({ x: ang.x, y: ang.y - rot.y * 0.25, z: ang.z });
+
+    for (let i = 1; i <= SEGMENTS; i++) {
+      if (dragged && i === SEGMENTS) continue;
+      const p = rope[i];
+      const vx = (p.pos.x - p.prev.x) * damp;
+      const vy = (p.pos.y - p.prev.y) * damp;
+      const vz = (p.pos.z - p.prev.z) * damp;
+      p.prev.copy(p.pos);
+      p.pos.x += vx;
+      p.pos.y += vy + gravity * dt2;
+      p.pos.z += vz;
     }
+
+    for (let k = 0; k < ITERATIONS; k++) {
+      for (let i = 0; i < SEGMENTS; i++) {
+        const a = rope[i];
+        const b = rope[i + 1];
+        const aFree = i !== 0;
+        const bFree = !(dragged && i + 1 === SEGMENTS);
+        const weight = (aFree ? 1 : 0) + (bFree ? 1 : 0);
+        if (weight === 0) continue;
+
+        const dx = b.pos.x - a.pos.x;
+        const dy = b.pos.y - a.pos.y;
+        const dz = b.pos.z - a.pos.z;
+        const dist = Math.sqrt(dx * dx + dy * dy + dz * dz);
+        if (dist === 0) continue;
+
+        const scale = (dist - REST_LENGTH) / dist / weight;
+        if (aFree) {
+          a.pos.x += dx * scale;
+          a.pos.y += dy * scale;
+          a.pos.z += dz * scale;
+        }
+        if (bFree) {
+          b.pos.x -= dx * scale;
+          b.pos.y -= dy * scale;
+          b.pos.z -= dz * scale;
+        }
+      }
+    }
+
+    up.copy(rope[SEGMENTS - 1].pos).sub(tip.pos);
+    if (up.lengthSq() < 1e-8) up.copy(UP);
+    up.normalize();
+
+    const s = spin.current;
+    s.velocity += (-s.yaw * SPIN_STIFFNESS - s.velocity * SPIN_DAMPING) * dt;
+    s.yaw += s.velocity * dt;
+
+    body.current.position.copy(tip.pos).addScaledVector(up, -CARD_DROP);
+    align.setFromUnitVectors(UP, up);
+    yaw.setFromAxisAngle(up, s.yaw);
+    body.current.quaternion.copy(yaw.multiply(align));
+
+    curve.points[0].copy(tip.pos);
+    curve.points[1].copy(rope[SEGMENTS - 1].pos);
+    curve.points[2].copy(rope[SEGMENTS - 2].pos);
+    curve.points[3].copy(rope[0].pos);
+    band.current.geometry.setPoints(curve.getPoints(32));
   });
 
   return (
     <>
-      <group position={[0, 4, 0]}>
-        <RigidBody ref={fixed} {...SEGMENT_PROPS} type="fixed" />
-        <RigidBody position={[0.5, 0, 0]} ref={j1} {...SEGMENT_PROPS}>
-          <BallCollider args={[0.1]} />
-        </RigidBody>
-        <RigidBody position={[1, 0, 0]} ref={j2} {...SEGMENT_PROPS}>
-          <BallCollider args={[0.1]} />
-        </RigidBody>
-        <RigidBody position={[1.5, 0, 0]} ref={j3} {...SEGMENT_PROPS}>
-          <BallCollider args={[0.1]} />
-        </RigidBody>
-        <RigidBody position={[2, 0, 0]} ref={card} {...SEGMENT_PROPS} type={dragged ? 'kinematicPosition' : 'dynamic'}>
-          <CuboidCollider args={[0.8, 1.125, 0.01]} />
-          <group
-            scale={2.25}
-            position={[0, -1.2, -0.05]}
-            onPointerOver={() => hover(true)}
-            onPointerOut={() => hover(false)}
-            onPointerUp={(e) => (e.target.releasePointerCapture(e.pointerId), drag(false))}
-            onPointerDown={(e) => (e.target.setPointerCapture(e.pointerId), drag(new THREE.Vector3().copy(e.point).sub(vec.copy(card.current.translation()))))}>
-            <mesh geometry={nodes.card.geometry}>
-              <meshPhysicalMaterial map={materials.base.map} map-anisotropy={16} clearcoat={1} clearcoatRoughness={0.15} roughness={0.9} metalness={0.8} />
-            </mesh>
-            <mesh geometry={nodes.clip.geometry} material={materials.metal} material-roughness={0.3} />
-            <mesh geometry={nodes.clamp.geometry} material={materials.metal} />
-          </group>
-        </RigidBody>
+      <group ref={body} position={[0.6, -0.5, 0]}>
+        <group
+          scale={2.25}
+          position={[0, -1.2, -0.05]}
+          onPointerOver={() => hover(true)}
+          onPointerOut={() => hover(false)}
+          onPointerUp={(e) => (e.target.releasePointerCapture(e.pointerId), drag(false))}
+          onPointerDown={(e) => {
+            e.target.setPointerCapture(e.pointerId);
+            dragOffset.current.copy(e.point).sub(body.current.position);
+            lastPointerX.current = null;
+            drag(true);
+          }}>
+          <mesh geometry={nodes.card.geometry}>
+            <meshPhysicalMaterial map={materials.base.map} map-anisotropy={16} clearcoat={1} clearcoatRoughness={0.15} roughness={0.9} metalness={0.8} />
+          </mesh>
+          <mesh geometry={nodes.clip.geometry} material={materials.metal} material-roughness={0.3} />
+          <mesh geometry={nodes.clamp.geometry} material={materials.metal} />
+        </group>
       </group>
       <mesh ref={band}>
         <meshLineGeometry />

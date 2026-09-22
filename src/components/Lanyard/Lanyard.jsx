@@ -41,8 +41,8 @@ export default function Lanyard(props) {
   useEffect(() => {
     if (!enabled) return;
 
-    // The scene chunk carries the WebGL + physics runtime, so it is only
-    // fetched once the section is close to the viewport, then stays mounted.
+    // The scene chunk carries the whole WebGL runtime, so it is only fetched
+    // once the section is close to the viewport, then stays mounted.
     const observer = new IntersectionObserver(
       ([entry]) => {
         setInView(entry.isIntersecting);
