@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://julianarwansah.github.io/portofolio_julian_arwansah/sitemap.xml
+Sitemap: https://julianarwansah.web.id/sitemap.xml
