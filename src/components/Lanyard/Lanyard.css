@@ -20,6 +20,7 @@
   height: 100%;
   cursor: grab;
   touch-action: none;
+  perspective: 1000px;
 }
 
 .lanyard-fallback:active {
@@ -28,12 +29,52 @@
 
 .lanyard-sway {
   --tilt: 0deg;
+  --flip: 0deg;
   display: flex;
   flex-direction: column;
   align-items: center;
   transform-origin: top center;
-  transform: rotate(var(--tilt));
+  transform: rotate(var(--tilt)) rotateY(var(--flip));
+  transform-style: preserve-3d;
   will-change: transform;
+}
+
+.lanyard-card {
+  position: relative;
+  width: min(60%, 260px);
+  margin-top: -6px;
+  transform-style: preserve-3d;
+}
+
+.lanyard-card img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border: 3px solid #000000;
+  border-radius: 8px;
+  box-shadow: 6px 6px 0px #000000;
+  backface-visibility: hidden;
+}
+
+.lanyard-back {
+  position: absolute;
+  inset: 0;
+  transform: rotateY(180deg);
+  backface-visibility: hidden;
+  border: 3px solid #000000;
+  border-radius: 8px;
+  box-shadow: 6px 6px 0px #000000;
+  background-color: #17171d;
+  background-image:
+    linear-gradient(#000000 0 0),
+    repeating-linear-gradient(0deg, rgba(255, 255, 255, 0.08) 0 2px, transparent 2px 16px);
+  background-size:
+    100% 34px,
+    70% 56%;
+  background-position:
+    0 16%,
+    50% 80%;
+  background-repeat: no-repeat;
 }
 
 .lanyard-strap {
@@ -41,15 +82,6 @@
   height: 32vh;
   background: #101014;
   border-radius: 6px;
-}
-
-.lanyard-fallback img {
-  width: min(60%, 260px);
-  height: auto;
-  margin-top: -6px;
-  border: 3px solid #000000;
-  border-radius: 8px;
-  box-shadow: 6px 6px 0px #000000;
 }
 
 .lanyard-perf {

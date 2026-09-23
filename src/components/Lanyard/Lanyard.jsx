@@ -30,6 +30,10 @@ const DRAG_DAMPING = 16;
 const PENDULUM_OMEGA_SQ = 15.4;
 const PENDULUM_DAMPING = 0.5;
 const DEG = Math.PI / 180;
+// Autonomous showcase acts for the no-WebGL card: a swing kick, a flip that
+// reveals the card back, or a toss, scheduled while it idles.
+const FLIP_MS = 1400;
+const ACT_GAP_MS = [6000, 11000];
 
 function tiltBetween(x, y, pivot) {
   if (!pivot) return 0;
@@ -44,7 +48,17 @@ function CardFallback() {
   useEffect(() => {
     const el = swayRef.current;
     const reduce = window.matchMedia('(prefers-reduced-motion: reduce)');
-    const s = (sim.current = { angle: 0, velocity: 0, target: 0, dragging: false, free: false, pivot: null, epoch: performance.now() });
+    const s = (sim.current = {
+      angle: 0,
+      velocity: 0,
+      target: 0,
+      dragging: false,
+      free: false,
+      pivot: null,
+      flipStart: null,
+      nextAct: performance.now() + 3000,
+      epoch: performance.now(),
+    });
 
     // One integrator drives three modes: idle sway, pointer follow while
     // pressed, and a free pendulum after release so a fling keeps swinging.
@@ -68,9 +82,24 @@ function CardFallback() {
         s.target = Math.sin(((now - s.epoch) / IDLE_PERIOD_MS) * Math.PI * 2) * IDLE_AMPLITUDE;
         s.velocity += ((s.target - s.angle) * IDLE_STIFFNESS - s.velocity * IDLE_DAMPING) * dt;
         s.angle += s.velocity * dt;
+        if (now > s.nextAct) {
+          s.nextAct = now + ACT_GAP_MS[0] + Math.random() * (ACT_GAP_MS[1] - ACT_GAP_MS[0]);
+          const sign = Math.random() < 0.5 ? -1 : 1;
+          const act = Math.floor(Math.random() * 3);
+          if (act === 0) s.velocity += 150 * sign;
+          else if (act === 1) s.flipStart = now;
+          else s.velocity += 110 * sign;
+        }
+      }
+      let flip = 0;
+      if (s.flipStart !== null && !reduce.matches) {
+        const p = (now - s.flipStart) / FLIP_MS;
+        if (p >= 1) s.flipStart = null;
+        else flip = (0.5 - Math.cos(p * Math.PI) / 2) * 360;
       }
       s.angle = Math.max(-FREE_TILT, Math.min(FREE_TILT, s.angle));
       el.style.setProperty('--tilt', `${s.angle}deg`);
+      el.style.setProperty('--flip', `${flip}deg`);
       frame = requestAnimationFrame(tick);
     };
     frame = requestAnimationFrame(tick);
@@ -113,13 +142,16 @@ function CardFallback() {
     >
       <div className="lanyard-sway" ref={swayRef}>
         <div className="lanyard-strap" aria-hidden="true" />
-        <img
-          src={CARD_FALLBACK}
-          alt="Julian Arwansah's lanyard card"
-          width={500}
-          height={500}
-          decoding="async"
-        />
+        <div className="lanyard-card">
+          <img
+            src={CARD_FALLBACK}
+            alt="Julian Arwansah's lanyard card"
+            width={500}
+            height={500}
+            decoding="async"
+          />
+          <div className="lanyard-back" aria-hidden="true" />
+        </div>
       </div>
     </div>
   );

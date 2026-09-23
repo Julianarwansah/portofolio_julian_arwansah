@@ -14,6 +14,14 @@ const lanyard = `${import.meta.env.BASE_URL}assets/lanyard.png`;
 
 const SEGMENT_PROPS = { type: 'dynamic', canSleep: true, colliders: false, angularDamping: 2, linearDamping: 2 };
 
+// Autonomous showcase: every so often the card swings, flips over or gets
+// tossed as if an invisible hand played with it, so the lanyard reads as a
+// real ID card even when nobody touches it.
+const ACT_GAP = [6, 11];
+const SWING_IMPULSE = 0.09;
+const FLIP_TORQUE = 0.3;
+const TOSS_IMPULSE = 0.06;
+
 extend({ MeshLineGeometry, MeshLineMaterial });
 
 export default function LanyardScene({ active = true, position = [0, 0, 30], gravity = [0, -40, 0], fov = 20, transparent = true }) {
@@ -44,6 +52,7 @@ export default function LanyardScene({ active = true, position = [0, 0, 30], gra
 
 function Band({ maxSpeed = 50, minSpeed = 0 }) {
   const band = useRef(), fixed = useRef(), j1 = useRef(), j2 = useRef(), j3 = useRef(), card = useRef();
+  const nextAct = useRef(5);
   const vec = new THREE.Vector3(), ang = new THREE.Vector3(), rot = new THREE.Vector3(), dir = new THREE.Vector3();
   const { nodes, materials } = useGLTF(cardGLB);
   const texture = useTexture(lanyard);
@@ -103,6 +112,19 @@ function Band({ maxSpeed = 50, minSpeed = 0 }) {
           y: 0,
           z: Math.cos(t * 0.8) * 0.08,
         });
+        if (t > nextAct.current) {
+          nextAct.current = t + ACT_GAP[0] + Math.random() * (ACT_GAP[1] - ACT_GAP[0]);
+          const sign = Math.random() < 0.5 ? -1 : 1;
+          const act = Math.floor(Math.random() * 3);
+          if (act === 0) {
+            card.current.applyImpulse({ x: SWING_IMPULSE * sign, y: 0, z: SWING_IMPULSE * 0.25 }, true);
+          } else if (act === 1) {
+            card.current.applyTorqueImpulse({ x: 0, y: FLIP_TORQUE * sign, z: 0 }, true);
+          } else {
+            card.current.applyImpulse({ x: SWING_IMPULSE * 0.4 * sign, y: TOSS_IMPULSE, z: 0 }, true);
+            card.current.applyTorqueImpulse({ x: FLIP_TORQUE * 0.35 * -sign, y: 0, z: 0 }, true);
+          }
+        }
       }
       [j1, j2].forEach((ref) => {
         if (!ref.current.lerped) ref.current.lerped = new THREE.Vector3().copy(ref.current.translation());
