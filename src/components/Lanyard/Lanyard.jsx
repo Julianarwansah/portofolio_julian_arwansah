@@ -7,8 +7,6 @@ const CARD_FALLBACK = `${import.meta.env.BASE_URL}assets/cardjul.webp`;
 
 function canRun3D() {
   if (typeof window === 'undefined') return false;
-  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return false;
-  if (navigator.connection?.saveData) return false;
 
   try {
     const probe = document.createElement('canvas');
@@ -21,13 +19,16 @@ function canRun3D() {
 function CardFallback() {
   return (
     <div className="lanyard-fallback">
-      <img
-        src={CARD_FALLBACK}
-        alt="Julian Arwansah's lanyard card"
-        width={500}
-        height={500}
-        decoding="async"
-      />
+      <div className="lanyard-sway">
+        <div className="lanyard-strap" aria-hidden="true" />
+        <img
+          src={CARD_FALLBACK}
+          alt="Julian Arwansah's lanyard card"
+          width={500}
+          height={500}
+          decoding="async"
+        />
+      </div>
     </div>
   );
 }
