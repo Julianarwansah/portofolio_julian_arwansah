@@ -1,4 +1,5 @@
 import { lazy, Suspense, useEffect, useRef, useState } from 'react';
+import { createPortal } from 'react-dom';
 import './Lanyard.css';
 
 const LanyardScene = lazy(() => import('./LanyardScene'));
@@ -124,12 +125,39 @@ function CardFallback() {
   );
 }
 
+function PerfBadge() {
+  const [text, setText] = useState('measuring…');
+
+  useEffect(() => {
+    const probe = document.createElement('canvas');
+    const ctx = probe.getContext('webgl');
+    const dbg = ctx?.getExtension('WEBGL_debug_renderer_info');
+    const gpu = dbg ? ctx.getParameter(dbg.UNMASKED_RENDERER_WEBGL) : 'no-webgl';
+    let frames = 0;
+    let last = performance.now();
+    let raf = 0;
+    const loop = (t) => {
+      frames += 1;
+      if (t - last >= 500) {
+        setText(`${Math.round((frames * 1000) / (t - last))} fps · ${gpu}`);
+        frames = 0;
+        last = t;
+      }
+      raf = requestAnimationFrame(loop);
+    };
+    raf = requestAnimationFrame(loop);
+    return () => cancelAnimationFrame(raf);
+  }, []);
+
+  return createPortal(<div className="lanyard-perf">{text}</div>, document.body);
+}
+
 export default function Lanyard(props) {
   const [enabled] = useState(canRun3D);
   const [inView, setInView] = useState(false);
   const [loadScene, setLoadScene] = useState(false);
   const wrapperRef = useRef(null);
-
+  const [showPerf] = useState(() => new URLSearchParams(window.location.search).has('perf'));
   useEffect(() => {
     if (!enabled) return;
 
@@ -149,6 +177,7 @@ export default function Lanyard(props) {
 
   return (
     <div className="lanyard-wrapper" ref={wrapperRef}>
+      {showPerf && <PerfBadge />}
       {enabled && loadScene ? (
         <Suspense fallback={<CardFallback />}>
           <LanyardScene {...props} active={inView} />

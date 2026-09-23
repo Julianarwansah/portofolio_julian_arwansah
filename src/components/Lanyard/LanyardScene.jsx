@@ -20,14 +20,14 @@ export default function LanyardScene({ active = true, position = [0, 0, 30], gra
   return (
     <Canvas
       camera={{ position: position, fov: fov }}
-      gl={{ alpha: transparent, powerPreference: 'high-performance' }}
-      dpr={[1, 1.75]}
+      gl={{ alpha: transparent, powerPreference: 'high-performance', antialias: false }}
+      dpr={[1, 1.5]}
       frameloop={active ? 'always' : 'never'}
       performance={{ min: 0.5 }}
       onCreated={({ gl }) => gl.setClearColor(new THREE.Color(0x000000), transparent ? 0 : 1)}
     >
       <ambientLight intensity={Math.PI} />
-      <Physics gravity={gravity} timeStep={1 / 60}>
+      <Physics gravity={gravity} timeStep="vary">
         <Suspense fallback={null}>
           <Band />
         </Suspense>
