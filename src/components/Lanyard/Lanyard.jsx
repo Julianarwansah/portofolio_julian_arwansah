@@ -16,11 +16,19 @@ function canRun3D() {
   }
 }
 
-const MAX_TILT = 20;
+const MAX_TILT = 24;
+const FREE_TILT = 32;
 const IDLE_AMPLITUDE = 2.2;
 const IDLE_PERIOD_MS = 5200;
-const SPRING_STIFFNESS = 90;
-const SPRING_DAMPING = 9;
+const IDLE_STIFFNESS = 40;
+const IDLE_DAMPING = 6;
+const DRAG_STIFFNESS = 160;
+const DRAG_DAMPING = 16;
+// Pendulum used once the card is let go: omega^2 of a ~1.6 s period plus light
+// damping, so a fling keeps swinging instead of snapping back to centre.
+const PENDULUM_OMEGA_SQ = 15.4;
+const PENDULUM_DAMPING = 0.5;
+const DEG = Math.PI / 180;
 
 function tiltBetween(x, y, pivot) {
   if (!pivot) return 0;
@@ -35,26 +43,32 @@ function CardFallback() {
   useEffect(() => {
     const el = swayRef.current;
     const reduce = window.matchMedia('(prefers-reduced-motion: reduce)');
-    const s = (sim.current = { angle: 0, velocity: 0, target: 0, dragging: false, epoch: performance.now() });
+    const s = (sim.current = { angle: 0, velocity: 0, target: 0, dragging: false, free: false, pivot: null, epoch: performance.now() });
 
-    // One continuous spring integrator drives idle sway, drag follow and the
-    // release swing; keyframed CSS eased to a stop at every keypoint and read
-    // as stutter.
+    // One integrator drives three modes: idle sway, pointer follow while
+    // pressed, and a free pendulum after release so a fling keeps swinging.
     let frame = 0;
     let last = performance.now();
     const tick = (now) => {
       const dt = Math.min((now - last) / 1000, 1 / 30);
       last = now;
-      if (!s.dragging && !reduce.matches) {
-        s.target = Math.sin(((now - s.epoch) / IDLE_PERIOD_MS) * Math.PI * 2) * IDLE_AMPLITUDE;
-      }
-      if (reduce.matches && !s.dragging) {
-        s.angle = s.target;
+      if (reduce.matches) {
+        s.angle = s.dragging ? s.target : 0;
         s.velocity = 0;
+      } else if (s.dragging) {
+        s.velocity += ((s.target - s.angle) * DRAG_STIFFNESS - s.velocity * DRAG_DAMPING) * dt;
+        s.angle += s.velocity * dt;
+      } else if (s.free) {
+        const accel = (-PENDULUM_OMEGA_SQ * Math.sin(s.angle * DEG)) / DEG - s.velocity * PENDULUM_DAMPING;
+        s.velocity += accel * dt;
+        s.angle += s.velocity * dt;
+        if (Math.abs(s.angle) < 1 && Math.abs(s.velocity) < 8) s.free = false;
       } else {
-        s.velocity += ((s.target - s.angle) * SPRING_STIFFNESS - s.velocity * SPRING_DAMPING) * dt;
+        s.target = Math.sin(((now - s.epoch) / IDLE_PERIOD_MS) * Math.PI * 2) * IDLE_AMPLITUDE;
+        s.velocity += ((s.target - s.angle) * IDLE_STIFFNESS - s.velocity * IDLE_DAMPING) * dt;
         s.angle += s.velocity * dt;
       }
+      s.angle = Math.max(-FREE_TILT, Math.min(FREE_TILT, s.angle));
       el.style.setProperty('--tilt', `${s.angle}deg`);
       frame = requestAnimationFrame(tick);
     };
@@ -65,7 +79,9 @@ function CardFallback() {
       s.target = tiltBetween(e.clientX, e.clientY, s.pivot);
     };
     const release = () => {
+      if (!s.dragging) return;
       s.dragging = false;
+      s.free = Math.abs(s.velocity) > 20 || Math.abs(s.angle) > 3;
       el.classList.remove('is-dragging');
     };
 
@@ -81,20 +97,20 @@ function CardFallback() {
   }, []);
 
   return (
-    <div className="lanyard-fallback">
-      <div
-        className="lanyard-sway"
-        ref={swayRef}
-        onPointerDown={(e) => {
-          const sim2 = sim.current;
-          if (!sim2) return;
-          const rect = e.currentTarget.getBoundingClientRect();
-          sim2.pivot = { x: rect.left + rect.width / 2, y: rect.top };
-          sim2.dragging = true;
-          sim2.target = tiltBetween(e.clientX, e.clientY, sim2.pivot);
-          e.currentTarget.classList.add('is-dragging');
-        }}
-      >
+    <div
+      className="lanyard-fallback"
+      onPointerDown={(e) => {
+        const state = sim.current;
+        const sway = swayRef.current;
+        if (!state || !sway) return;
+        const rect = sway.getBoundingClientRect();
+        state.pivot = { x: rect.left + rect.width / 2, y: rect.top };
+        state.dragging = true;
+        state.free = false;
+        state.target = tiltBetween(e.clientX, e.clientY, state.pivot);
+      }}
+    >
+      <div className="lanyard-sway" ref={swayRef}>
         <div className="lanyard-strap" aria-hidden="true" />
         <img
           src={CARD_FALLBACK}

@@ -18,6 +18,12 @@
   justify-content: center;
   width: 100%;
   height: 100%;
+  cursor: grab;
+  touch-action: none;
+}
+
+.lanyard-fallback:active {
+  cursor: grabbing;
 }
 
 .lanyard-sway {
@@ -27,13 +33,7 @@
   align-items: center;
   transform-origin: top center;
   transform: rotate(var(--tilt));
-  touch-action: none;
-  cursor: grab;
   will-change: transform;
-}
-
-.lanyard-sway.is-dragging {
-  cursor: grabbing;
 }
 
 .lanyard-strap {
