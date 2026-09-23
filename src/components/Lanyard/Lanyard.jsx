@@ -16,10 +16,59 @@ function canRun3D() {
   }
 }
 
+const MAX_TILT = 20;
+
+function tiltBetween(x, y, pivot) {
+  if (!pivot) return 0;
+  const deg = (Math.atan2(x - pivot.x, Math.max(y - pivot.y, 1)) * 180) / Math.PI;
+  return Math.max(-MAX_TILT, Math.min(MAX_TILT, -deg));
+}
+
 function CardFallback() {
+  const swayRef = useRef(null);
+  const pivot = useRef(null);
+
+  useEffect(() => {
+    const move = (e) => {
+      const el = swayRef.current;
+      if (!el?.classList.contains('is-dragging')) return;
+      el.style.setProperty('--tilt', `${tiltBetween(e.clientX, e.clientY, pivot.current)}deg`);
+    };
+    const release = () => {
+      const el = swayRef.current;
+      if (!el?.classList.contains('is-dragging')) return;
+      el.classList.remove('is-dragging');
+      el.classList.add('is-settling');
+    };
+
+    window.addEventListener('pointermove', move);
+    window.addEventListener('pointerup', release);
+    window.addEventListener('pointercancel', release);
+    return () => {
+      window.removeEventListener('pointermove', move);
+      window.removeEventListener('pointerup', release);
+      window.removeEventListener('pointercancel', release);
+    };
+  }, []);
+
   return (
     <div className="lanyard-fallback">
-      <div className="lanyard-sway">
+      <div
+        className="lanyard-sway"
+        ref={swayRef}
+        onPointerDown={(e) => {
+          const rect = e.currentTarget.getBoundingClientRect();
+          pivot.current = { x: rect.left + rect.width / 2, y: rect.top };
+          e.currentTarget.classList.remove('is-settling');
+          e.currentTarget.classList.add('is-dragging');
+          e.currentTarget.style.setProperty('--tilt', `${tiltBetween(e.clientX, e.clientY, pivot.current)}deg`);
+        }}
+        onAnimationEnd={(e) => {
+          if (e.animationName !== 'lanyard-settle') return;
+          e.currentTarget.classList.remove('is-settling');
+          e.currentTarget.style.removeProperty('--tilt');
+        }}
+      >
         <div className="lanyard-strap" aria-hidden="true" />
         <img
           src={CARD_FALLBACK}

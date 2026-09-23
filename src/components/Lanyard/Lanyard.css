@@ -21,11 +21,28 @@
 }
 
 .lanyard-sway {
+  --tilt: 0deg;
   display: flex;
   flex-direction: column;
   align-items: center;
   transform-origin: top center;
+  transform: rotate(var(--tilt));
+  touch-action: none;
+  cursor: grab;
   animation: lanyard-sway 7s ease-in-out infinite;
+}
+
+.lanyard-sway.is-dragging,
+.lanyard-sway.is-settling {
+  animation: none;
+}
+
+.lanyard-sway.is-dragging {
+  cursor: grabbing;
+}
+
+.lanyard-sway.is-settling {
+  animation: lanyard-settle 1.2s ease-out forwards;
 }
 
 .lanyard-strap {
@@ -47,15 +64,37 @@
 @keyframes lanyard-sway {
   0%,
   100% {
+    transform: rotate(0deg);
+  }
+  25% {
     transform: rotate(2.5deg);
   }
-  50% {
+  75% {
     transform: rotate(-2.5deg);
+  }
+}
+
+@keyframes lanyard-settle {
+  0% {
+    transform: rotate(var(--tilt));
+  }
+  45% {
+    transform: rotate(calc(var(--tilt) * -0.35));
+  }
+  75% {
+    transform: rotate(calc(var(--tilt) * 0.12));
+  }
+  100% {
+    transform: rotate(0deg);
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
   .lanyard-sway {
     animation: none;
+  }
+
+  .lanyard-sway.is-settling {
+    animation-duration: 0.01s;
   }
 }
