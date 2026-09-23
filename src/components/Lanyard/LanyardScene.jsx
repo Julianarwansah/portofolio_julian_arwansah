@@ -20,8 +20,8 @@ export default function LanyardScene({ active = true, position = [0, 0, 30], gra
   return (
     <Canvas
       camera={{ position: position, fov: fov }}
-      gl={{ alpha: transparent }}
-      dpr={[1, 1.75]}
+      gl={{ alpha: transparent, powerPreference: 'high-performance' }}
+      dpr={[1, 1.25]}
       frameloop={active ? 'always' : 'never'}
       performance={{ min: 0.5 }}
       onCreated={({ gl }) => gl.setClearColor(new THREE.Color(0x000000), transparent ? 0 : 1)}

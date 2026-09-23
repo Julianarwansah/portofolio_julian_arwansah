@@ -17,6 +17,10 @@ function canRun3D() {
 }
 
 const MAX_TILT = 20;
+const IDLE_AMPLITUDE = 2.2;
+const IDLE_PERIOD_MS = 5200;
+const SPRING_STIFFNESS = 90;
+const SPRING_DAMPING = 9;
 
 function tiltBetween(x, y, pivot) {
   if (!pivot) return 0;
@@ -26,25 +30,50 @@ function tiltBetween(x, y, pivot) {
 
 function CardFallback() {
   const swayRef = useRef(null);
-  const pivot = useRef(null);
+  const sim = useRef(null);
 
   useEffect(() => {
+    const el = swayRef.current;
+    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)');
+    const s = (sim.current = { angle: 0, velocity: 0, target: 0, dragging: false, epoch: performance.now() });
+
+    // One continuous spring integrator drives idle sway, drag follow and the
+    // release swing; keyframed CSS eased to a stop at every keypoint and read
+    // as stutter.
+    let frame = 0;
+    let last = performance.now();
+    const tick = (now) => {
+      const dt = Math.min((now - last) / 1000, 1 / 30);
+      last = now;
+      if (!s.dragging && !reduce.matches) {
+        s.target = Math.sin(((now - s.epoch) / IDLE_PERIOD_MS) * Math.PI * 2) * IDLE_AMPLITUDE;
+      }
+      if (reduce.matches && !s.dragging) {
+        s.angle = s.target;
+        s.velocity = 0;
+      } else {
+        s.velocity += ((s.target - s.angle) * SPRING_STIFFNESS - s.velocity * SPRING_DAMPING) * dt;
+        s.angle += s.velocity * dt;
+      }
+      el.style.setProperty('--tilt', `${s.angle}deg`);
+      frame = requestAnimationFrame(tick);
+    };
+    frame = requestAnimationFrame(tick);
+
     const move = (e) => {
-      const el = swayRef.current;
-      if (!el?.classList.contains('is-dragging')) return;
-      el.style.setProperty('--tilt', `${tiltBetween(e.clientX, e.clientY, pivot.current)}deg`);
+      if (!s.dragging) return;
+      s.target = tiltBetween(e.clientX, e.clientY, s.pivot);
     };
     const release = () => {
-      const el = swayRef.current;
-      if (!el?.classList.contains('is-dragging')) return;
+      s.dragging = false;
       el.classList.remove('is-dragging');
-      el.classList.add('is-settling');
     };
 
     window.addEventListener('pointermove', move);
     window.addEventListener('pointerup', release);
     window.addEventListener('pointercancel', release);
     return () => {
+      cancelAnimationFrame(frame);
       window.removeEventListener('pointermove', move);
       window.removeEventListener('pointerup', release);
       window.removeEventListener('pointercancel', release);
@@ -57,16 +86,13 @@ function CardFallback() {
         className="lanyard-sway"
         ref={swayRef}
         onPointerDown={(e) => {
+          const sim2 = sim.current;
+          if (!sim2) return;
           const rect = e.currentTarget.getBoundingClientRect();
-          pivot.current = { x: rect.left + rect.width / 2, y: rect.top };
-          e.currentTarget.classList.remove('is-settling');
+          sim2.pivot = { x: rect.left + rect.width / 2, y: rect.top };
+          sim2.dragging = true;
+          sim2.target = tiltBetween(e.clientX, e.clientY, sim2.pivot);
           e.currentTarget.classList.add('is-dragging');
-          e.currentTarget.style.setProperty('--tilt', `${tiltBetween(e.clientX, e.clientY, pivot.current)}deg`);
-        }}
-        onAnimationEnd={(e) => {
-          if (e.animationName !== 'lanyard-settle') return;
-          e.currentTarget.classList.remove('is-settling');
-          e.currentTarget.style.removeProperty('--tilt');
         }}
       >
         <div className="lanyard-strap" aria-hidden="true" />
