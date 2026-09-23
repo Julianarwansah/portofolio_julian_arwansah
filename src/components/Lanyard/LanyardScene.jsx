@@ -12,7 +12,7 @@ import * as THREE from 'three';
 const cardGLB = `${import.meta.env.BASE_URL}assets/card.glb`;
 const lanyard = `${import.meta.env.BASE_URL}assets/lanyard.png`;
 
-const SEGMENT_PROPS = { type: 'dynamic', canSleep: true, colliders: false, angularDamping: 4, linearDamping: 4 };
+const SEGMENT_PROPS = { type: 'dynamic', canSleep: true, colliders: false, angularDamping: 2, linearDamping: 2 };
 
 extend({ MeshLineGeometry, MeshLineMaterial });
 
@@ -21,7 +21,7 @@ export default function LanyardScene({ active = true, position = [0, 0, 30], gra
     <Canvas
       camera={{ position: position, fov: fov }}
       gl={{ alpha: transparent, powerPreference: 'high-performance' }}
-      dpr={[1, 1.25]}
+      dpr={[1, 1.75]}
       frameloop={active ? 'always' : 'never'}
       performance={{ min: 0.5 }}
       onCreated={({ gl }) => gl.setClearColor(new THREE.Color(0x000000), transparent ? 0 : 1)}
@@ -93,6 +93,17 @@ function Band({ maxSpeed = 50, minSpeed = 0 }) {
       card.current?.setNextKinematicTranslation({ x: vec.x - dragged.x, y: vec.y - dragged.y, z: vec.z - dragged.z });
     }
     if (fixed.current) {
+      if (!dragged) {
+        // A faint two-frequency breeze keeps the strap alive instead of
+        // letting the solver put every body to sleep in a dead hang.
+        const t = state.clock.elapsedTime;
+        card.current.wakeUp();
+        card.current.applyForce({
+          x: Math.sin(t * 0.6) * 0.14 + Math.sin(t * 1.9) * 0.05,
+          y: 0,
+          z: Math.cos(t * 0.8) * 0.08,
+        });
+      }
       [j1, j2].forEach((ref) => {
         if (!ref.current.lerped) ref.current.lerped = new THREE.Vector3().copy(ref.current.translation());
         const clampedDistance = Math.max(0.1, Math.min(1, ref.current.lerped.distanceTo(ref.current.translation())));
@@ -102,7 +113,7 @@ function Band({ maxSpeed = 50, minSpeed = 0 }) {
       curve.points[1].copy(j2.current.lerped);
       curve.points[2].copy(j1.current.lerped);
       curve.points[3].copy(fixed.current.translation());
-      band.current.geometry.setPoints(curve.getPoints(32));
+      band.current.geometry.setPoints(curve.getPoints(48));
       ang.copy(card.current.angvel());
       rot.copy(card.current.rotation());
       card.current.setAngvel({ x: ang.x, y: ang.y - rot.y * 0.25, z: ang.z });
