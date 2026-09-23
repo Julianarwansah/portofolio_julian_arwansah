@@ -1,4 +1,4 @@
-import { lazy, Suspense, useEffect, useRef, useState } from 'react';
+import { Component, lazy, Suspense, useEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 import './Lanyard.css';
 
@@ -184,6 +184,21 @@ function PerfBadge() {
   return createPortal(<div className="lanyard-perf">{text}</div>, document.body);
 }
 
+class SceneErrorBoundary extends Component {
+  constructor(props) {
+    super(props);
+    this.state = { failed: false };
+  }
+
+  static getDerivedStateFromError() {
+    return { failed: true };
+  }
+
+  render() {
+    return this.state.failed ? <CardFallback /> : this.props.children;
+  }
+}
+
 export default function Lanyard(props) {
   const [enabled] = useState(canRun3D);
   const [inView, setInView] = useState(false);
@@ -212,7 +227,9 @@ export default function Lanyard(props) {
       {showPerf && <PerfBadge />}
       {enabled && loadScene ? (
         <Suspense fallback={<CardFallback />}>
-          <LanyardScene {...props} active={inView} />
+          <SceneErrorBoundary>
+            <LanyardScene {...props} active={inView} />
+          </SceneErrorBoundary>
         </Suspense>
       ) : (
         <CardFallback />

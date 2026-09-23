@@ -21,6 +21,7 @@
   cursor: grab;
   touch-action: none;
   perspective: 1000px;
+  -webkit-perspective: 1000px;
 }
 
 .lanyard-fallback:active {
@@ -36,6 +37,7 @@
   transform-origin: top center;
   transform: rotate(var(--tilt)) rotateY(var(--flip));
   transform-style: preserve-3d;
+  -webkit-transform-style: preserve-3d;
   will-change: transform;
 }
 
@@ -44,6 +46,7 @@
   width: min(60%, 260px);
   margin-top: -6px;
   transform-style: preserve-3d;
+  -webkit-transform-style: preserve-3d;
 }
 
 .lanyard-card img {
@@ -54,6 +57,7 @@
   border-radius: 8px;
   box-shadow: 6px 6px 0px #000000;
   backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
 }
 
 .lanyard-back {
@@ -61,6 +65,7 @@
   inset: 0;
   transform: rotateY(180deg);
   backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
   border: 3px solid #000000;
   border-radius: 8px;
   box-shadow: 6px 6px 0px #000000;
