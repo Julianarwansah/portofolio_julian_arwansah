@@ -40,6 +40,10 @@ for (const project of listProyek) {
   html = html.replace(/(<meta\s+property="og:title"\s+content=")[^"]*(")/, `$1${title}$2`);
   html = html.replace(/(<meta\s+property="og:description"\s+content=")[^"]*(")/, `$1${description}$2`);
   html = html.replace(/(<meta\s+property="og:url"\s+content=")[^"]*(")/, `$1${url}$2`);
+  // public/ is copied verbatim, so the screenshot keeps a stable public URL.
+  const image = `${SITE}/assets/proyek/proyek${project.id}.webp`;
+  html = html.replace(/(<meta\s+property="og:image"\s+content=")[^"]*(")/, `$1${image}$2`);
+  html = html.replace(/(<meta\s+name="twitter:image"\s+content=")[^"]*(")/, `$1${image}$2`);
   html = html.replace(/(<meta\s+name="twitter:title"\s+content=")[^"]*(")/, `$1${title}$2`);
   html = html.replace(/(<meta\s+name="twitter:description"\s+content=")[^"]*(")/, `$1${description}$2`);
   html = html.replace(/(<link\s+rel="canonical"\s+href=")[^"]*(")/, `$1${url}$2`);
@@ -51,6 +55,7 @@ for (const project of listProyek) {
       name: project.title,
       description: project.fullDescription,
       url,
+      image,
       applicationCategory: 'DeveloperApplication',
     })}</script>`
   );
@@ -82,6 +87,7 @@ pruneDir('dist/assets/tools');
 for (const relative of [
   'dist/assets/cardjul.png',
   'dist/assets/ftjul.png',
+  'dist/assets/lanyard.png',
   'dist/assets/favicon.ico',
   'dist/assets/faris.png',
   'dist/assets/faris1.png',

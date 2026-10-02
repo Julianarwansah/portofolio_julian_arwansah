@@ -1,14 +1,27 @@
 import Dock from "./Dock/Dock";
+import { useLocation, useNavigate } from "react-router-dom";
 import { VscHome, VscArchive, VscAccount } from "react-icons/vsc";
 import { RiGithubFill, RiInstagramFill } from "react-icons/ri";
 import { FiMail, FiPhone } from "react-icons/fi";
 import { scrollToId } from "../lib/scroll";
 
 const Footer = () => {
+  const navigate = useNavigate();
+  const { pathname } = useLocation();
+
+  // The dock targets home page sections, which are not mounted on a project page.
+  const go = (id) => {
+    if (pathname === "/") {
+      scrollToId(id);
+      return;
+    }
+    navigate("/", { state: { scrollTo: id } });
+  };
+
   const items = [
-    { icon: <VscHome size={18} />, label: "Home", onClick: () => scrollToId("home") },
-    { icon: <VscAccount size={18} />, label: "About Me", onClick: () => scrollToId("about") },
-    { icon: <VscArchive size={18} />, label: "Project", onClick: () => scrollToId("project") },
+    { icon: <VscHome size={18} />, label: "Home", onClick: () => go("home") },
+    { icon: <VscAccount size={18} />, label: "About Me", onClick: () => go("about") },
+    { icon: <VscArchive size={18} />, label: "Project", onClick: () => go("project") },
   ];
 
   return (

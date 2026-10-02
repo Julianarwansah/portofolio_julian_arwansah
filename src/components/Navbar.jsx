@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { FiSun, FiMoon, FiMenu, FiX } from "react-icons/fi";
 import { scrollToId } from "../lib/scroll";
 
@@ -12,6 +13,8 @@ const LINKS = [
 
 const Navbar = ({ theme = "dark", onToggleTheme }) => {
   const [menuOpen, setMenuOpen] = useState(false);
+  const navigate = useNavigate();
+  const { pathname } = useLocation();
 
   useEffect(() => {
     if (!menuOpen) return;
@@ -23,22 +26,28 @@ const Navbar = ({ theme = "dark", onToggleTheme }) => {
     return () => window.removeEventListener("keydown", handleKey);
   }, [menuOpen]);
 
+  // Section anchors only exist on the home page, so from anywhere else we go
+  // home first and let App scroll to the requested section once it mounts.
   const go = (e, id) => {
     e.preventDefault();
     setMenuOpen(false);
-    scrollToId(id);
+    if (pathname === "/") {
+      scrollToId(id);
+      return;
+    }
+    navigate("/", { state: { scrollTo: id } });
   };
 
   return (
     <nav className="navbar relative z-50 py-8 flex flex-col sm:flex-row items-center justify-between gap-4 px-6 md:px-12 border-b-3 border-black bg-[#0d0d11]/80 backdrop-blur-sm">
-      <div className="logo flex items-center gap-2 select-none">
+      <Link to="/" className="logo flex items-center gap-2 select-none" aria-label="Julian Arwansah — back to home">
         <p className="text-3xl font-black text-white tracking-tighter m-0">
           JULIAN<span className="text-[#ffe600]">.</span>
         </p>
         <span className="neo-badge text-xs px-2 py-0.5 rounded-none font-bold bg-[#00e5ff] text-black border border-black shadow-[2px_2px_0px_#000]">
           AR
         </span>
-      </div>
+      </Link>
 
       <div className="flex items-center gap-4">
         <button

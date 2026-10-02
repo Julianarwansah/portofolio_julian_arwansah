@@ -10,7 +10,7 @@ import { MeshLineGeometry, MeshLineMaterial } from 'meshline';
 import * as THREE from 'three';
 
 const cardGLB = `${import.meta.env.BASE_URL}assets/card.glb`;
-const lanyard = `${import.meta.env.BASE_URL}assets/lanyard.png`;
+const lanyard = `${import.meta.env.BASE_URL}assets/lanyard.webp`;
 
 const SEGMENT_PROPS = { type: 'dynamic', canSleep: true, colliders: false, angularDamping: 2, linearDamping: 2 };
 

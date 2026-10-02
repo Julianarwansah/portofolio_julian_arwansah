@@ -94,13 +94,7 @@ body.has-custom-cursor .neo-cursor {
   display: block;
 }
 
-body.has-custom-cursor,
-body.has-custom-cursor a,
-body.has-custom-cursor button,
-body.has-custom-cursor [role="button"],
-body.has-custom-cursor input {
-  cursor: none;
-}
+/* Decorative trailing accent only — the native cursor stays visible on purpose. */
 
 .neo-cursor.cursor-hot {
   width: 40px;
@@ -562,4 +556,202 @@ body.light-mode .pc-avatar-content::before {
 
 body.light-mode .pc-avatar-content .avatar {
   opacity: 1;
+}
+
+/* Project filter bar */
+.proj-search-icon {
+  position: absolute;
+  left: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #71717a;
+  pointer-events: none;
+}
+
+.proj-search:focus-visible {
+  outline: none;
+}
+
+.proj-tag,
+.proj-year {
+  line-height: 1;
+}
+
+body.light-mode .proj-search {
+  background-color: #ffffff !important;
+  color: #000000 !important;
+}
+
+body.light-mode .proj-search::placeholder {
+  color: #9ca3af !important;
+}
+
+body.light-mode .proj-search-icon {
+  color: #6b7280 !important;
+}
+
+body.light-mode .proj-chip:not(.proj-chip-active) {
+  background-color: #ffffff !important;
+  color: #374151 !important;
+}
+
+body.light-mode .proj-chip:not(.proj-chip-active):hover {
+  color: #000000 !important;
+}
+
+body.light-mode .proj-count {
+  color: #4b5563 !important;
+}
+
+body.light-mode .proj-clear:hover {
+  color: #000000 !important;
+}
+
+body.light-mode .proj-empty {
+  background-color: #ffffff !important;
+}
+
+body.light-mode .proj-empty-title {
+  color: #000000 !important;
+}
+
+body.light-mode .proj-empty-desc {
+  color: #4b5563 !important;
+}
+
+body.light-mode .proj-tag {
+  background-color: #f3f4f6 !important;
+  color: #374151 !important;
+}
+
+/* Project detail page */
+.detail-meta {
+  display: inline-flex;
+  align-items: center;
+  border: 2px solid #000000;
+  border-radius: 2px;
+  padding: 2px 8px;
+  box-shadow: 2px 2px 0px #000000;
+  font-family: var(--font-sans);
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  line-height: 1.4;
+}
+
+.detail-meta-year {
+  background-color: #00e5ff;
+  color: #000000;
+}
+
+.detail-meta-role {
+  background-color: #00ff66;
+  color: #000000;
+}
+
+.detail-meta-category {
+  background-color: #ff007f;
+  color: #ffffff;
+}
+
+.proj-pager-link {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 16px;
+  background-color: #18181b;
+  border: 3px solid #000000;
+  border-radius: 8px;
+  box-shadow: 4px 4px 0px #000000;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.proj-pager-link:hover {
+  transform: translateY(-2px);
+  box-shadow: 6px 6px 0px #00e5ff;
+}
+
+.proj-pager-next {
+  text-align: right;
+  align-items: flex-end;
+}
+
+.proj-pager-dir {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-sans);
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #ffe600;
+}
+
+.proj-pager-name {
+  font-family: var(--font-display);
+  font-size: 1.125rem;
+  font-weight: 900;
+  color: #ffffff;
+}
+
+body.light-mode .project-detail,
+body.light-mode .related-card,
+body.light-mode .proj-pager-link {
+  background-color: #ffffff !important;
+}
+
+body.light-mode .detail-title,
+body.light-mode .related-card-title,
+body.light-mode .proj-pager-name,
+body.light-mode .notfound-title,
+body.light-mode .detail-stack-item {
+  color: #000000 !important;
+}
+
+body.light-mode .detail-desc {
+  color: #374151 !important;
+}
+
+body.light-mode .detail-sub,
+body.light-mode .proj-pager-dir {
+  color: #a16207 !important;
+}
+
+body.light-mode .detail-heading {
+  color: #0369a1 !important;
+}
+
+body.light-mode .detail-stack-item,
+body.light-mode .proj-highlight {
+  background-color: #f3f4f6 !important;
+}
+
+body.light-mode .proj-highlight-text {
+  color: #111827 !important;
+}
+
+/* 404 page */
+.notfound-code {
+  -webkit-text-stroke: 4px #000000;
+  text-shadow: 8px 8px 0px #000000;
+}
+
+body.light-mode .notfound-desc {
+  color: #4b5563 !important;
+}
+
+/* Hero fact bar in Light Mode */
+body.light-mode .fact-cell {
+  background-color: #ffffff !important;
+  box-shadow: 4px 4px 0px #000000 !important;
+}
+
+body.light-mode .fact-value {
+  color: #000000 !important;
+}
+
+body.light-mode .fact-label {
+  color: #4b5563 !important;
 }

@@ -1,17 +1,23 @@
-import { lazy, Suspense, useState, useEffect, useRef } from "react";
-import { useNavigate } from "react-router-dom";
-import { FiMail, FiPhone, FiMapPin } from "react-icons/fi";
+import { lazy, Suspense, useState, useEffect, useMemo, useRef } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
+import { FiMail, FiPhone, FiMapPin, FiSearch } from "react-icons/fi";
+import { RiGithubFill, RiInstagramFill } from "react-icons/ri";
+import AOS from "aos";
 import ProfileCard from "./components/ProfileCard/ProfileCard";
 import BlurText from "./components/BlurText/BlurText";
 import Lanyard from "./components/Lanyard/Lanyard";
-import { listTools, listProyek, listPengalaman, listPendidikan, listSertifikat } from "./data";
+import { listTools, listProyek, listPengalaman, listPendidikan, listSertifikat, listFakta } from "./data";
 import Timeline from "./components/Timeline/Timeline";
 import Education from "./components/Education/Education";
 import Certificates from "./components/Certificates/Certificates";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
+import ScrollProgress from "./components/ScrollProgress";
 import CreativeCursor from "./components/CreativeCursor";
 import { usePageMeta } from "./lib/meta";
+import { useTheme } from "./lib/theme";
+import { scrollToId } from "./lib/scroll";
+import { filterProjects, projectCategories } from "./lib/projects";
 
 const ChatRoom = lazy(() => import("./components/ChatRoom"));
 
@@ -51,27 +57,6 @@ function ToolMarquee({ items, duration, reverse = false }) {
       </div>
     </div>
   );
-}
-
-function ScrollProgress() {
-  const barRef = useRef(null);
-
-  useEffect(() => {
-    const update = () => {
-      const el = document.documentElement;
-      const max = el.scrollHeight - el.clientHeight;
-      barRef.current.style.transform = `scaleX(${max > 0 ? el.scrollTop / max : 0})`;
-    };
-    update();
-    window.addEventListener("scroll", update, { passive: true });
-    window.addEventListener("resize", update);
-    return () => {
-      window.removeEventListener("scroll", update);
-      window.removeEventListener("resize", update);
-    };
-  }, []);
-
-  return <div ref={barRef} className="scroll-progress" aria-hidden="true" />;
 }
 
 function Typewriter({ text, speed = 45 }) {
@@ -140,37 +125,184 @@ function KonamiConfetti() {
   return null;
 }
 
+const CATEGORY_CHIPS = ["all", ...projectCategories];
+
+const CHAT_PLACEHOLDER = (
+  <div className="h-[28rem] flex items-center justify-center text-zinc-500 font-mono uppercase text-xs tracking-wider">
+    Loading chat…
+  </div>
+);
+
+function ProjectsSection({ onProjectClick }) {
+  const [category, setCategory] = useState("all");
+  const [query, setQuery] = useState("");
+
+  const visible = useMemo(() => filterProjects({ category, query }), [category, query]);
+  const isFiltering = category !== "all" || query.trim() !== "";
+
+  // Filtering swaps in DOM nodes AOS has never measured, and they would sit at
+  // opacity 0 until the next scroll event.
+  useEffect(() => {
+    AOS.refreshHard();
+  }, [visible]);
+
+  const clearFilters = () => {
+    setCategory("all");
+    setQuery("");
+  };
+
+  return (
+    <section className="proyek mt-32" id="project" aria-labelledby="projects-title">
+      <div className="flex flex-col items-center text-center mt-10" data-aos="fade-up" data-aos-duration="1000" data-aos-once="true">
+        <span className="neo-badge bg-[#ffe600] text-black border-2 border-black shadow-[2px_2px_0px_#000] py-1 px-3 mb-4 text-sm">
+          MY WORK
+        </span>
+        <h2 id="projects-title" className="text-4xl sm:text-5xl font-black mb-4 text-white">Featured Projects</h2>
+        <p className="text-zinc-400 font-bold max-w-2xl leading-relaxed">
+          Showcasing a selection of projects that reflect my skills, creativity, and passion for building meaningful digital experiences.
+        </p>
+      </div>
+
+      <div className="mt-12 max-w-6xl mx-auto w-full" data-aos="fade-up" data-aos-duration="1000" data-aos-delay="200" data-aos-once="true">
+        <div className="relative">
+          <FiSearch size={18} className="proj-search-icon" aria-hidden="true" />
+          <input
+            type="search"
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+            placeholder="Search projects or tech — try Laravel, Flutter, EV…"
+            aria-label="Search projects"
+            className="proj-search w-full border-3 border-black rounded-md bg-zinc-950 py-3 pl-12 pr-4 text-sm font-bold text-white placeholder:text-zinc-600 shadow-[4px_4px_0px_#000000] focus:shadow-[4px_4px_0px_#ffe600] focus:outline-none transition-shadow"
+          />
+        </div>
+
+        <div className="flex flex-wrap gap-2 mt-4" role="group" aria-label="Filter projects by category">
+          {CATEGORY_CHIPS.map((chip) => {
+            const isActive = chip === category;
+            return (
+              <button
+                key={chip}
+                type="button"
+                onClick={() => setCategory(chip)}
+                aria-pressed={isActive}
+                className={`proj-chip border-2 border-black rounded-sm px-3 py-1.5 text-xs font-bold uppercase tracking-wider transition-all cursor-pointer ${
+                  isActive
+                    ? "proj-chip-active bg-[#ffe600] text-black shadow-[3px_3px_0px_#000000]"
+                    : "bg-zinc-950 text-zinc-400 shadow-[2px_2px_0px_#000000] hover:text-white hover:shadow-[3px_3px_0px_#00e5ff]"
+                }`}
+              >
+                {chip === "all" ? "All" : chip}
+              </button>
+            );
+          })}
+        </div>
+
+        <div className="flex flex-wrap items-center justify-between gap-3 mt-5">
+          <p className="proj-count text-[11px] font-mono uppercase tracking-wider text-zinc-500">
+            Showing {visible.length} of {listProyek.length} projects
+          </p>
+          {isFiltering && (
+            <button
+              type="button"
+              onClick={clearFilters}
+              className="proj-clear text-[11px] font-mono uppercase tracking-wider font-bold text-[#ff007f] hover:text-white border-b-2 border-current cursor-pointer transition-colors"
+            >
+              Clear filters
+            </button>
+          )}
+        </div>
+      </div>
+
+      {visible.length === 0 ? (
+        <div className="proj-empty mt-14 max-w-6xl mx-auto w-full border-4 border-dashed border-black rounded-xl bg-zinc-950 p-10 text-center">
+          <p className="proj-empty-title text-2xl font-black text-white mb-2">No projects match that.</p>
+          <p className="proj-empty-desc text-zinc-400 font-bold mb-6">
+            Try a different keyword, or reset the filters to see all {listProyek.length} projects.
+          </p>
+          <button type="button" onClick={clearFilters} className="neo-btn-yellow p-3 px-6 rounded-md text-sm">
+            Clear filters
+          </button>
+        </div>
+      ) : (
+        <div className="proyek-box mt-10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto w-full">
+          {visible.map((project, i) => (
+            <article
+              key={project.slug}
+              role="button"
+              tabIndex={0}
+              aria-label={`Open details for ${project.title}`}
+              onClick={() => onProjectClick(project)}
+              onKeyDown={(e) => {
+                if (e.key === "Enter" || e.key === " ") {
+                  e.preventDefault();
+                  onProjectClick(project);
+                }
+              }}
+              onMouseMove={(e) => {
+                const r = e.currentTarget.getBoundingClientRect();
+                e.currentTarget.style.setProperty("--mouse-x", `${e.clientX - r.left}px`);
+                e.currentTarget.style.setProperty("--mouse-y", `${e.clientY - r.top}px`);
+              }}
+              style={{ "--card-border": project.borderColor || "transparent", cursor: "pointer" }}
+              className="proj-card group relative flex flex-col border-4 border-black rounded-xl overflow-hidden bg-zinc-950 shadow-[8px_8px_0px_#000000] transition-all duration-200 hover:-translate-x-1 hover:-translate-y-1 hover:shadow-[12px_12px_0px_#000000] focus-visible:-translate-x-1 focus-visible:-translate-y-1 focus-visible:shadow-[12px_12px_0px_#000000] focus-visible:outline-3 focus-visible:outline-[#00e5ff] focus-visible:outline-offset-4"
+              data-aos="fade-up"
+              data-aos-duration="1000"
+              data-aos-delay={(i % 3) * 100}
+              data-aos-once="true"
+            >
+              <div className="overflow-hidden border-b-4 border-black">
+                <img
+                  src={project.image}
+                  alt={`Screenshot of ${project.title}`}
+                  loading="lazy"
+                  decoding="async"
+                  className="w-full h-44 object-cover transition-transform duration-300 group-hover:scale-105"
+                />
+              </div>
+              <div className="p-5 flex flex-col gap-1">
+                <span className="proj-sub text-[11px] font-mono uppercase tracking-wider text-[#ffe600]">{project.subtitle}</span>
+                <h3 className="proj-name text-xl font-black text-white leading-tight">{project.title}</h3>
+              </div>
+              <div className="mt-auto px-5 pb-5 flex flex-wrap items-center gap-2">
+                <span className="proj-year text-[10px] font-mono font-bold uppercase tracking-wider text-black bg-[#00e5ff] border-2 border-black rounded-sm px-1.5 py-0.5">
+                  {project.year}
+                </span>
+                {(project.stack ?? []).slice(0, 3).map((tech) => (
+                  <span key={tech} className="proj-tag text-[10px] font-mono font-bold uppercase tracking-wider text-zinc-400 bg-zinc-900 border-2 border-black rounded-sm px-1.5 py-0.5">
+                    {tech}
+                  </span>
+                ))}
+              </div>
+            </article>
+          ))}
+        </div>
+      )}
+    </section>
+  );
+}
+
 // Stable references so toggling the theme does not rebuild the physics scene.
 const LANYARD_POSITION = [0, 0, 15];
 const LANYARD_GRAVITY = [0, -40, 0];
 
 function App() {
-  const [theme, setTheme] = useState(() => {
-    try {
-      return localStorage.getItem("theme") || "light";
-    } catch {
-      return "light";
-    }
-  });
-
-  const toggleTheme = () => {
-    setTheme((prev) => (prev === "light" ? "dark" : "light"));
-  };
-
-  useEffect(() => {
-    document.body.classList.toggle("light-mode", theme === "light");
-    try {
-      localStorage.setItem("theme", theme);
-    } catch {
-      // Storage is blocked in private browsing; the toggle still works for this session.
-    }
-  }, [theme]);
-
+  const { theme, toggleTheme } = useTheme();
   const navigate = useNavigate();
+  const location = useLocation();
+
+  // Navbar links clicked from a project page land here carrying a section to reveal.
+  useEffect(() => {
+    const target = location.state?.scrollTo;
+    if (!target) return;
+    scrollToId(target);
+    navigate(location.pathname, { replace: true });
+  }, [location.state, location.pathname, navigate]);
 
   const heroTextRef = useRef(null);
   const heroCardRef = useRef(null);
+  const chatHostRef = useRef(null);
   const [copied, setCopied] = useState(false);
+  const [chatNear, setChatNear] = useState(false);
 
   useEffect(() => {
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
@@ -189,6 +321,23 @@ function App() {
       cancelAnimationFrame(raf);
       window.removeEventListener("scroll", onScroll);
     };
+  }, []);
+
+  // The chat chunk drags Firebase in with it, so it is only requested once the
+  // visitor gets close to the contact section.
+  useEffect(() => {
+    const host = chatHostRef.current;
+    if (!host) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (!entry.isIntersecting) return;
+        setChatNear(true);
+        observer.disconnect();
+      },
+      { rootMargin: "600px 0px" }
+    );
+    observer.observe(host);
+    return () => observer.disconnect();
   }, []);
 
   const copyEmail = async () => {
@@ -246,8 +395,16 @@ function App() {
               delay={100}
               animateBy="words"
               direction="top"
-              className="mb-8 text-zinc-400 text-lg leading-relaxed font-medium block"
+              className="mb-6 text-zinc-400 text-lg leading-relaxed font-medium block"
             />
+            <dl className="fact-bar grid grid-cols-2 lg:grid-cols-4 gap-3 mb-8">
+              {listFakta.map((fact) => (
+                <div key={fact.label} className="fact-cell border-3 border-black rounded-md bg-zinc-950 p-3 shadow-[4px_4px_0px_#000000]">
+                  <dt className="fact-label text-[10px] font-mono uppercase tracking-wider text-zinc-500">{fact.label}</dt>
+                  <dd className="fact-value text-sm font-bold text-white mt-1">{fact.value}</dd>
+                </div>
+              ))}
+            </dl>
             <div className="flex items-center sm:gap-6 gap-3 flex-wrap">
               <a
                 href={`${import.meta.env.BASE_URL}assets/CV.pdf`}
@@ -264,6 +421,28 @@ function App() {
                 className="neo-btn-yellow p-4 px-6 rounded-md text-base"
               >
                 Explore My Projects
+              </a>
+
+              <a
+                href="https://github.com/Julianarwansah"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="GitHub profile (opens in a new tab)"
+                data-magnetic
+                className="neo-btn-magenta p-4 px-4 rounded-md"
+              >
+                <RiGithubFill size={20} aria-hidden="true" />
+              </a>
+
+              <a
+                href="https://www.instagram.com/iyan_juliann/"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Instagram profile (opens in a new tab)"
+                data-magnetic
+                className="neo-btn-cyan p-4 px-4 rounded-md"
+              >
+                <RiInstagramFill size={20} aria-hidden="true" />
               </a>
             </div>
             </div>
@@ -337,8 +516,8 @@ function App() {
             My Professional Stack & Skills
           </p>
           <div className="tools-box mt-14 flex flex-col gap-6">
-            <ToolMarquee items={listTools.slice(0, 10)} duration="45s" />
-            <ToolMarquee items={listTools.slice(10)} duration="55s" reverse />
+            <ToolMarquee items={listTools.slice(0, 10)} duration="70s" />
+            <ToolMarquee items={listTools.slice(10)} duration="85s" reverse />
           </div>
         </section>
         {/* tentang */}
@@ -394,59 +573,7 @@ function App() {
         )}
 
         {/* Proyek */}
-        <section className="proyek mt-32" id="project" aria-labelledby="projects-title">
-        <div className="flex flex-col items-center text-center mt-10" data-aos="fade-up" data-aos-duration="1000" data-aos-once="true">
-          <span className="neo-badge bg-[#ffe600] text-black border-2 border-black shadow-[2px_2px_0px_#000] py-1 px-3 mb-4 text-sm">
-            MY WORK
-          </span>
-          <h2 id="projects-title" className="text-4xl sm:text-5xl font-black mb-4 text-white">Featured Projects</h2>
-          <p className="text-zinc-400 font-bold max-w-2xl leading-relaxed">
-            Showcasing a selection of projects that reflect my skills, creativity, and passion for building meaningful digital experiences.
-          </p>
-        </div>
-        <div className="proyek-box mt-14 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto w-full">
-          {listProyek.map((project, i) => (
-            <article
-              key={project.slug}
-              role="button"
-              tabIndex={0}
-              aria-label={`Open details for ${project.title}`}
-              onClick={() => handleProjectClick(project)}
-              onKeyDown={(e) => {
-                if (e.key === "Enter" || e.key === " ") {
-                  e.preventDefault();
-                  handleProjectClick(project);
-                }
-              }}
-              onMouseMove={(e) => {
-                const r = e.currentTarget.getBoundingClientRect();
-                e.currentTarget.style.setProperty("--mouse-x", `${e.clientX - r.left}px`);
-                e.currentTarget.style.setProperty("--mouse-y", `${e.clientY - r.top}px`);
-              }}
-              style={{ "--card-border": project.borderColor || "transparent", cursor: "pointer" }}
-              className="proj-card group relative flex flex-col border-4 border-black rounded-xl overflow-hidden bg-zinc-950 shadow-[8px_8px_0px_#000000] transition-all duration-200 hover:-translate-x-1 hover:-translate-y-1 hover:shadow-[12px_12px_0px_#000000] focus-visible:-translate-x-1 focus-visible:-translate-y-1 focus-visible:shadow-[12px_12px_0px_#000000] focus-visible:outline-3 focus-visible:outline-[#00e5ff] focus-visible:outline-offset-4"
-              data-aos="fade-up"
-              data-aos-duration="1000"
-              data-aos-delay={(i % 3) * 100}
-              data-aos-once="true"
-            >
-              <div className="overflow-hidden border-b-4 border-black">
-                <img
-                  src={project.image}
-                  alt={`Screenshot of ${project.title}`}
-                  loading="lazy"
-                  decoding="async"
-                  className="w-full h-44 object-cover transition-transform duration-300 group-hover:scale-105"
-                />
-              </div>
-              <div className="p-5 flex flex-col gap-1">
-                <span className="proj-sub text-[11px] font-mono uppercase tracking-wider text-[#ffe600]">{project.subtitle}</span>
-                <h3 className="proj-name text-xl font-black text-white leading-tight">{project.title}</h3>
-              </div>
-            </article>
-          ))}
-        </div>
-        </section>
+        <ProjectsSection onProjectClick={handleProjectClick} />
         {/* Proyek */}
 
 
@@ -491,16 +618,15 @@ function App() {
           </div>
 
           {/* Chat Room */}
-          <div className="w-full max-w-4xl border-4 border-black shadow-[8px_8px_0px_rgba(0,0,0,1)] rounded-xl overflow-hidden bg-zinc-950 p-2" data-aos="fade-up" data-aos-duration="1000" data-aos-delay="400" data-aos-once="true">
-            <Suspense
-              fallback={
-                <div className="h-[28rem] flex items-center justify-center text-zinc-500 font-mono uppercase text-xs tracking-wider">
-                  Loading chat…
-                </div>
-              }
-            >
-              <ChatRoom />
-            </Suspense>
+          <div
+            ref={chatHostRef}
+            className="w-full max-w-4xl border-4 border-black shadow-[8px_8px_0px_rgba(0,0,0,1)] rounded-xl overflow-hidden bg-zinc-950 p-2"
+            data-aos="fade-up"
+            data-aos-duration="1000"
+            data-aos-delay="400"
+            data-aos-once="true"
+          >
+            {chatNear ? <Suspense fallback={CHAT_PLACEHOLDER}><ChatRoom /></Suspense> : CHAT_PLACEHOLDER}
           </div>
         </section>
       </main >
