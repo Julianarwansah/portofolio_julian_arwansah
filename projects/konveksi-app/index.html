@@ -3,6 +3,9 @@
   <head>
     <meta charset="UTF-8" />
     <link rel="icon" type="image/webp" href="/assets/cardjul.webp" />
+    <!-- The profile photo is the LCP element but is only discovered once React
+         mounts, so start it during HTML parse instead. -->
+    <link rel="preload" as="image" href="/assets/ftjul.webp" fetchpriority="high" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="theme-color" content="#faf9f5" />
 
@@ -21,14 +24,14 @@
       content="A full-stack Laravel application for managing made-to-order and custom garment production. Supports e-commerce, custom ordering, production management, inv"
     />
     <meta property="og:url" content="https://julianarwansah.web.id/projects/konveksi-app/" />
-    <meta property="og:image" content="https://julianarwansah.web.id/assets/cardjul.webp" />
+    <meta property="og:image" content="https://julianarwansah.web.id/assets/proyek/proyek5.webp" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="Konveksi — Julian Arwansah" />
     <meta
       name="twitter:description"
       content="A full-stack Laravel application for managing made-to-order and custom garment production. Supports e-commerce, custom ordering, production management, inv"
     />
-    <meta name="twitter:image" content="https://julianarwansah.web.id/assets/cardjul.webp" />
+    <meta name="twitter:image" content="https://julianarwansah.web.id/assets/proyek/proyek5.webp" />
 
     <!-- Only the two families the design actually uses; Poppins was fetched
          but never rendered. Kept blocking so headings never flash a fallback. -->
@@ -39,11 +42,11 @@
       href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Syne:wght@700;800&display=swap"
     />
 
-    <script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"Konveksi","description":"A full-stack Laravel application for managing made-to-order and custom garment production. Supports e-commerce, custom ordering, production management, inventory, and financial reporting across multiple user roles.","url":"https://julianarwansah.web.id/projects/konveksi-app/","applicationCategory":"DeveloperApplication"}</script>
-    <script type="module" crossorigin src="/assets/index-ClJetOtl.js"></script>
-    <link rel="stylesheet" crossorigin href="/assets/index-CeIHAFfw.css">
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"Konveksi","description":"A full-stack Laravel application for managing made-to-order and custom garment production. Supports e-commerce, custom ordering, production management, inventory, and financial reporting across multiple user roles.","url":"https://julianarwansah.web.id/projects/konveksi-app/","image":"https://julianarwansah.web.id/assets/proyek/proyek5.webp","applicationCategory":"DeveloperApplication"}</script>
+    <script type="module" crossorigin src="/assets/index-Dae82iW3.js"></script>
+    <link rel="stylesheet" crossorigin href="/assets/index-hB1hCCEf.css">
   </head>
-  <body class = "bg-zinc-900 text-white" id="home">
+  <body id="home">
     <div id="root"></div>
   </body>
 </html>
