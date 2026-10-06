@@ -66,3 +66,27 @@ export function getAdjacentProjects(slug) {
 
   return { prev: listProyek[index - 1] ?? null, next: listProyek[index + 1] ?? null };
 }
+
+// The Skills marquee names tools the way a résumé does ("Next JS"), while
+// project stacks use package names ("Next.js"). Map the few that differ so a
+// marquee click actually finds something.
+const TOOL_ALIASES = {
+  "Next JS": "Next.js",
+  "Node JS": "Node.js",
+  MySql: "MySQL",
+};
+
+export function toolFilterQuery(nama) {
+  return TOOL_ALIASES[nama] ?? nama;
+}
+
+// Most marquee tools appear in no project at all, and a chip that filters to
+// zero results is a dead end. Counts are cached: the data never changes.
+const toolCounts = new Map();
+
+export function toolProjectCount(nama) {
+  if (!toolCounts.has(nama)) {
+    toolCounts.set(nama, filterProjects({ query: toolFilterQuery(nama) }).length);
+  }
+  return toolCounts.get(nama);
+}

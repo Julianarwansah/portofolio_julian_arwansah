@@ -1,28 +1,16 @@
 import { Link } from "react-router-dom";
 import { FiHome, FiArrowRight } from "react-icons/fi";
 import { usePageMeta } from "../lib/meta";
-import { useTheme } from "../lib/theme";
-import Navbar from "../components/Navbar";
-import Footer from "../components/Footer";
-import ScrollProgress from "../components/ScrollProgress";
-import CreativeCursor from "../components/CreativeCursor";
 
 export default function NotFound() {
-  const { theme, toggleTheme } = useTheme();
-
   usePageMeta(
     "Page not found — Julian Arwansah",
     "The page you are looking for does not exist. Head back to the portfolio to see projects, experience and skills."
   );
 
   return (
-    <>
-      <ScrollProgress />
-      <CreativeCursor />
-      <div className="container mx-auto px-4 sm:px-6">
-        <Navbar theme={theme} onToggleTheme={toggleTheme} />
-        <main className="max-w-3xl mx-auto px-4 sm:px-6 py-24 flex flex-col items-center text-center">
-          <span className="neo-badge bg-[#ff007f] text-white border-2 border-black shadow-[2px_2px_0px_#000] py-1 px-3 mb-8 text-sm">
+    <main className="max-w-3xl mx-auto px-4 sm:px-6 py-24 flex flex-col items-center text-center">
+          <span className="neo-badge bg-[#ff007f] text-white mb-8 text-sm">
             WRONG TURN
           </span>
           <p className="notfound-code text-[6.5rem] sm:text-[10rem] font-black leading-none text-[#ffe600] select-none" aria-hidden="true">
@@ -45,10 +33,7 @@ export default function NotFound() {
             >
               Browse projects <FiArrowRight aria-hidden="true" />
             </Link>
-          </div>
-        </main>
-        <Footer />
-      </div>
-    </>
+        </div>
+    </main>
   );
 }

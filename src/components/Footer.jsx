@@ -4,6 +4,7 @@ import { VscHome, VscArchive, VscAccount } from "react-icons/vsc";
 import { RiGithubFill, RiInstagramFill } from "react-icons/ri";
 import { FiMail, FiPhone } from "react-icons/fi";
 import { scrollToId } from "../lib/scroll";
+import { EMAIL, GITHUB_URL, INSTAGRAM_URL, PHONE_TEL } from "../lib/contact";
 
 const Footer = () => {
   const navigate = useNavigate();
@@ -30,14 +31,14 @@ const Footer = () => {
       <div className="w-full flex flex-col md:flex-row items-center md:justify-between gap-6">
         
         {/* Judul - paling atas di mobile */}
-        <p className="text-2.5xl font-black order-1 md:order-none text-white tracking-tighter m-0">
+        <p className="text-3xl font-black order-1 md:order-none text-white tracking-tighter m-0">
           JULIAN<span className="text-[#ffe600]">.</span>
         </p>
 
         {/* Ikon Sosmed - di tengah di mobile */}
         <div className="flex gap-4 order-2 md:order-none">
           <a 
-            href="https://github.com/Julianarwansah"
+            href={GITHUB_URL}
             target="_blank"
             rel="noopener noreferrer"
             aria-label="GitHub profile (opens in a new tab)"
@@ -46,7 +47,7 @@ const Footer = () => {
             <RiGithubFill size={20} aria-hidden="true" />
           </a>
           <a 
-            href="https://www.instagram.com/iyan_juliann/"
+            href={INSTAGRAM_URL}
             target="_blank"
             rel="noopener noreferrer"
             aria-label="Instagram profile (opens in a new tab)"
@@ -55,14 +56,14 @@ const Footer = () => {
             <RiInstagramFill size={20} aria-hidden="true" />
           </a>
           <a
-            href="mailto:julianarwansahh@gmail.com"
+            href={`mailto:${EMAIL}`}
             aria-label="Email Julian Arwansah"
             className="text-black bg-[#ffe600] border-2 border-black p-2 hover:bg-[#00e5ff] transition-all rounded-md shadow-[2px_2px_0px_#000] active:translate-x-0.5 active:translate-y-0.5 active:shadow-[0px_0px_0px_#000] cursor-pointer flex items-center justify-center w-10 h-10"
           >
             <FiMail size={20} aria-hidden="true" />
           </a>
           <a
-            href="tel:+6289661770123"
+            href={`tel:${PHONE_TEL}`}
             aria-label="Call Julian Arwansah"
             className="text-black bg-[#ffe600] border-2 border-black p-2 hover:bg-[#00ff66] transition-all rounded-md shadow-[2px_2px_0px_#000] active:translate-x-0.5 active:translate-y-0.5 active:shadow-[0px_0px_0px_#000] cursor-pointer flex items-center justify-center w-10 h-10"
           >

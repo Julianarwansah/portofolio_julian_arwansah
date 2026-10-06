@@ -1,16 +1,13 @@
+import { useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { FiArrowLeft, FiArrowRight, FiCheck, FiExternalLink, FiGithub } from "react-icons/fi";
 import { getAdjacentProjects, getProjectBySlug, getRelatedProjects } from "../lib/projects";
 import { usePageMeta } from "../lib/meta";
-import { useTheme } from "../lib/theme";
-import Navbar from "../components/Navbar";
-import Footer from "../components/Footer";
-import ScrollProgress from "../components/ScrollProgress";
-import CreativeCursor from "../components/CreativeCursor";
+import ImageLightbox from "../components/ImageLightbox";
 
 export default function ProjectDetail() {
   const { slug } = useParams();
-  const { theme, toggleTheme } = useTheme();
+  const [lightboxOpen, setLightboxOpen] = useState(false);
   const project = getProjectBySlug(slug);
   const related = project ? getRelatedProjects(project) : [];
   const { prev, next } = getAdjacentProjects(slug);
@@ -22,12 +19,7 @@ export default function ProjectDetail() {
   );
 
   return (
-    <>
-      <ScrollProgress />
-      <CreativeCursor />
-      <div className="container mx-auto px-4 sm:px-6">
-        <Navbar theme={theme} onToggleTheme={toggleTheme} />
-        <main className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+    <main className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
           {!project ? (
             <div className="text-center py-20">
               <h1 className="notfound-title text-4xl font-black text-white mb-8">Project not found</h1>
@@ -37,9 +29,17 @@ export default function ProjectDetail() {
             </div>
           ) : (
             <>
-              <article className="project-detail border-4 border-black rounded-xl overflow-hidden bg-zinc-950 shadow-[8px_8px_0px_rgba(0,0,0,1)]">
+              <article className="project-detail border-4 border-black rounded-card overflow-hidden bg-zinc-950 shadow-neo-lg">
                 <div className="detail-hero border-b-4 border-black" style={{ background: project.gradient }}>
-                  <img src={project.image} alt={`Screenshot of ${project.title}`} decoding="async" />
+                  <button
+                    type="button"
+                    className="detail-hero-zoom"
+                    onClick={() => setLightboxOpen(true)}
+                    aria-label={`View the screenshot of ${project.title} at full size`}
+                    title="View full size"
+                  >
+                    <img src={project.image} alt={`Screenshot of ${project.title}`} decoding="async" />
+                  </button>
                 </div>
 
                 <div className="p-8 md:p-12">
@@ -135,7 +135,7 @@ export default function ProjectDetail() {
                     <li key={p.slug}>
                       <Link
                         to={`/projects/${p.slug}`}
-                        className="related-card block border-3 border-black rounded-lg overflow-hidden bg-zinc-950 shadow-[4px_4px_0px_#000] hover:shadow-[6px_6px_0px_#ffe600] hover:-translate-y-1 transition-all"
+                        className="related-card block border-3 border-black rounded-card overflow-hidden bg-zinc-950 shadow-neo-sm hover:shadow-[6px_6px_0px_#ffe600] hover:-translate-y-1 transition-all"
                       >
                         <img
                           src={p.image}
@@ -152,11 +152,16 @@ export default function ProjectDetail() {
                   ))}
                 </ul>
               </section>
+
+              {lightboxOpen && (
+                <ImageLightbox
+                  src={project.image}
+                  alt={`Screenshot of ${project.title}`}
+                  onClose={() => setLightboxOpen(false)}
+                />
+              )}
             </>
           )}
-        </main>
-        <Footer />
-      </div>
-    </>
+    </main>
   );
 }

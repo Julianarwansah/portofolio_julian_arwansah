@@ -1,3 +1,7 @@
+.xp-timeline {
+  position: relative;
+}
+
 .xp-list {
   position: relative;
   list-style: none;
@@ -5,15 +9,27 @@
   padding: 0 0 0 2.25rem;
 }
 
-.xp-list::before {
-  content: "";
+/* The rail used to be a ::before, which cannot be a motion target, and a span
+   cannot be a child of <ol> — hence the wrapper. Geometry is unchanged. */
+.xp-rail {
   position: absolute;
   left: 0.55rem;
   top: 0.6rem;
   bottom: 0.6rem;
   width: 4px;
-  background: #ffe600;
+  background: var(--color-rail);
   box-shadow: 2px 2px 0px #000000;
+}
+
+/* scaleY(1) in CSS as well as from JS: if the scroll hook never runs, the
+   visitor still sees the full yellow rail exactly as before. */
+.xp-rail-fill {
+  display: block;
+  width: 100%;
+  height: 100%;
+  background: #ffe600;
+  transform: scaleY(1);
+  transform-origin: top center;
 }
 
 .xp-item {
@@ -35,6 +51,10 @@
   border: 4px solid #ffe600;
   border-radius: 50%;
   box-shadow: 2px 2px 0px #000000;
+}
+
+.xp-dot.is-passed {
+  background: #ffe600;
 }
 
 .xp-card {

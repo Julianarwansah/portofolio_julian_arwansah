@@ -2,6 +2,11 @@ import { useEffect, useRef } from "react";
 
 const INTERACTIVE = "a, button, [role='button'], input, textarea, select";
 
+// Module scope on purpose: it survives StrictMode's mount/cleanup/remount, so an
+// element is never bound twice. A second handler would read the first one's
+// transform through getBoundingClientRect and compound the offset.
+const boundMagnets = new WeakSet();
+
 export default function CreativeCursor() {
   const cursorRef = useRef(null);
 
@@ -41,11 +46,25 @@ export default function CreativeCursor() {
     const magLeave = (e) => {
       e.currentTarget.style.transform = "";
     };
-    const magnets = [...document.querySelectorAll("[data-magnetic]")];
-    magnets.forEach((m) => {
+
+    // Bound lazily on first hover. This used to query [data-magnetic] exactly
+    // once on mount, so magnets rendered later never became magnetic — which
+    // matters now that this component outlives a single route and every page
+    // entered after it mounted renders its own buttons.
+    const bindMagnet = (m) => {
+      if (boundMagnets.has(m)) return;
+      boundMagnets.add(m);
       m.addEventListener("pointermove", magMove);
       m.addEventListener("pointerleave", magLeave);
-    });
+    };
+    const onOver = (e) => {
+      if (!(e.target instanceof Element)) return;
+      const magnet = e.target.closest("[data-magnetic]");
+      if (magnet) bindMagnet(magnet);
+    };
+
+    document.querySelectorAll("[data-magnetic]").forEach(bindMagnet);
+    document.addEventListener("pointerover", onOver, { passive: true });
 
     window.addEventListener("pointermove", move, { passive: true });
     window.addEventListener("pointerdown", down);
@@ -58,11 +77,7 @@ export default function CreativeCursor() {
       window.removeEventListener("pointermove", move);
       window.removeEventListener("pointerdown", down);
       window.removeEventListener("pointerup", up);
-      magnets.forEach((m) => {
-        m.removeEventListener("pointermove", magMove);
-        m.removeEventListener("pointerleave", magLeave);
-        m.style.transform = "";
-      });
+      document.removeEventListener("pointerover", onOver);
     };
   }, []);
 

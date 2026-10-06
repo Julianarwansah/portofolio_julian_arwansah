@@ -2,17 +2,14 @@ import { useState, useEffect } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { FiSun, FiMoon, FiMenu, FiX } from "react-icons/fi";
 import { scrollToId } from "../lib/scroll";
+import { useTheme } from "../lib/theme";
+import { SECTIONS, useActiveSection } from "../lib/sections";
+import { openCommandPalette } from "../lib/palette";
 
-const LINKS = [
-  { id: "home", label: "Home", hover: "hover:bg-[#ffe600]" },
-  { id: "about", label: "About", hover: "hover:bg-[#ff007f]" },
-  { id: "experience", label: "Experience", hover: "hover:bg-[#00e5ff]" },
-  { id: "project", label: "Project", hover: "hover:bg-[#00ff66]" },
-  { id: "contact", label: "Contact", hover: "hover:bg-[#00e5ff]" },
-];
-
-const Navbar = ({ theme = "dark", onToggleTheme }) => {
+const Navbar = () => {
   const [menuOpen, setMenuOpen] = useState(false);
+  const { theme, toggleTheme } = useTheme();
+  const active = useActiveSection();
   const navigate = useNavigate();
   const { pathname } = useLocation();
 
@@ -44,14 +41,24 @@ const Navbar = ({ theme = "dark", onToggleTheme }) => {
         <p className="text-3xl font-black text-white tracking-tighter m-0">
           JULIAN<span className="text-[#ffe600]">.</span>
         </p>
-        <span className="neo-badge text-xs px-2 py-0.5 rounded-none font-bold bg-[#00e5ff] text-black border border-black shadow-[2px_2px_0px_#000]">
+        <span className="neo-badge bg-[#00e5ff] text-black px-2 py-0.5 text-xs">
           AR
         </span>
       </Link>
 
       <div className="flex items-center gap-4">
         <button
-          onClick={onToggleTheme}
+          type="button"
+          data-magnetic
+          onClick={openCommandPalette}
+          className="text-black bg-[#00e5ff] border-2 border-black px-2.5 py-2 hover:bg-[#ffe600] transition-all rounded-md shadow-[2px_2px_0px_#000] active:translate-x-0.5 active:translate-y-0.5 active:shadow-[0px_0px_0px_#000] cursor-pointer font-mono text-xs font-bold tracking-wider flex items-center justify-center z-50"
+          aria-label="Open command palette"
+          title="Open command palette (Ctrl/Cmd + K)"
+        >
+          ⌘K
+        </button>
+        <button
+          onClick={toggleTheme}
           data-magnetic
           className="text-black bg-[#ffe600] border-2 border-black p-2 hover:bg-[#ff007f] hover:text-white transition-all rounded-md shadow-[2px_2px_0px_#000] active:translate-x-0.5 active:translate-y-0.5 active:shadow-[0px_0px_0px_#000] cursor-pointer flex items-center justify-center z-50"
           aria-label={theme === "light" ? "Switch to dark mode" : "Switch to light mode"}
@@ -86,17 +93,25 @@ const Navbar = ({ theme = "dark", onToggleTheme }) => {
               ? "top-4 opacity-100 visible pointer-events-auto"
               : "-top-20 opacity-0 invisible pointer-events-none"}`}
         >
-          {LINKS.map((link) => (
-            <li key={link.id}>
-              <a
-                href={`#${link.id}`}
-                onClick={(e) => go(e, link.id)}
-                className={`block px-3 py-1.5 sm:text-base text-sm font-bold text-zinc-300 hover:text-black ${link.hover} border-2 border-transparent hover:border-black rounded-sm transition-all`}
-              >
-                {link.label}
-              </a>
-            </li>
-          ))}
+          {SECTIONS.map((link) => {
+            const isActive = active === link.id;
+            return (
+              <li key={link.id}>
+                <a
+                  href={`#${link.id}`}
+                  onClick={(e) => go(e, link.id)}
+                  aria-current={isActive ? "true" : undefined}
+                  className={`block px-3 py-1.5 sm:text-base text-sm font-bold border-2 rounded-chip transition-all ${
+                    isActive
+                      ? "text-black bg-[#ffe600] border-black shadow-neo-xs"
+                      : `text-zinc-300 hover:text-black ${link.accent} border-transparent hover:border-black`
+                  }`}
+                >
+                  {link.label}
+                </a>
+              </li>
+            );
+          })}
         </ul>
       </div>
     </nav>

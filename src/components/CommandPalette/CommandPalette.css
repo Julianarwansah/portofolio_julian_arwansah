@@ -1,0 +1,111 @@
+/* Consumes the --color-* tokens flipped by body.light-mode, so the palette
+   themes in both modes without adding to the !important block in index.css. */
+.cmdk-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 9990;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 12vh 16px 16px;
+  background: rgba(0, 0, 0, 0.45);
+}
+
+.cmdk-panel {
+  width: min(560px, 100%);
+  display: flex;
+  flex-direction: column;
+  background: var(--color-surface);
+  color: var(--color-ink);
+  border: 3px solid var(--color-line);
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-neo-lg);
+  overflow: hidden;
+}
+
+.cmdk-input {
+  width: 100%;
+  padding: 14px 16px;
+  font-family: inherit;
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--color-ink);
+  background: transparent;
+  border: 0;
+  border-bottom: 3px solid var(--color-line);
+  outline: none;
+}
+
+.cmdk-input::placeholder {
+  color: var(--color-muted);
+  font-weight: 500;
+}
+
+.cmdk-list {
+  margin: 0;
+  padding: 6px;
+  list-style: none;
+  max-height: 320px;
+  overflow-y: auto;
+}
+
+.cmdk-option {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 9px 10px;
+  border: 2px solid transparent;
+  border-radius: var(--radius-control);
+  cursor: pointer;
+}
+
+.cmdk-option[aria-selected="true"] {
+  background: var(--color-acid);
+  border-color: var(--color-line);
+  color: #000000;
+}
+
+.cmdk-option-icon {
+  display: inline-flex;
+  flex-shrink: 0;
+}
+
+.cmdk-option-label {
+  font-size: 0.9rem;
+  font-weight: 700;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.cmdk-option-group {
+  margin-left: auto;
+  font-family: monospace;
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--color-muted);
+}
+
+.cmdk-option[aria-selected="true"] .cmdk-option-group {
+  color: #000000;
+}
+
+.cmdk-empty {
+  padding: 18px 10px;
+  text-align: center;
+  font-weight: 700;
+  color: var(--color-muted);
+}
+
+.cmdk-hints {
+  margin: 0;
+  padding: 8px 16px;
+  border-top: 3px solid var(--color-line);
+  font-family: monospace;
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--color-muted);
+}
