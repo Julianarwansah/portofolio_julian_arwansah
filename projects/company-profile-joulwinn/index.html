@@ -43,10 +43,28 @@
     />
 
     <script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"Company Profile Joulwinn","description":"A company profile website for Joulwinn, built to streamline business processes with a modern look and a structured content flow. Focuses on a clear presentation of the company's services, portfolio, and contact information.","url":"https://julianarwansah.web.id/projects/company-profile-joulwinn/","image":"https://julianarwansah.web.id/assets/proyek/proyek6.webp","applicationCategory":"DeveloperApplication"}</script>
-    <script type="module" crossorigin src="/assets/index-Dae82iW3.js"></script>
-    <link rel="stylesheet" crossorigin href="/assets/index-hB1hCCEf.css">
+    <script type="module" crossorigin src="/assets/index-BHXzEfxq.js"></script>
+    <link rel="stylesheet" crossorigin href="/assets/index-Bp6N-S1j.css">
   </head>
   <body id="home">
+    <!-- The theme must land before first paint. Every selector in index.css is
+         body.light-mode while the CSS default is dark, so applying the class
+         from a React effect flashed the page dark for one frame on every load. -->
+    <script>
+      try {
+        // Must mirror readInitialTheme in ThemeProvider.jsx, or the pre-paint
+        // class and the first React render disagree and the page flashes.
+        var stored = localStorage.getItem("theme");
+        var theme =
+          stored ||
+          (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+        if (theme === "light") {
+          document.body.classList.add("light-mode");
+        }
+      } catch (e) {
+        /* Storage is blocked in private browsing; the React toggle still works. */
+      }
+    </script>
     <div id="root"></div>
   </body>
 </html>
